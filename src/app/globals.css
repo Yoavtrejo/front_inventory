@@ -1,5 +1,4 @@
-@import "tailwindcss";
-
+@import "https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css";
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -22,5 +21,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Noto Sans, Poppins, DM Sans;
 }
