@@ -1,3 +1,5 @@
+import { API } from '@/constants';
+
 interface LoginCredentials {
     username: string;
     password: string;
@@ -22,7 +24,7 @@ interface RegisterCredentials{
 
 export const authService = {
     login: async(credentials: LoginCredentials): Promise<LoginResponse> => {
-        const response = await fetch('http://127.0.0.1:8000/api/token/', {
+        const response = await fetch(`${API}/token/`, {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify(credentials)
@@ -36,7 +38,7 @@ export const authService = {
     },
 
     me: async(id: number, token: string) => {
-        const response = await fetch(`http://127.0.0.1:8000/api/users/${id}/`, {
+        const response = await fetch(`${API}/users/${id}/`, {
             method: 'GET',
             headers: { 
                 'Content-Type' : 'application/json',
@@ -57,7 +59,7 @@ export const authService = {
     },
 
     register: async(credentials: RegisterCredentials) => {
-        const response = await fetch('http://127.0.0.1:8000/api/users/', {
+        const response = await fetch(`${API}/users/`, {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify(credentials)
