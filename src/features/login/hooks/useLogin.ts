@@ -12,9 +12,9 @@ export function useLogin(){
     const router = useRouter();
 
     const rutas: Record<string, string> = {
-        Administrador: '/admin/dashboard',
-        Docente: '/docente/dashboard',
-        Alumno: '/alumno/dashboard'
+        Administrador: '/inicio',
+        Docente: '/inicio',
+        Alumno: '/inicio'
     }; 
 
     const handleLogin = async () => {

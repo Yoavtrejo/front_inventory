@@ -42,20 +42,20 @@ export function FormLogin() {
                 <div className="field">
                     <label 
                         className="label" 
-                        htmlFor="email" 
+                        htmlFor="text" 
                         style={{ fontFamily: 'Poppins', fontWeight: 400, fontSize: '0.875rem', color: '#555' }}
                         >
                         <span className="icon is-small" style={{ marginRight: '4px' }}>
                             <IoMailOutline color="#f59e0b" size={16} />
                         </span>
-                        Correo electrónico
+                        Nombre de usuario
                     </label>
                     <div className="control">
                         <input
                             className="input"
-                            type="email"
-                            placeholder="correo@ejemplo.com"
-                            id="email"
+                            type="text"
+                            placeholder="usuario"
+                            id="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
