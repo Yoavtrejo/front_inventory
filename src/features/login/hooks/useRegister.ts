@@ -34,7 +34,8 @@ export function useRegister(){
             });
             router.push('/login');
         } catch (err) {
-            setError('Error al registrar el usuario. Por favor, verifica los datos ingresados.');
+            const mensaje = err instanceof Error ? err.message : 'Error inesperado. Intentar de nuevo.';
+            setError(mensaje);
         } finally {
             setLoading(false);
         }

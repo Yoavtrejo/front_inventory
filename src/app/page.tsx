@@ -1,10 +1,5 @@
-import LoginPage from "@/app/login/page"
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <LoginPage />
-    </div>
-  );
+export default function Home(){
+    redirect('/login');
 }
-

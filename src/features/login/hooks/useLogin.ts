@@ -37,7 +37,8 @@ export function useLogin(){
             localStorage.setItem('userRole', rol);
             router.push(rutas[rol]);
         }catch (err){
-            setError('Error al iniciar sesión. Por favor, verifica tus credenciales.');
+            const mensaje = err instanceof Error ? err.message : 'Error inesperado. Intenta de nuevo';
+            setError(mensaje);
         }finally {
             setLoading(false);
         }

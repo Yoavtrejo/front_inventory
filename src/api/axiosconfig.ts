@@ -1,5 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import {API} from "@/constants";
+import {API, TOKEN_KEYS} from "@/constants";
 
 const api = axios.create({
     baseURL: API,
@@ -10,7 +10,7 @@ api.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         // Obtenemos el token solo en el cliente
         if (typeof window !== "undefined") {
-            const token = localStorage.getItem('token');   
+            const token = localStorage.getItem(TOKEN_KEYS.access);   
         
             if (token) {
                 config.headers['Authorization'] = `Bearer ${token}`;
