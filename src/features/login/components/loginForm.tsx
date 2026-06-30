@@ -53,9 +53,9 @@ export function FormLogin() {
                     <div className="control">
                         <input
                             className="input"
-                            type="email"
+                            type="text"
                             placeholder="correo@ejemplo.com"
-                            id="email"
+                            id="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
