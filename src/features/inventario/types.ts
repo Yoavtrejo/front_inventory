@@ -1,0 +1,29 @@
+export type MaterialStatus = 'Disponible' | 'Prestado' | 'Mantenimiento' | 'Agotado';
+
+export interface Material {
+    id: number,
+    name: string,
+    description: string;
+    quantity: number;
+    min_stock: number;
+    max_stock: number;
+    status: MaterialStatus;
+    created_at:string;
+    update_at:string;
+}
+
+export interface CreateMaterialPayload{
+    name: string;
+    description: string;
+    quantity: number;
+    min_stock: number;
+    max_stock: number;
+}
+
+export interface UpdateMaterialPayload{
+    name?: string;
+    description?: string;
+    quantity?: number;
+    min_stock?: number;
+    max_stock?: number;
+}

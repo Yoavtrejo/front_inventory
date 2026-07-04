@@ -15,7 +15,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "SIGELARED",
+  title: "SIDERED",
   description: "Sistema de Gestión de Laboratorios de Red",
 };
 
