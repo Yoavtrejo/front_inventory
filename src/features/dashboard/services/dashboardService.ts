@@ -1,6 +1,7 @@
-// src/features/dashboard/services/dashboardService.ts
+
 import { API, TOKEN_KEYS } from '@/constants';
 import type { Reservacion, MaterialLoan, Isla } from '../types';
+import { unwrapList } from '@/utils/apiResponse';
 
 function getAuthHeaders(): HeadersInit {
     const token = typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEYS.access) : null;
@@ -39,17 +40,17 @@ async function fetchWithAuth<T>(endpoint: string): Promise<T> {
 
 export const dashboardService = {
     getReservaciones: async (): Promise<Reservacion[]> => {
-        const data = await fetchWithAuth<unknown>('/reservaciones/');
-        return normalizeList<Reservacion>(data);
+        const raw = await fetchWithAuth<unknown>('/reservaciones/');
+        return unwrapList<Reservacion>(raw);
     },
-
+    
     getPrestamos: async (): Promise<MaterialLoan[]> => {
-        const data = await fetchWithAuth<unknown>('/material-loans/');
-        return normalizeList<MaterialLoan>(data);
+        const raw = await fetchWithAuth<unknown>('/material-loans/');
+        return unwrapList<MaterialLoan>(raw);
     },
 
     getIslas: async (): Promise<Isla[]> => {
-        const data = await fetchWithAuth<unknown>('/islas/');
-        return normalizeList<Isla>(data);
+        const raw = await fetchWithAuth<unknown>('/islas/');
+        return unwrapList<Isla>(raw);
     },
 };

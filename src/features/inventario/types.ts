@@ -1,4 +1,5 @@
-export type MaterialStatus = 'Disponible' | 'Prestado' | 'Mantenimiento' | 'Agotado';
+export type MaterialStatus =  'Disponible' | 'Stock bajo' | 'Agotado' | 'No disponible' | 'Dañado' | 'En reparación' | 'En préstamo';
+
 
 export interface Material {
     id: number,
@@ -18,6 +19,7 @@ export interface CreateMaterialPayload{
     quantity: number;
     min_stock: number;
     max_stock: number;
+    status: MaterialStatus;
 }
 
 export interface UpdateMaterialPayload{
@@ -26,4 +28,5 @@ export interface UpdateMaterialPayload{
     quantity?: number;
     min_stock?: number;
     max_stock?: number;
+    status: MaterialStatus;
 }

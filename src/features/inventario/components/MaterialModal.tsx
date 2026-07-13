@@ -1,5 +1,6 @@
 import type { CreateMaterialPayload } from "../types";
 import type { Dispatch, SetStateAction } from 'react';
+import type { MaterialStatus } from "../types";
 
 type FormErrors = Partial<Record<keyof CreateMaterialPayload, string>>;
 
@@ -11,7 +12,7 @@ interface MaterialModalProps {
     formErrors: FormErrors;
     onClose:  () => void;
     onSubmit: () => void;
-    setForm:  Dispatch<SetStateAction<CreateMaterialPayload>>; // ← tipo correcto
+    setForm:  Dispatch<SetStateAction<CreateMaterialPayload>>;
 }
 
 export function MaterialModal({
@@ -76,6 +77,30 @@ export function MaterialModal({
                     {error && (
                         <p className="help is-danger" style={{ fontFamily:'Poppins', marginTop: '0.5rem'}}>{error}</p>
                     )}
+
+                    <div className="field">
+                    <label className="label" style={{ fontFamily: 'Poppins', fontSize: '0.875rem' }}>
+                        Estado
+                    </label>
+                    <div className="control">
+                        <div className="select is-fullwidth">
+                            <select
+                                value={form.status ?? 'Disponible'}
+                                onChange={(e) => setForm((prev) => ({ ...prev, status: e.target.value as MaterialStatus }))}
+                                style={{ fontFamily: 'var(--font-poppins)', fontSize: '0.875rem', borderRadius: '8px' }}
+                            >
+                                <option value="Disponible">Disponible</option>
+                                <option value="No disponible">No disponible</option>
+                                <option value="Dañado">Dañado</option>
+                                <option value="En reparación">En reparación</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p className="help" style={{ fontFamily: 'var(--font-poppins)', color: '#aaa' }}>
+                        Agotado y Stock bajo se actualizan automáticamente según la cantidad.
+                    </p>
+                </div>
+
                 </section>
 
                 <footer className="modal-card-foot" style={{ borderRadius:'0 0 16px 16px', background:'#ffffff', borderTop: '1px solid #f0f0f0', justifyContent: 'flex-end', gap:'0.75rem', padding:'1rem 1.5rem'}}>

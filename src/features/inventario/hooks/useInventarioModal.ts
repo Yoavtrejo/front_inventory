@@ -14,7 +14,7 @@ export function useInventarioModal(onSuccess: () => void){
     const [ error, setError ] = useState<string | null>(null);
     const [ formErrors, setFormErrors ] = useState<FormErrors>({});
 
-    const [ form, setForm ] = useState<CreateMaterialPayload>({ name: '', description: '', quantity: 0, min_stock: 0, max_stock: 0, });
+    const [ form, setForm ] = useState<CreateMaterialPayload>({ name: '', description: '', quantity: 0, min_stock: 0, max_stock: 0, status: 'Disponible'});
 
     const validate = (): boolean => {
         const errors: FormErrors ={};
@@ -45,7 +45,7 @@ export function useInventarioModal(onSuccess: () => void){
     }
 
     const openCreate = () => {
-        setForm({ name: '', description: '', quantity: 0, min_stock: 0, max_stock: 0 });
+        setForm({ name: '', description: '', quantity: 0, min_stock: 0, max_stock: 0 , status: 'Disponible'});
         setCurrent(null);
         setMode('create');
         setError(null);
@@ -59,8 +59,9 @@ export function useInventarioModal(onSuccess: () => void){
             quantity:    material.quantity,
             min_stock:   material.min_stock,
             max_stock:   material.max_stock,
+            status: material.status
         });
-        setCurrent(material);  // ← guardamos el material completo aquí
+        setCurrent(material);  
         setMode('edit');
         setError(null);
         setFormErrors({});

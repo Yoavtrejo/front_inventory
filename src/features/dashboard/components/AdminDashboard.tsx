@@ -9,7 +9,7 @@ export function AdminDashboard(){
 
     if (error){
         return(
-            <div className="notification is-danger is-light" style={{ fontFamily: 'var(--font-poppins)' }}>
+            <div className="notification is-danger is-light" style={{ fontFamily: 'Poppins' }}>
                 <strong>Error al cargar la página: </strong> {error}
             </div>
         );

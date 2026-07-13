@@ -1,5 +1,6 @@
 import { API, TOKEN_KEYS } from "@/constants";
 import type { Material, CreateMaterialPayload, UpdateMaterialPayload } from "../types";
+import { unwrapList, unwrapResponse } from '@/utils/apiResponse';
 
 function getAuthHeaders(includeContentType = true): HeadersInit {
     const token = typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEYS.access) : null;
@@ -34,28 +35,33 @@ async function fetchWithAuth<T>(
 
 export const inventarioService = {
     getAll: async (): Promise<Material[]> => {
-        const data = await fetchWithAuth<Material[] | unknown>('/materials/');
-        if (Array.isArray(data)) return data;
-        return [];
+        const raw = await fetchWithAuth<unknown>('/materials/');
+        return unwrapList<Material>(raw);
     },
 
-    //Obtener un material
-    getById: async (id:number): Promise<Material> => fetchWithAuth<Material>(`/materials/${id}/`),
+    getById: async (id: number): Promise<Material> => {
+        const raw = await fetchWithAuth<unknown>(`/materials/${id}/`);
+        return unwrapResponse<Material>(raw);
+    },
 
-    //crear
-    create: async (payload: CreateMaterialPayload) : Promise<Material> => fetchWithAuth<Material>('/materials/', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-    }),
+    create: async (payload: CreateMaterialPayload): Promise<Material> => {
+        const raw = await fetchWithAuth<unknown>('/materials/', {
+            method: 'POST',
+            body:   JSON.stringify(payload),
+        });
+        return unwrapResponse<Material>(raw);
+    },
 
-    //editar
-    update: async (id:number, payload: UpdateMaterialPayload) : Promise<Material> => fetchWithAuth<Material>(`/materials/${id}/`, {
-        method: 'PATCH',
-        body: JSON.stringify(payload),
-    }),
+    update: async (id: number, payload: UpdateMaterialPayload): Promise<Material> => {
+        const raw = await fetchWithAuth<unknown>(`/materials/${id}/`, {
+            method: 'PATCH',
+            body:   JSON.stringify(payload),
+        });
+        return unwrapResponse<Material>(raw);
+    },
 
-    //eliminar
-    delete: async (id:number) : Promise<void> => fetchWithAuth<void>(`/materials/${id}/`, {
-        method: 'DELETE'
-    }),
+    delete: async (id: number): Promise<void> => {
+        await fetchWithAuth<unknown>(`/materials/${id}/`, { method: 'DELETE' });
+    },
 };
+
