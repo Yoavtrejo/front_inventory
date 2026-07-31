@@ -37,14 +37,14 @@ export function CrearPrestamo(){
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '1.5rem', alignItems:'start' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(280px, 340px)', gap: '1.5rem', alignItems:'start' }}>
 
                 <div style={{ background: '#fff', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
                     <h3 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap:'0.5rem' }}>
                         <IoHammerOutline size={18} color="#d81e5b"/> Materiales Disponibles
                     </h3>
 
-                    <div style={{ display: 'grid', gridTemplateColumns:'32px 1fr 80px 90px', gap:'0.5rem', padding: '0.5rem 0.25rem', borderBottom: '1px solid #f0f0f0', fontFamily: 'Poppins', fontWeight: 700, fontSize: '0.78rem', color: '#555', textTransform: 'uppercase'}}>
+                    <div style={{ display: 'grid', gridTemplateColumns:'32px minmax(0, 1fr) 80px 90px', gap:'0.5rem', padding: '0.5rem 0.25rem', borderBottom: '1px solid #f0f0f0', fontFamily: 'Poppins', fontWeight: 700, fontSize: '0.78rem', color: '#555', textTransform: 'uppercase'}}>
                         <span/>
                         <span>Nombre</span>
                         <span>Stock</span>
@@ -56,7 +56,7 @@ export function CrearPrestamo(){
                     )): materials.map((material) => {
                         const isSelected = !!selected[material.id];
                         return (
-                            <div key={material.id} style={{ display: 'grid', gridTemplateColumns: '32px 1fr 80px 90px', gap: '0.5rem', padding: '0.6rem 0.25rem', borderBottom: '1px solid #f9f9f9', alignItems: 'center', background: isSelected ? '#fff7ed' : 'transparent', borderRadius: isSelected ? '8px' : '0' }}>
+                            <div key={material.id} style={{ display: 'grid', gridTemplateColumns: '32px minmax(0, 1fr) 80px 90px', gap: '0.5rem', padding: '0.6rem 0.25rem', borderBottom: '1px solid #f9f9f9', alignItems: 'center', background: isSelected ? '#fff7ed' : 'transparent', borderRadius: isSelected ? '8px' : '0' }}>
                                 <input 
                                     type="checkbox" 
                                     checked={isSelected}

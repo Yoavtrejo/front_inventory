@@ -5,26 +5,30 @@ import { useInventario } from "../hooks/useInventario";
 import { useInventarioModal } from "../hooks/useInventarioModal";
 import { MaterialModal } from "./MaterialModal";
 import { StatusBadge } from "./StatusBadge";
+import { ConfirmModal } from "@/components/ui/Modal/ConfirmModal";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export function Inventario(){
     const { materials, loading, error, search, setSearch, refetch, handleDelete } = useInventario();
     const { mode, form, setForm, loading: saving, error: saveError, formErrors, openCreate, openEdit, close, handleSubmit } = useInventarioModal(refetch);
+    const [ confirmDlete, setConfirmDelete] = useState<number | null>(null);
 
     return(
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems:'flex-start', marginBottom:'1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems:'flex-start', marginBottom:'1.5rem', flexWrap:'wrap', gap:'1rem' }}>
                 <div>
-                    <h1 style={{ fontWeight: 700, fontSize: '1.75rem', color: '#1a1a1a', marginBottom:'0.25rem'}}> Gestión de Inventario </h1>
+                    <h1 style={{ fontWeight: 700, fontSize: 'clamp(1.25rem, 2vw, 1.75rem)', color: '#1a1a1a', marginBottom:'0.25rem'}}> Gestión de Inventario </h1>
                     <p style={{ color:'#888', fontSize:'0.875rem'}}> Administra todo el material que está dentro del laboratorio.</p>
                 </div>
 
-                <button onClick={openCreate} style={{ background: 'linear-gradient(135deg, #f97316, #e53e6d)', color: '#fff', fontWeight:600, fontSize:'0.9rem', border:'none', borderRadius:'12px', padding:'0.65rem 1.25rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.5rem'}}>
+                <button onClick={openCreate} style={{ background: 'linear-gradient(135deg, #f97316, #e53e6d)', color: '#fff', fontWeight:600, fontSize:'0.9rem', border:'none', borderRadius:'12px', padding:'0.65rem 1.25rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.5rem', width:'100%', maxWidth:'220px', justifyContent:'center'}}>
                     <IoAdd size={18} />
                     Agregar material
                 </button>
             </div>
 
-            <div className="control has-icons-left" style={{ marginBottom:'1.25rem', maxWidth: '400px'}}>
+            <div className="control has-icons-left" style={{ marginBottom:'1.25rem', maxWidth: '400px', width:'100%'}}>
                 <input className="input" type="text" placeholder="Buscar material, tipo, etc" value={search} onChange={(e) => setSearch(e.target.value)} style={{ borderRadius: '12px' }}/>
                 <span className="icon is-left">
                     <IoSearch color="#aaa"/>
@@ -35,8 +39,8 @@ export function Inventario(){
                 <div className="notification is-danger is-light">{error}</div>
             )}
 
-            <div style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 2fr 100px 120px 110px', padding: '0.75rem 1.5rem', borderBottom: '2px solid', borderImage: 'linear-gradient(135deg, #f97316, #e53e6d) 1', fontWeight: 700, fontSize:'0.8rem', color: '#1a1a1a', textTransform: 'uppercase', letterSpacing:'0.05rem'}}>
+            <div style={{ background: '#fff', borderRadius: '16px', overflowX: 'auto', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 2fr 100px 120px 110px', minWidth: '760px', padding: '0.75rem 1.5rem', borderBottom: '2px solid', borderImage: 'linear-gradient(135deg, #f97316, #e53e6d) 1', fontWeight: 700, fontSize:'0.8rem', color: '#1a1a1a', textTransform: 'uppercase', letterSpacing:'0.05rem'}}>
                     <span>ID</span>
                     <span>Nombre</span>
                     <span>Descripción</span>
@@ -54,7 +58,7 @@ export function Inventario(){
                 )}
 
                 {!loading && materials.map((material, index) => (
-                    <div key={material.id} style={{ display:'grid', gridTemplateColumns: '80px 1fr 2fr 100px 120px 110px', padding: '1rem 1.5rem', alignItems:'center', background: index % 2 === 0 ? '#ffffff' : '#fafafa', borderBottom:'1px solid #f5f5f5', fontSize: '0.875rem'}}>
+                    <div key={material.id} style={{ display:'grid', gridTemplateColumns: '80px 1fr 2fr 100px 120px 110px', minWidth: '760px', padding: '1rem 1.5rem', alignItems:'center', background: index % 2 === 0 ? '#ffffff' : '#fafafa', borderBottom:'1px solid #f5f5f5', fontSize: '0.875rem'}}>
                         <span style={{ color:'#888', fontWeight: 500 }}>{String(material.id).padStart(3, '0')}</span>
                         <span style={{ fontWeight: 500, color: '#1a1a1a'}}>{material.name}</span>
                         <span style={{ color: '#666666'}}>{material.description}</span>
@@ -64,8 +68,24 @@ export function Inventario(){
                             <button onClick={() => openEdit(material)} style={{background: 'none', border:'none', cursor: 'pointer', padding: '4px'}} title="Editar">
                                 <IoPencil size={18} color="#f97316"/>
                             </button>
-                            <button onClick={() => handleDelete(material.id)} style={{ background:'none', border:'none', cursor: 'pointer', padding:'4px'}} title="Eliminar">
-                                <IoTrash size={18} color="#e53e6d"/>
+                            <ConfirmModal
+                                open={confirmDlete !== null}
+                                title="Eliminar material"
+                                message="¿Estás seguro de que deseas eliminar este material? Esta acción no se puede deshacer."
+                                onClose={() => setConfirmDelete(null)}
+                                onConfirm={async() => {
+                                    if (confirmDlete !== null){
+                                        await handleDelete(confirmDlete);
+                                        setConfirmDelete(null);
+                                    }
+                                }}
+                                confirmLabel="Sí, eliminar"
+                            />
+                            <button
+                                onClick={() => setConfirmDelete(material.id)}
+                                style={{ background:'none', border:'none', cursor:'pointer', padding:'4px' }}
+                            >
+                                <IoTrash color="#e53e6d"/>
                             </button>
                         </div>
                     </div>

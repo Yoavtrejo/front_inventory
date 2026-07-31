@@ -29,7 +29,7 @@ export function Prestamos() {
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap:'wrap', gap:'1rem' }}>
                 <div>
                     <h1 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: '1.75rem', color: '#1a1a1a', marginBottom: '0.25rem' }}>
                         Gestión de préstamos
@@ -39,7 +39,7 @@ export function Prestamos() {
                     </p>
                 </div>
 
-                <button onClick={() => router.push('/admin/prestamos/crear')} style={{background:'linear-gradient(135deg, #f97316, #e53e6d)',color:'#fff',fontFamily:'Poppins',fontWeight:600,fontSize:'0.9rem',border:'none',borderRadius:'12px',padding:'0.65rem 1.25rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'0.5rem',}}>
+                <button onClick={() => router.push('/admin/prestamos/crear')} style={{background:'linear-gradient(135deg, #f97316, #e53e6d)',color:'#fff',fontFamily:'Poppins',fontWeight:600,fontSize:'0.9rem',border:'none',borderRadius:'12px',padding:'0.65rem 1.25rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'0.5rem',justifyContent:'center', width:'100%', maxWidth:'220px'}}>
                     <IoAdd size={18} /> Crear Préstamo
                 </button>
             </div>

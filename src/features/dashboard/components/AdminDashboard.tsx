@@ -20,7 +20,7 @@ export function AdminDashboard(){
             <h1 style={{ fontWeight: 700, fontSize: '2rem', color:'#1a1a1a', marginBottom:'0.25rem' }}>
                 ¡Bienvenido {userName}!
             </h1>
-            <p style={{ fontFamily:'var(--font-poppins), sans-serif', color:'#e53e6d', fontWeight: 600, fontSize:'1rem', marginBottom:'1.75rem' }}>
+            <p style={{ fontFamily:'Poppins, sans-serif', color:'#e53e6d', fontWeight: 600, fontSize:'1rem', marginBottom:'1.75rem' }}>
                 Mantente al día
             </p>
 

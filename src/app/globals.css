@@ -6,7 +6,7 @@
   --color-secondary: #D4537E;
   --color-gradient-start: #E85D24;
   --color-gradient-end: #D4537E;
-  --font-heading: var(--font-poppins);
+  --font-heading: Poppins;
   --font-body: var(--font-noto-sans);
 }
 
@@ -17,4 +17,15 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), sans-serif;
+}
+
+@keyframes slideIn {
+  from {
+    opacity:   0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity:   1;
+    transform: translateX(0);
+  }
 }

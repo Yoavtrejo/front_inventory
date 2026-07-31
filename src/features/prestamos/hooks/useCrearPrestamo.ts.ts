@@ -100,6 +100,27 @@ export function useCrearPrestamo() {
 
     const selectedList = Object.values(selected);
 
+    const syncInventoryAfterLoan = async (materialId: number, delta: number) => {
+        const material = await inventarioService.getById(materialId);
+        const nextQuantity = Math.max(0, material.quantity + delta);
+        const nextStatus = nextQuantity <= 0
+            ? 'Agotado'
+            : nextQuantity <= material.min_stock
+                ? 'Stock bajo'
+                : material.status;
+
+        await inventarioService.update(materialId, {
+            name: material.name,
+            description: material.description,
+            quantity: nextQuantity,
+            min_stock: material.min_stock,
+            max_stock: material.max_stock,
+            status: nextStatus,
+        });
+
+        setMaterials((prev) => prev.map((item) => item.id === materialId ? { ...item, quantity: nextQuantity, status: nextStatus } : item));
+    };
+
     const handleSubmit = async () => {
         if (selectedList.length === 0) {
             setError('Selecciona al menos un material');
@@ -127,6 +148,16 @@ export function useCrearPrestamo() {
                 )
             );
 
+            const inventoryResults = await Promise.allSettled(
+                selectedList.map((item) => syncInventoryAfterLoan(item.material_id, -item.quantity))
+            );
+
+            const hadInventoryErrors = inventoryResults.some((result) => result.status === 'rejected');
+            if (hadInventoryErrors) {
+                setError('Préstamo creado, pero no se pudo actualizar el inventario.');
+            }
+
+            window.dispatchEvent(new CustomEvent('inventory:refresh'));
             router.refresh();
             router.push('/admin/prestamos?updated=' + Date.now());
         } catch (err) {

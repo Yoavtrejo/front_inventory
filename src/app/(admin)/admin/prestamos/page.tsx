@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: 'Préstamos | SIGELARED' };
 export default function PrestamosPage() {
     return (
         <Suspense fallback={
-            <div style={{ fontFamily: 'var(--font-poppins)', padding: '2rem', color: '#888' }}>
+            <div style={{ fontFamily: 'Poppins', padding: '2rem', color: '#888' }}>
                 Cargando...
             </div>
         }>
