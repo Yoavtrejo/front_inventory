@@ -87,7 +87,6 @@ export const islasService = {
         const raw = await fetchWithAuth<unknown>('/reservaciones/');
         return unwrapList<Reservacion>(raw);
     },
-
     createReservacion: async(payload: CreateReservacionPayload) : Promise<Reservacion> => {
         const raw = await fetchWithAuth<unknown>('/reservaciones/', {
             method: 'POST',
