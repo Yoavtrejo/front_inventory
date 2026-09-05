@@ -39,14 +39,14 @@ export function CalendarioIslas({ semanaActual, reservaciones, bloqueos, onAnter
     });
 
     return(
-        <div style={{ background:'#fff', borderRadius:'16px', padding:'1.5rem', boxShadow:'0 2px 8px rgba(0,0,0,0.06)', overflow:'hidden' }}>
+        <div style={{ background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', padding:'1.5rem', boxShadow:'var(--shadow)', overflow:'hidden' }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'1.25rem', flexWrap:'wrap', gap:'0.5rem' }}>
                 <button onClick={onAnterior} style={{ background:'none', border:'1px solid #e5e7eb', borderRadius:'8px', padding:'0.4rem 0.75rem', cursor:'pointer', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>
                     <IoChevronBackOutline/> Anterior
                 </button>
 
                 <div style={{ textAlign:'center', flex:1 }}>
-                    <p style={{ fontFamily:'Poppins', fontWeight:600, fontSize:'0.9rem', color:'#1a1a1a' }}>
+                    <p style={{ fontFamily:'Poppins', fontWeight:600, fontSize:'0.9rem', color:'var(--text)' }}>
                         {formatSemana(semanaActual)}
                     </p>
                     <div style={{ height:'2px', background:'linear-gradient(135deg, #f97316, #e53e6d)', borderRadius:'8px', marginTop:'4px' }}/>

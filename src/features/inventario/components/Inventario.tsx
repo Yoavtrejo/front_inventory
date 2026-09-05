@@ -39,8 +39,8 @@ export function Inventario(){
                 <div className="notification is-danger is-light">{error}</div>
             )}
 
-            <div style={{ background: '#fff', borderRadius: '16px', overflowX: 'auto', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 2fr 100px 120px 110px', minWidth: '760px', padding: '0.75rem 1.5rem', borderBottom: '2px solid', borderImage: 'linear-gradient(135deg, #f97316, #e53e6d) 1', fontWeight: 700, fontSize:'0.8rem', color: '#1a1a1a', textTransform: 'uppercase', letterSpacing:'0.05rem'}}>
+            <div style={{ background: 'var(--surface)', border:'1px solid var(--border)', borderRadius: '16px', overflowX: 'auto', boxShadow: 'var(--shadow)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr 2fr 100px 120px 110px', minWidth: '760px', padding: '0.75rem 1.5rem', borderBottom: '2px solid', borderImage: 'linear-gradient(135deg, #f97316, #e53e6d) 1', fontWeight: 700, fontSize:'0.8rem', color: 'var(--text)', textTransform: 'uppercase', letterSpacing:'0.05rem'}}>
                     <span>ID</span>
                     <span>Nombre</span>
                     <span>Descripción</span>
@@ -58,11 +58,11 @@ export function Inventario(){
                 )}
 
                 {!loading && materials.map((material, index) => (
-                    <div key={material.id} style={{ display:'grid', gridTemplateColumns: '80px 1fr 2fr 100px 120px 110px', minWidth: '760px', padding: '1rem 1.5rem', alignItems:'center', background: index % 2 === 0 ? '#ffffff' : '#fafafa', borderBottom:'1px solid #f5f5f5', fontSize: '0.875rem'}}>
-                        <span style={{ color:'#888', fontWeight: 500 }}>{String(material.id).padStart(3, '0')}</span>
-                        <span style={{ fontWeight: 500, color: '#1a1a1a'}}>{material.name}</span>
-                        <span style={{ color: '#666666'}}>{material.description}</span>
-                        <span style={{ fontWeight:600, color: '#1a1a1a'}}>{material.quantity}</span>
+                    <div key={material.id} style={{ display:'grid', gridTemplateColumns: '80px 1fr 2fr 100px 120px 110px', minWidth: '760px', padding: '1rem 1.5rem', alignItems:'center', background: index % 2 === 0 ? 'var(--surface)' : 'var(--surface-soft)', borderBottom:'1px solid var(--border)', fontSize: '0.875rem'}}>
+                        <span style={{ color:'var(--text-muted)', fontWeight: 500 }}>{String(material.id).padStart(3, '0')}</span>
+                        <span style={{ fontWeight: 500, color: 'var(--text)'}}>{material.name}</span>
+                        <span style={{ color: 'var(--text-soft)'}}>{material.description}</span>
+                        <span style={{ fontWeight:600, color: 'var(--text)'}}>{material.quantity}</span>
                         <StatusBadge status={material.status}/>
                         <div style={{ display:'flex', gap:'0.5rem '}}>
                             <button onClick={() => openEdit(material)} style={{background: 'none', border:'none', cursor: 'pointer', padding: '4px'}} title="Editar">

@@ -16,7 +16,7 @@ export function LoanCard ({ loan, onAuthorize, onFinalize, onDelete} : LoanCardP
     const isAuth = status === 'Autorizado';
 
     return (
-        <div style={{background:'#ffffff', borderRadius:'16px', padding:'1.25rem 1.5rem', boxShadow:'0 2px 8px rgba(0,0,0,0.06)', marginBottom:'0.75rem'}}>
+        <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', padding:'1.25rem 1.5rem', boxShadow:'var(--shadow)', marginBottom:'0.75rem'}}>
 
             <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'0.75rem'}}>
                 <span style={{fontFamily:'Poppins', fontWeight:700, fontSize:'0.9rem', color:'#e53e6d', borderBottom:'2px solid #f97316', paddingBottom:'2px'}}>
@@ -30,19 +30,19 @@ export function LoanCard ({ loan, onAuthorize, onFinalize, onDelete} : LoanCardP
                 </div>
             </div>
 
-            <p style={{fontFamily:'Poppins', fontSize:'0.85rem', color:'#555', marginBottom:'0.35rem'}}>
+            <p style={{fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'0.35rem'}}>
                 <strong>Material ID:</strong> {loan.material}
             </p>
             <div style={{display:'flex', gap:'2rem', marginBottom:'0.35rem'}}>
-                <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>
+                <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>
                     <strong>Solicitante:</strong> {loan.requested_by?.first_name ?? '-'} {loan.requested_by?.last_name ?? '-'}
                 </p>
-                <p style={{ fontFamily: 'Poppins', fontSize:'0.85rem', color:'#555' }}>
+                <p style={{ fontFamily: 'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>
                     <strong>Cantidad:</strong> {loan.quantity}
                 </p>
             </div>
 
-            <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'#555', marginBottom:'1rem'}}>
+            <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'1rem'}}>
                 <strong>Fecha solicitud:</strong> {loan.loan_date}
             </p>
 

@@ -64,3 +64,12 @@ export interface PaginatedResponse<T> {
     previous?: string | null;
     results?:  T[];
 }
+
+export interface ActivityItem {
+    id: string;
+    usuario: string;
+    accion: 'Reserva' | 'Préstamo';
+    detalle: string;
+    fecha: string;
+    estado: 'completado' | 'pendiente' | 'alerta';
+}

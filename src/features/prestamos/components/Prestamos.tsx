@@ -28,8 +28,8 @@ export function Prestamos() {
     const router = useRouter();
 
     return (
-        <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap:'wrap', gap:'1rem' }}>
+        <div style={{ width: '100%' }}>
+            <div className="prestamos-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap:'wrap', gap:'1rem' }}>
                 <div>
                     <h1 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: '1.75rem', color: '#1a1a1a', marginBottom: '0.25rem' }}>
                         Gestión de préstamos
@@ -44,8 +44,8 @@ export function Prestamos() {
                 </button>
             </div>
 
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                <div className="control has-icons-left" style={{ maxWidth: '320px', flex: 1 }}>
+            <div className="prestamos-toolbar" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                <div className="control has-icons-left" style={{ maxWidth: '320px', flex: '1 1 220px', width: '100%' }}>
                     <input
                         className="input"
                         type="text"
@@ -57,7 +57,7 @@ export function Prestamos() {
                     <span className="icon is-left"><IoSearch color="#aaa" /></span>
                 </div>
 
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div className="prestamos-filters" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     {FILTERS.map((f) => (
                         <button key={f} onClick={() => setFilter(f)} style={{...FILTER_STYLES[f],border:filter === f ? '2px solid #f0f0f0' : '2px solid transparent',borderRadius:'20px',padding:'0.35rem 1rem',fontFamily:'Poppins',fontWeight:600,fontSize:'0.8rem', cursor:'pointer',}}>
                             {f}

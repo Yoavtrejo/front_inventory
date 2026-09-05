@@ -84,12 +84,12 @@ export function HistorialReservaciones({ reservaciones, semanaActual, onRefetch,
     };
 
     return (
-        <>
-            <div style={{ background:'#fff',borderRadius:'16px',boxShadow:'0 2px 8px rgba(0,0,0,0.06)',marginTop:'1.5rem',overflow:'hidden' }}>
-        
+<>
+            <div style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:'16px',boxShadow:'var(--shadow)',marginTop:'1.5rem',overflow:'hidden', width:'100%' }}>
+
                 <div style={{ display: 'flex', borderBottom: '1px solid #f0f0f0' }}>
                     {(['semana', 'historial'] as const).map((p) => (
-                        
+
                         <button
                             key={p}
                             onClick={() => setPestana(p)}
@@ -106,7 +106,53 @@ export function HistorialReservaciones({ reservaciones, semanaActual, onRefetch,
                             No hay reservaciones {pestana === 'semana' ? 'esta semana' : 'en el historial'}.
                         </p>
                     ) : (
-                        lista.map((r) => <ReservacionRow key={r.id} r={r} />)
+                        lista.map((r) => <div key={r.id} className="historial-row" style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0.75rem 1rem',borderBottom:'1px solid #f5f5f5',gap:'1rem' }}>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                                <p style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.85rem', color: '#1a1a1a', margin: 0 }}>
+                                    Isla #{r.isla_detalles.numero_isla}
+                                </p>
+                                <p style={{ fontFamily: 'Poppins', fontSize: '0.78rem', color: '#888', margin: 0 }}>
+                                    {r.alumno.first_name} {r.alumno.last_name} · {r.fecha_reserva} · {r.hora_inicio.slice(0,5)}h · {r.duracion_horas}h
+                                </p>
+                            </div>
+
+                            {(() => {
+                                const estado = getReservacionEstado(r);
+                                const style = ESTADO_STYLES[estado];
+                                const isActive = estado === 'Activa';
+
+                                return (
+                                    <>
+                                        <span style={{ ...style,fontFamily:'Poppins',fontSize:'0.72rem',fontWeight:600,borderRadius:'20px',padding:'0.2rem 0.6rem',whiteSpace:'nowrap',flexShrink:0 }}>
+                                            {estado}
+                                        </span>
+
+                                        {isAdmin && (
+                                            <div style={{ display: 'flex', gap: '0.35rem', flexShrink: 0 }}>
+                                                {isActive && (
+                                                    <button
+                                                        onClick={() => setConfirmCancel(r.id)}
+                                                        disabled={loadingId === r.id}
+                                                        title="Cancelar reservación"
+                                                        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
+                                                    >
+                                                        <IoClose size={16} color="#f97316" />
+                                                    </button>
+                                                )}
+                                                <button
+                                                    onClick={() => setConfirmDelete(r.id)}
+                                                    disabled={loadingId === r.id}
+                                                    title="Eliminar del historial"
+                                                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
+                                                >
+                                                    <IoTrash size={16} color="#e53e6d" />
+                                                </button>
+                                            </div>
+                                        )}
+                                    </>
+                                );
+                            })()}
+                        </div>)
                     )}
                 </div>
             </div>

@@ -14,13 +14,13 @@ export function GestionPermisos() {
     const [ confitmDelete, setConfirmDelete] = useState<number | null>(null);
 
     return (
-        <div>
-            <div style={{ display: 'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'1.5rem' }}>
+        <div style={{ width: '100%' }}>
+            <div className="permisos-header" style={{ display: 'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>
-                    <h1 style={{ fontFamily:'Poppins', fontWeight:'700', fontSize:'1.75rem', color:'#1A1A1A', marginBottom:'0.25rem' }}>
+                    <h1 style={{ fontFamily:'Poppins', fontWeight:'700', fontSize:'1.75rem', color:'var(--text)', marginBottom:'0.25rem' }}>
                         Gestión de Permisos
                     </h1>
-                    <p style={{ fontFamily:'Poppins', color:'#888', fontSize:'0.875rem' }}>
+                    <p style={{ fontFamily:'Poppins', color:'var(--text-muted)', fontSize:'0.875rem' }}>
                         Administra el acceso que cada usuario tiene en el sistema.
                     </p>
                 </div>
@@ -33,21 +33,23 @@ export function GestionPermisos() {
                 </button>
             </div>
 
-            <div className="control has-icons-left" style={{ marginBottom:'1.25rem', maxWidth:'400px' }}>
-                <input 
-                    className="input"
-                    type="text"
-                    placeholder="Buscar por nombre, correo, etc."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    style={{ fontFamily:'Poppins', borderRadius:'12px'}}
-                />
-                <span className="icon is-left"><IoSearch color="#AAA"/></span>
+            <div className="permisos-toolbar" style={{ width:'100%', marginBottom:'1.25rem', maxWidth:'400px' }}>
+                <div className="control has-icons-left" style={{ width:'100%' }}>
+                    <input 
+                        className="input"
+                        type="text"
+                        placeholder="Buscar por nombre, correo, etc."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        style={{ fontFamily:'Poppins', borderRadius:'12px'}}
+                    />
+                    <span className="icon is-left"><IoSearch color="#AAA"/></span>
+                </div>
             </div>
 
-            <div style={{ background:'#FFF', borderRadius:'16px', overflow:'hidden', boxShadow:'0 2px 8px rgba(0,0,0,0.06)' }}>
+            <div className="permiso-table-wrapper" style={{ background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', overflowX:'auto', boxShadow:'var(--shadow)' }}>
 
-                <div style={{ display:'grid', gridTemplateColumns:'60px 1fr 1fr 1fr 120px 100px', padding:'0.75rem 1.5rem', borderBottom:'2px solid', borderImage:'linear-gradient(135deg, #F97316, #E53E6D) 1', fontFamily:'Poppins', fontWeight:'700', fontSize:'0.8rem', color:'#1A1A1A', textTransform:'uppercase', letterSpacing:'0.05rem' }}>
+                <div className="permiso-table-head" style={{ display:'grid', gridTemplateColumns:'60px 1fr 1fr 1fr 120px 100px', minWidth:'780px', padding:'0.75rem 1.5rem', borderBottom:'2px solid', borderImage:'linear-gradient(135deg, #F97316, #E53E6D) 1', fontFamily:'Poppins', fontWeight:'700', fontSize:'0.8rem', color:'var(--text)', textTransform:'uppercase', letterSpacing:'0.05rem' }}>
                     <span>ID</span>
                     <span>Nombre</span>
                     <span>Correo</span>
@@ -65,17 +67,17 @@ export function GestionPermisos() {
                 )}
 
                 {!loading && usuarios.map((usuario, index) => (
-                    <div key={usuario.id} style={{ display:'grid', gridTemplateColumns:'60px 1fr 1fr 1fr 120px 100px', padding:'1rem 1.5rem', alignItems:'center', background: index % 2 === 0 ? '#FFFFFF' : '#FAFAFA', borderBottom:'1px solid #F5F5F5', fontFamily:'Poppins', fontSize:'0.875rem' }}>
+                    <div key={usuario.id} className="permiso-table-row" style={{ display:'grid', gridTemplateColumns:'60px 1fr 1fr 1fr 120px 100px', minWidth:'780px', padding:'1rem 1.5rem', alignItems:'center', background: index % 2 === 0 ? '#FFFFFF' : '#FAFAFA', borderBottom:'1px solid #F5F5F5', fontFamily:'Poppins', fontSize:'0.875rem' }}>
                         <span style={{ color:'#888', fontWeight:500}}>
                             {String(usuario.id).padStart(3,'0')}
                         </span>
-                        <span style={{ fontWeight:500, color:'#1A1A1A' }}>
+                        <span style={{ fontWeight:500, color:'var(--text)' }}>
                             {usuario.first_name} {usuario.last_name}
                         </span>
-                        <span style={{ color:'#666' }}>
+                        <span style={{ color:'var(--text-soft)' }}>
                             {usuario.email}
                         </span>
-                        <span style={{ color: '#666' }}>
+                        <span style={{ color: 'var(--text-soft)' }}>
                             {usuario.username}
                         </span>
                         <RolBadge usuario={usuario} />

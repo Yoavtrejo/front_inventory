@@ -33,8 +33,8 @@ export function GestionIslas(){
     }
 
     return (
-        <div>
-            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'1.5rem', flexWrap:'wrap', gap:'1rem'}}>
+        <div style={{ width: '100%' }}>
+            <div className="islas-header" style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'1.5rem', flexWrap:'wrap', gap:'1rem'}}>
                 <div>
                     <h1 style={{ fontFamily:'Poppins', fontWeight:700, fontSize:'1.75rem', color: '#1a1a1a', marginBottom:'0.25rem' }}>
                         Gestión de Islas
@@ -60,9 +60,9 @@ export function GestionIslas(){
                 </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns:'minmax(0, 1fr) 220px', gap:'1.5rem', alignItems:'start', gridTemplateAreas: '"calendar panel"', }}>
+            <div className="gestion-islas-grid" style={{ display: 'grid', gridTemplateColumns:'minmax(0, 1fr) 220px', gap:'1.5rem', alignItems:'start', gridTemplateAreas: '"calendar panel"', width: '100%' }}>
 
-                <div style={{ gridArea: 'calendar', minWidth: 0 }}>
+                <div style={{ gridArea: 'calendar', minWidth: 0, width: '100%' }}>
                     <CalendarioIslas
                         semanaActual={semanaActual}
                         reservaciones={reservaciones}
@@ -75,7 +75,7 @@ export function GestionIslas(){
                     />
                 </div>
 
-                <div style={{ gridArea: 'panel', minWidth: 0 }}>
+                <div style={{ gridArea: 'panel', minWidth: 0, width: '100%' }}>
                     <PanelIslas
                         islas={islas}
                         onDelete={handleDeleteIsla}

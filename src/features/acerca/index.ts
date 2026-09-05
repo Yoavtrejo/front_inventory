@@ -1,0 +1,1 @@
+export { AcercaDe } from './components/AcercaDe';

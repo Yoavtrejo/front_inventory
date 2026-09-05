@@ -17,10 +17,10 @@ export function PanelIslas({ islas, onDelete, isAdmin} : PanelIslasProps) {
       {islas.map((isla) => {
         const style = ESTADO_COLORS[isla.estado] ?? ESTADO_COLORS.Disponible;
         return (
-          <div key={isla.id} style={{background:'#fff',border:`1px solid ${style.dot}33`,borderRadius:'12px',padding:'0.75rem 1rem',display:'flex',alignItems:'center',justifyContent:'space-between',boxShadow:'0 1px 4px rgba(0,0,0,0.04)',}}>
+          <div key={isla.id} style={{background:'var(--surface)',border:`1px solid ${style.dot}33`,borderRadius:'12px',padding:'0.75rem 1rem',display:'flex',alignItems:'center',justifyContent:'space-between',boxShadow:'var(--shadow)',}}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
               <div style={{ width: 10, height: 10, borderRadius: '50%', background: style.dot, flexShrink: 0 }} />
-              <span style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>
+              <span style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.875rem', color: 'var(--text)' }}>
                 Isla #{isla.numero_isla}
               </span>
             </div>
