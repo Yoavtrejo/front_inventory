@@ -9,7 +9,7 @@ export function QuickActions() {
     const actions = [
         { label: 'Nuevo Préstamo', icon: IoAddCircleOutline, path: '/admin/prestamos/crear' },
         { label: 'Reservar Isla', icon: IoCalendarOutline, path: '/admin/islas' },
-        { label: 'Ver Reportes', icon: IoDocumentTextOutline, path: 'admin//inventario' },
+        { label: 'Ver Reportes', icon: IoDocumentTextOutline, path: '/admin//reportes' },
     ];
 
     return (

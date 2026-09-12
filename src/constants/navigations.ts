@@ -6,6 +6,7 @@ import {
     IoLockClosedOutline,
     IoPersonOutline,
     IoInformationCircleOutline,
+    IoBarChartOutline,
 } from 'react-icons/io5';
 
 import type { IconType } from 'react-icons';
@@ -22,6 +23,7 @@ export const ADMIN_NAV: NavItem[] = [
     { label: 'Inventario', href:'/admin/inventario', icon: IoCubeOutline },
     { label: 'Islas', href:'/admin/islas', icon: IoGridOutline },
     { label: 'Permisos', href:'/admin/permisos', icon: IoLockClosedOutline },
+    { label: 'Reportes', href:'/admin/reportes', icon: IoBarChartOutline},
     { label: 'Perfil', href:'/admin/perfil', icon: IoPersonOutline },
     { label: 'Acerca de', href:'/admin/acerca', icon: IoInformationCircleOutline},
 ];
