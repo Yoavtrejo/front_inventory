@@ -7,6 +7,9 @@ import {
     IoPersonOutline,
     IoInformationCircleOutline,
     IoBarChartOutline,
+    IoDocumentTextOutline,
+    IoPeopleOutline,
+    IoClipboardOutline
 } from 'react-icons/io5';
 
 import type { IconType } from 'react-icons';
@@ -26,4 +29,15 @@ export const ADMIN_NAV: NavItem[] = [
     { label: 'Reportes', href:'/admin/reportes', icon: IoBarChartOutline},
     { label: 'Perfil', href:'/admin/perfil', icon: IoPersonOutline },
     { label: 'Acerca de', href:'/admin/acerca', icon: IoInformationCircleOutline},
+];
+
+export const DOCENTE_NAV: NavItem[] = [
+    { label: 'Inicio', href: '/docente/dashboard', icon: IoHomeOutline },
+  { label: 'Préstamos', href: '/docente/prestamos', icon: IoCardOutline },
+  { label: 'Recursos', href: '/docente/recursos', icon: IoDocumentTextOutline },
+  { label: 'Islas', href: '/docente/islas', icon: IoGridOutline },
+  { label: 'Actividades', href: '/docente/actividades',  icon: IoClipboardOutline },
+  { label: 'Grupos', href: '/docente/grupos', icon: IoPeopleOutline },
+  { label: 'Perfil', href: '/docente/perfil', icon: IoPersonOutline },
+  { label: 'Acerca de', href: '/docente/acerca', icon: IoInformationCircleOutline }, 
 ];

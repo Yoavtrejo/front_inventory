@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { authService } from '../services/authService';
 import { useRouter } from 'next/navigation';
+import { TOKEN_KEYS } from '@/constants';
 
 export function useLogin(){
     const [username, setUsername] = useState('');
@@ -31,10 +32,10 @@ export function useLogin(){
                     ? 'Docente' 
                     : 'Alumno';
 
-            localStorage.setItem('accessToken', data.access);
-            localStorage.setItem('refreshToken', data.refresh);
-            localStorage.setItem('userName', user.username || user.first_name);
-            localStorage.setItem('userRole', rol);
+            localStorage.setItem(TOKEN_KEYS.access, data.access);
+            localStorage.setItem(TOKEN_KEYS.refresh, data.refresh);
+            localStorage.setItem(TOKEN_KEYS.name, user.first_name ? `${user.first_name} ${user.last_name}`.trim() : user.username);
+            localStorage.setItem(TOKEN_KEYS.role, rol);
             router.push(rutas[rol]);
         }catch (err){
             const mensaje = err instanceof Error ? err.message : 'Error inesperado. Intenta de nuevo';

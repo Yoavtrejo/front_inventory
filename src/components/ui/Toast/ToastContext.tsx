@@ -18,9 +18,10 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 
 export function ToastProvider({ children } : { children:ReactNode }) {
     const [ toasts, setToasts ] = useState<Toast[]>([]);
+    let toastCounter = 0;
 
     const showToast = useCallback((message:string, type: ToastType = 'error') => {
-        const id = Date.now();
+        const id = ++toastCounter;
         setToasts((prev) => [...prev, {id, message, type}]);
 
         setTimeout(() => {
