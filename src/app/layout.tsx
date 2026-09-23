@@ -26,6 +26,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${notoSans.variable} ${poppins.variable}`}>
+      <head>
+        {/* La app tiene su propio modo oscuro; evita que Dark Reader altere el HTML y rompa la hidratación */}
+        <meta name="darkreader-lock" />
+      </head>
       <body>{children}</body>
     </html>
   );

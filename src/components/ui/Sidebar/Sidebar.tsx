@@ -1,5 +1,6 @@
 import { BrandLogo } from "../BrandLogo";
 import { ThemeToggle } from "../ThemeToggle";
+import { LogoutButton } from "../LogoutButton";
 import { SidebarNavItem } from "./SidebarNavItems";
 import type { NavItem } from "@/constants/navigations";
 
@@ -53,8 +54,9 @@ export function Sidebar({ items, mobileOpen = false, onClose }: SidebarProps){
                     </ul>
                 </nav>
 
-                <div style={{ padding: '0.75rem 1rem 1.25rem', borderTop: '1px solid var(--border)' }}>
+                <div style={{ padding: '0.75rem 1rem 1.25rem', borderTop: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <ThemeToggle />
+                    <LogoutButton />
                 </div>
             </aside>
         </>

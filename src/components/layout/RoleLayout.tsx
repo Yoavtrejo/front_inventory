@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { Sidebar } from '@/components/ui/Sidebar/Sidebar';
@@ -21,15 +21,20 @@ interface RoleLayoutProps {
   children: ReactNode;
 }
 
+const subscribeToNothing = () => () => {};
+const readStoredRole = () => localStorage.getItem(TOKEN_KEYS.role);
+
 export function RoleLayout({ role, children }: RoleLayoutProps) {
   const navItems = NAV_BY_ROLE[role];
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  // En el servidor no hay sesión: el contenido se pinta solo tras confirmar el rol en el cliente
+  const storedRole = useSyncExternalStore(subscribeToNothing, readStoredRole, () => undefined);
+  const isAuthorized = storedRole === role;
 
   useEffect(() => {
-    const storedRole = localStorage.getItem(TOKEN_KEYS.role);
-    if (storedRole !== role) router.replace('/login');
-  }, [router, role]);
+    if (storedRole !== undefined && storedRole !== role) router.replace('/login');
+  }, [router, role, storedRole]);
 
   useEffect(() => {
     const onResize = () => {
@@ -81,7 +86,7 @@ export function RoleLayout({ role, children }: RoleLayoutProps) {
           }}
           className="admin-main"
         >
-          <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>{children}</div>
+          <div style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>{isAuthorized ? children : null}</div>
         </main>
       </div>
     </ToastProvider>
