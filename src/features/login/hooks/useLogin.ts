@@ -24,8 +24,7 @@ export function useLogin(){
 
         try {
             const data = await authService.login({ username, password });
-            const userInfo = authService.decodeToken(data.access);
-            const user= await authService.me(userInfo.user_id, data.access);
+            const user= await authService.me(data.access);
             const rol = user.is_superuser 
                 ? 'Administrador' 
                 : user.is_staff

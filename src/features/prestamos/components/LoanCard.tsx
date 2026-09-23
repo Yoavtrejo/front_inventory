@@ -5,8 +5,9 @@ import type { MaterialLoan } from "../types";
 
 interface LoanCardProps {
     loan: MaterialLoan;
-    onAuthorize: (id: number) => void;
-    onFinalize: (id: number) => void;
+    // Sin estas acciones la tarjeta es de solo consulta (docente/alumno)
+    onAuthorize?: (id: number) => void;
+    onFinalize?: (id: number) => void;
     onDelete: (id: number) => void;
 }
 
@@ -14,6 +15,8 @@ export function LoanCard ({ loan, onAuthorize, onFinalize, onDelete} : LoanCardP
     const status = getLoanStatus(loan);
     const isPending = status === 'Pendiente';
     const isAuth = status === 'Autorizado';
+    const canManage = Boolean(onAuthorize && onFinalize);
+    const canDelete = canManage || isPending;
 
     return (
         <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', padding:'1.25rem 1.5rem', boxShadow:'var(--shadow)', marginBottom:'0.75rem'}}>
@@ -24,9 +27,11 @@ export function LoanCard ({ loan, onAuthorize, onFinalize, onDelete} : LoanCardP
                 </span>
                 <div style={{ display:'flex', alignItems:'center', gap:'0.5rem'}}>
                     <LoanStatusBadge loan={loan} />
-                    <button onClick={() => onDelete(loan.id)} style={{ background: 'none', border:'none', cursor:'pointer', padding:'4px'}}>
-                        <IoTrash size={18} color="#e53e6d"/>
-                    </button>
+                    {canDelete && (
+                        <button onClick={() => onDelete(loan.id)} title={canManage ? 'Eliminar' : 'Cancelar solicitud'} style={{ background: 'none', border:'none', cursor:'pointer', padding:'4px'}}>
+                            <IoTrash size={18} color="#e53e6d"/>
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -46,22 +51,24 @@ export function LoanCard ({ loan, onAuthorize, onFinalize, onDelete} : LoanCardP
                 <strong>Fecha solicitud:</strong> {loan.loan_date}
             </p>
 
+            {canManage && (
             <div style={{ display:'flex', gap:'0.5rem'}}>
                 <button 
-                    onClick={() => onAuthorize(loan.id)} 
+                    onClick={() => onAuthorize?.(loan.id)} 
                     disabled={!isPending}
                     style={{background: isPending ? '#d1fae5' : '#f0f0f0', color: isPending ? '#065f46' : '#aaa', border:'none', borderRadius:'8px', padding:'0.4rem 1rem', fontFamily:'Poppins', fontWeight:600, fontSize:'0.8rem', cursor: isPending ? 'pointer' : 'not-allowed'}}
                 > 
                     Autorizar
                 </button>
                 <button
-                    onClick={() => onFinalize(loan.id)}
+                    onClick={() => onFinalize?.(loan.id)}
                     disabled={!isAuth}
                     style={{ background: isAuth ? '#fce7f3' : '#f0f0f0', color: isAuth ? '#9d174d' : '#aaa', border:'none', borderRadius:'0.8rem', padding:'0.4rem 1rem', fontFamily:'Poppins', fontSize:'0.8rem', fontWeight: 600, cursor: isAuth ? 'pointer' : 'not-allowed'}}
                 >
                     Finalizar
                 </button>
             </div>
+            )}
         </div>
     )
 }

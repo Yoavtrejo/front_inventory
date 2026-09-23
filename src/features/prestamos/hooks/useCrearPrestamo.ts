@@ -1,4 +1,3 @@
-// src/features/prestamos/hooks/useCrearPrestamo.ts
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -6,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { prestamoService } from '../services/prestamoService';
 import { inventarioService } from '@/features/inventario';
 import { TOKEN_KEYS } from '@/constants';
+import { ROLE_BASE_PATH, getSessionRole } from '@/utils/session';
+import { adjustMaterialStock } from '../utils/stockSync';
 import type { Material } from '@/features/inventario/types';
 import type { SelectedMaterial } from '../types';
 
@@ -101,25 +102,11 @@ export function useCrearPrestamo() {
     const selectedList = Object.values(selected);
 
     const syncInventoryAfterLoan = async (materialId: number, delta: number) => {
-        const material = await inventarioService.getById(materialId);
-        const nextQuantity = Math.max(0, material.quantity + delta);
-        const nextStatus = nextQuantity <= 0
-            ? 'Agotado'
-            : nextQuantity <= material.min_stock
-                ? 'Stock bajo'
-                : material.status;
-
-        await inventarioService.update(materialId, {
-            name: material.name,
-            description: material.description,
-            quantity: nextQuantity,
-            min_stock: material.min_stock,
-            max_stock: material.max_stock,
-            status: nextStatus,
-        });
-
-        setMaterials((prev) => prev.map((item) => item.id === materialId ? { ...item, quantity: nextQuantity, status: nextStatus } : item));
+        const updated = await adjustMaterialStock(materialId, delta);
+        setMaterials((prev) => prev.map((item) => item.id === materialId ? updated : item));
     };
+
+    const prestamosPath = `${ROLE_BASE_PATH[getSessionRole() ?? 'Administrador']}/prestamos`;
 
     const handleSubmit = async () => {
         if (selectedList.length === 0) {
@@ -159,7 +146,7 @@ export function useCrearPrestamo() {
 
             window.dispatchEvent(new CustomEvent('inventory:refresh'));
             router.refresh();
-            router.push('/admin/prestamos?updated=' + Date.now());
+            router.push(`${prestamosPath}?updated=${Date.now()}`);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Error al crear préstamo');
         } finally {
@@ -167,7 +154,7 @@ export function useCrearPrestamo() {
         }
     };
 
-    const handleCancel = () => router.push('/admin/prestamos');
+    const handleCancel = () => router.push(prestamosPath);
 
     return {
         userInfo,

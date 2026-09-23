@@ -12,13 +12,21 @@ import { TOKEN_KEYS } from "@/constants";
 import { useBloqueoModal } from "../hooks/useBloqueoModal";
 import { BloqueoModal } from "./BloqueoModal";
 import { HistorialReservaciones } from "./HistorialReservaciones";
+import type { SessionRole } from "@/utils/session";
 
-export function GestionIslas(){
+interface GestionIslasProps {
+    // Si se indica, evita depender de localStorage durante el render
+    role?: SessionRole;
+}
+
+export function GestionIslas({ role }: GestionIslasProps = {}){
     const {
         islas, reservaciones, loading, error, semanaActual, semanaAnterior, semanaSiguiente, bloqueos, handleDeleteIsla, refetch
     } = useIslas();
 
-    const isAdmin = typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEYS.role) === 'Administrador' : false;
+    const isAdmin = role
+        ? role === 'Administrador'
+        : typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEYS.role) === 'Administrador' : false;
 
     const bloqueoModal = useBloqueoModal(refetch);
     const islaModal = useIslaModal(refetch);
@@ -37,10 +45,10 @@ export function GestionIslas(){
             <div className="islas-header" style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'1.5rem', flexWrap:'wrap', gap:'1rem'}}>
                 <div>
                     <h1 style={{ fontFamily:'Poppins', fontWeight:700, fontSize:'1.75rem', color: '#1a1a1a', marginBottom:'0.25rem' }}>
-                        Gestión de Islas
+                        {isAdmin ? 'Gestión de Islas' : 'Islas'}
                     </h1>
                     <p style={{ fontFamily:'Poppins', color:'#888', fontSize:'0.875rem' }}>
-                        Administra el estado y horarios de las islas.
+                        {isAdmin ? 'Administra el estado y horarios de las islas.' : 'Visualiza el estado y disponibilidad de cada isla. Da clic en un horario libre para reservar.'}
                     </p>
                 </div>
 

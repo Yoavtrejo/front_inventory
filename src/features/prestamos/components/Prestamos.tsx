@@ -5,6 +5,7 @@ import { usePrestamos }        from '../hooks/usePrestamos';
 import { LoanCard }            from './LoanCard';
 import type { LoanStatus }     from '../types';
 import { useRouter } from 'next/navigation';
+import { ROLE_BASE_PATH, type SessionRole } from '@/utils/session';
 
 const FILTERS: Array<'Todos' | LoanStatus> = ['Todos', 'Pendiente', 'Autorizado', 'Finalizado'];
 
@@ -15,7 +16,12 @@ const FILTER_STYLES: Record<string, { background: string; color: string }> = {
     Finalizado: { background: '#ff84ac', color: '#992048' },
 };
 
-export function Prestamos() {
+interface PrestamosProps {
+    role?: SessionRole;
+}
+
+export function Prestamos({ role = 'Administrador' }: PrestamosProps) {
+    const isAdmin = role === 'Administrador';
     const {
         loans, loading, error,
         search,  setSearch,
@@ -32,14 +38,14 @@ export function Prestamos() {
             <div className="prestamos-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap:'wrap', gap:'1rem' }}>
                 <div>
                     <h1 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: '1.75rem', color: '#1a1a1a', marginBottom: '0.25rem' }}>
-                        Gestión de préstamos
+                        {isAdmin ? 'Gestión de préstamos' : 'Mis préstamos'}
                     </h1>
                     <p style={{ fontFamily: 'Poppins', color: '#888', fontSize: '0.875rem' }}>
-                        Administra y autoriza todas las solicitudes de préstamo.
+                        {isAdmin ? 'Administra y autoriza todas las solicitudes de préstamo.' : 'Consulta el estado de tus solicitudes de material.'}
                     </p>
                 </div>
 
-                <button onClick={() => router.push('/admin/prestamos/crear')} style={{background:'linear-gradient(135deg, #f97316, #e53e6d)',color:'#fff',fontFamily:'Poppins',fontWeight:600,fontSize:'0.9rem',border:'none',borderRadius:'12px',padding:'0.65rem 1.25rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'0.5rem',justifyContent:'center', width:'100%', maxWidth:'220px'}}>
+                <button onClick={() => router.push(`${ROLE_BASE_PATH[role]}/prestamos/crear`)} style={{background:'linear-gradient(135deg, #f97316, #e53e6d)',color:'#fff',fontFamily:'Poppins',fontWeight:600,fontSize:'0.9rem',border:'none',borderRadius:'12px',padding:'0.65rem 1.25rem',cursor:'pointer',display:'flex',alignItems:'center',gap:'0.5rem',justifyContent:'center', width:'100%', maxWidth:'220px'}}>
                     <IoAdd size={18} /> Crear Préstamo
                 </button>
             </div>
@@ -76,7 +82,7 @@ export function Prestamos() {
                 {loading ? Array.from({ length: 4 }).map((_, i) => (
                     <div key={i} style={{ height: '180px', borderRadius: '16px', background: '#f0f0f0' }} />
                 )) : loans.map((loan) => (
-                    <LoanCard key={loan.id} loan={loan} onAuthorize={handleAuthorize} onFinalize={handleFinalize} onDelete={handleDelete}/>
+                    <LoanCard key={loan.id} loan={loan} onDelete={handleDelete} {...(isAdmin ? { onAuthorize: handleAuthorize, onFinalize: handleFinalize } : {})}/>
                 ))
                 }
             </div>

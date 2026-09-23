@@ -6,12 +6,18 @@ const api = axios.create({
     timeout: 13000,
 });
 
+function redirectToLogin() {
+    localStorage.removeItem(TOKEN_KEYS.access);
+    localStorage.removeItem(TOKEN_KEYS.refresh);
+    window.location.href = "/login";
+}
+
 api.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         // Obtenemos el token solo en el cliente
         if (typeof window !== "undefined") {
-            const token = localStorage.getItem(TOKEN_KEYS.access);   
-        
+            const token = localStorage.getItem(TOKEN_KEYS.access);
+
             if (token) {
                 config.headers['Authorization'] = `Bearer ${token}`;
             }
@@ -30,40 +36,29 @@ api.interceptors.response.use(
     },
     async (error: AxiosError) => {
         const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
-        
-        if (error.response?.status === 401 && !originalRequest?._retry) {
+
+        if (error.response?.status === 401 && originalRequest && !originalRequest._retry && typeof window !== "undefined") {
             originalRequest._retry = true;
             try {
-                const refreshToken = typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null;
-                
+                const refreshToken = localStorage.getItem(TOKEN_KEYS.refresh);
+
                 if (!refreshToken) {
                     throw new Error("No hay token de actualización disponible");
                 }
 
-                const response = await api.post("refresh/", { refresh: refreshToken });
+                // Se usa axios directo para que el interceptor no reintente el refresh en bucle
+                const response = await axios.post<{ access: string }>(`${API}/token/refresh/`, { refresh: refreshToken });
                 const newAccessToken = response.data.access;
-                
-                if (newAccessToken && originalRequest) {
-                    localStorage.setItem("token", newAccessToken);
-                    originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                    return api(originalRequest);
-                }
-                
-                throw new Error("No se recibió token de acceso");
 
+                localStorage.setItem(TOKEN_KEYS.access, newAccessToken);
+                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                return api(originalRequest);
             } catch (refreshError) {
-                console.error("Error al refrescar el token:", refreshError);
-                localStorage.removeItem("token");
-                localStorage.removeItem("refreshToken");
-                
-                if (typeof window !== "undefined") {
-                    window.location.href = "/login";
-                }
-                
+                redirectToLogin();
                 return Promise.reject(refreshError);
             }
         }
-        
+
         return Promise.reject(error);
     }
 );

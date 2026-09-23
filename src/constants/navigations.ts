@@ -41,3 +41,13 @@ export const DOCENTE_NAV: NavItem[] = [
   { label: 'Perfil', href: '/docente/perfil', icon: IoPersonOutline },
   { label: 'Acerca de', href: '/docente/acerca', icon: IoInformationCircleOutline }, 
 ];
+
+export const ALUMNO_NAV: NavItem[] = [
+  { label: 'Inicio', href: '/alumno/dashboard', icon: IoHomeOutline },
+  { label: 'Préstamos', href: '/alumno/prestamos', icon: IoCardOutline },
+  { label: 'Recursos', href: '/alumno/recursos', icon: IoDocumentTextOutline },
+  { label: 'Islas', href: '/alumno/islas', icon: IoGridOutline },
+  { label: 'Actividades', href: '/alumno/actividades', icon: IoClipboardOutline },
+  { label: 'Perfil', href: '/alumno/perfil', icon: IoPersonOutline },
+  { label: 'Acerca de', href: '/alumno/acerca', icon: IoInformationCircleOutline },
+];

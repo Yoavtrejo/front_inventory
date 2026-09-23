@@ -1,7 +1,7 @@
 'use client';
 
 import { IoPersonOutline, IoHammerOutline, IoChevronBackOutline, IoChevronForward, IoNewspaperOutline} from "react-icons/io5";
-import { useCrearPrestamo } from "../hooks/useCrearPrestamo.ts";
+import { useCrearPrestamo } from "../hooks/useCrearPrestamo";
 
 export function CrearPrestamo(){
     const { userInfo, materials, loadingMaterials, selected, selectedList, page, setPage, totalPages, 

@@ -37,8 +37,9 @@ export const authService = {
         return response.json() as Promise<LoginResponse>;
     },
 
-    me: async(id: number, token: string) => {
-        const response = await fetch(`${API}/users/${id}/`, {
+    // /profile/ funciona para cualquier rol; /users/{id}/ solo para staff
+    me: async(token: string) => {
+        const response = await fetch(`${API}/profile/`, {
             method: 'GET',
             headers: { 
                 'Content-Type' : 'application/json',
