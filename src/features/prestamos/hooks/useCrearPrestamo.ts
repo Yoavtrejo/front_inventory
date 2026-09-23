@@ -6,7 +6,6 @@ import { prestamoService } from '../services/prestamoService';
 import { inventarioService } from '@/features/inventario';
 import { TOKEN_KEYS } from '@/constants';
 import { ROLE_BASE_PATH, getSessionRole } from '@/utils/session';
-import { adjustMaterialStock } from '../utils/stockSync';
 import type { Material } from '@/features/inventario/types';
 import type { SelectedMaterial } from '../types';
 
@@ -101,11 +100,6 @@ export function useCrearPrestamo() {
 
     const selectedList = Object.values(selected);
 
-    const syncInventoryAfterLoan = async (materialId: number, delta: number) => {
-        const updated = await adjustMaterialStock(materialId, delta);
-        setMaterials((prev) => prev.map((item) => item.id === materialId ? updated : item));
-    };
-
     const prestamosPath = `${ROLE_BASE_PATH[getSessionRole() ?? 'Administrador']}/prestamos`;
 
     const handleSubmit = async () => {
@@ -135,15 +129,7 @@ export function useCrearPrestamo() {
                 )
             );
 
-            const inventoryResults = await Promise.allSettled(
-                selectedList.map((item) => syncInventoryAfterLoan(item.material_id, -item.quantity))
-            );
-
-            const hadInventoryErrors = inventoryResults.some((result) => result.status === 'rejected');
-            if (hadInventoryErrors) {
-                setError('Préstamo creado, pero no se pudo actualizar el inventario.');
-            }
-
+            // El backend descuenta el stock al crear la solicitud
             window.dispatchEvent(new CustomEvent('inventory:refresh'));
             router.refresh();
             router.push(`${prestamosPath}?updated=${Date.now()}`);
