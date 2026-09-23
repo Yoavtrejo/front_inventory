@@ -97,6 +97,8 @@ button, a {
 
   .admin-main {
     padding: 0.75rem !important;
+    /* deja espacio para el botón fijo del menú */
+    padding-top: 4.25rem !important;
   }
 
   .prestamos-header,
