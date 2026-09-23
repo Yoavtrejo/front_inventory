@@ -1,6 +1,7 @@
 'use client';
 
-import { use, useState } from "react";
+import { useState } from "react";
+import { formatDate, HORAS } from "../utils/calendar";
 import { islasService } from "../services/islasService";
 import type { Isla } from "../types";
 
@@ -31,6 +32,17 @@ export function useReservacionMOdal(onSuccess: () => void) {
         setError(null);
         setOpen(true);
     };
+
+    // Botón "Reservar": propone el siguiente horario disponible del día (o mañana a las 08:00)
+    const openBlank = () => {
+        const now = new Date();
+        const nextHour = HORAS.find((hora) => parseInt(hora, 10) > now.getHours());
+        const fecha = nextHour ? now : new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        openModal(formatDate(fecha), nextHour ?? HORAS[0]);
+    };
+
+    const updateSlot = (changes: Partial<SlotSeleccionado>) =>
+        setSlot((prev) => (prev ? { ...prev, ...changes } : prev));
 
     const close = () => {
         setOpen(false);
@@ -77,6 +89,8 @@ export function useReservacionMOdal(onSuccess: () => void) {
         loading,
         error,
         openModal,
+        openBlank,
+        updateSlot,
         close,
         handleSubmit
     };

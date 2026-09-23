@@ -1,6 +1,6 @@
 'use client';
 
-import { IoAdd } from "react-icons/io5";
+import { IoAdd, IoCalendarOutline } from "react-icons/io5";
 import { useIslaModal } from "../hooks/useIslaModal";
 import { useIslas } from "../hooks/useIslas";
 import { useReservacionMOdal } from "../hooks/useReservacionModal";
@@ -14,6 +14,7 @@ import { BloqueoModal } from "./BloqueoModal";
 import { HistorialReservaciones } from "./HistorialReservaciones";
 import type { SessionRole } from "@/utils/session";
 import { getIslasOcupadasEnSlot } from "../utils/calendar";
+import { useOcupacionDia } from "../hooks/useOcupacionDia";
 
 interface GestionIslasProps {
     // Si se indica, evita depender de localStorage durante el render
@@ -32,6 +33,7 @@ export function GestionIslas({ role }: GestionIslasProps = {}){
     const bloqueoModal = useBloqueoModal(refetch);
     const islaModal = useIslaModal(refetch);
     const reservModal = useReservacionMOdal(refetch);
+    const ocupacionDia = useOcupacionDia(reservModal.slot?.fecha ?? null);
 
     if (loading) {
         return (
@@ -53,9 +55,18 @@ export function GestionIslas({ role }: GestionIslasProps = {}){
                     </p>
                 </div>
 
+                {!isAdmin && (
+                    <button
+                        onClick={reservModal.openBlank}
+                        style={{ background:'linear-gradient(135deg, #f97316, #e53e6d)', color:'#fff', fontFamily:'Poppins', fontWeight:600, fontSize:'0.9rem', border:'none', borderRadius:'12px', padding:'0.65rem 1.25rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.5rem', justifyContent:'center', width:'100%', maxWidth:'220px' }}
+                    >
+                        <IoCalendarOutline size={18} /> Reservar
+                    </button>
+                )}
+
                 {isAdmin && (
                     <button
-                        onClick={islaModal.openCreate}
+                        onClick={() => islaModal.openCreate(islas)}
                         style={{ background:'linear-gradient(135deg, #f97316, #e53e6d)', color:'#fff', fontFamily:'Poppins', fontWeight:600, fontSize:'0.9rem', border:'none', borderRadius:'12px', padding:'0.65rem 1.25rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.5rem', justifyContent:'center', width:'100%', maxWidth:'220px' }}
                     >
                         <IoAdd size={18} /> Agregar Isla
@@ -126,7 +137,8 @@ export function GestionIslas({ role }: GestionIslasProps = {}){
                     islas={islas}
                     onClose={reservModal.close}
                     onSubmit={() => reservModal.handleSubmit(islas)}
-                    islasOcupadas={reservModal.slot ? getIslasOcupadasEnSlot(ocupacion, reservModal.slot.fecha, reservModal.slot.hora) : []}
+                    islasOcupadas={reservModal.slot ? getIslasOcupadasEnSlot(ocupacionDia, reservModal.slot.fecha, reservModal.slot.hora, true) : []}
+                    onSlotChange={reservModal.updateSlot}
                 />
             )}
 

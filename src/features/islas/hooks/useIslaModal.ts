@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { islasService } from "../services/islasService";
 import type { Isla, CreateIslaPayload } from "../types";
-import { existsSync } from "fs";
 
 type FormErrors = Partial<Record<keyof CreateIslaPayload, string>>;
 
@@ -23,11 +22,14 @@ export function useIslaModal(onSuccess: () => void) {
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState<string | null>(null);
     const [ editTarget, setEditTarget ] = useState<Isla | null>(null);
+    const [ numerosUsados, setNumerosUsados ] = useState<number[]>([]);
     
     const validate = () : boolean => {
         const errors:  FormErrors = {};
         if (!form.numero_isla || form.numero_isla < 1)
             errors.numero_isla = 'El número de isla debe ser mayor a 0.';
+        else if (numerosUsados.includes(form.numero_isla))
+            errors.numero_isla = `Ya existe la Isla #${form.numero_isla}. Usa otro número.`;
 
         if (form.equipos_computo < 0)
             errors.equipos_computo = 'No puede ser negarivo.';
@@ -42,8 +44,11 @@ export function useIslaModal(onSuccess: () => void) {
         return Object.keys(errors).length === 0;
     };
 
-    const openCreate = () => {
-        setForm(EMPTY_FORM);
+    // Propone el siguiente número libre y evita el error de número duplicado del backend
+    const openCreate = (islas: Isla[] = []) => {
+        const numeros = islas.map((isla) => isla.numero_isla);
+        setNumerosUsados(numeros);
+        setForm({ ...EMPTY_FORM, numero_isla: numeros.length ? Math.max(...numeros) + 1 : 1 });
         setEditTarget(null);
         setError(null);
         setFormErrors({});
@@ -51,6 +56,7 @@ export function useIslaModal(onSuccess: () => void) {
     };
 
     const openEdit = (isla: Isla) => {
+        setNumerosUsados([]);
         setForm({
             numero_isla: isla.numero_isla,
             equipos_computo: isla.equipos_computo,

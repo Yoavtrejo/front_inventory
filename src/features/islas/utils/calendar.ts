@@ -86,11 +86,11 @@ export function getReservacionEnSlot(
 
 
 // Islas ocupadas por otras personas en un horario (la ocupación no trae datos personales)
-export function getIslasOcupadasEnSlot(ocupacion: Ocupacion[], fecha: string, hora: string): number[] {
+export function getIslasOcupadasEnSlot(ocupacion: Ocupacion[], fecha: string, hora: string, includeOwn = false): number[] {
   const horaSlot = parseInt(hora.slice(0, 2), 10);
   return ocupacion
     .filter((o) => {
-      if (o.es_mia || o.fecha_reserva !== fecha) return false;
+      if ((o.es_mia && !includeOwn) || o.fecha_reserva !== fecha) return false;
       const inicio = parseInt(o.hora_inicio.slice(0, 2), 10);
       return horaSlot >= inicio && horaSlot < inicio + o.duracion_horas;
     })

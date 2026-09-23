@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Isla } from "../types";
+import { HORAS, formatDate } from "../utils/calendar";
 
 interface ReservacionForm {
     isla_id: number | null;
@@ -18,14 +19,18 @@ interface ReservacionModalProps {
     islas: Isla[];
     onClose: () => void;
     onSubmit: () => void;
-    // Islas que otra persona ya reservó en este horario
+    // Islas ya reservadas en este horario (por cualquier persona)
     islasOcupadas?: number[];
+    // Si se pasa, la fecha y la hora se pueden cambiar (botón "Reservar")
+    onSlotChange?: (changes: { fecha?: string; hora?: string }) => void;
 }
 
-export function ReservacionModal({ slot, form, setForm, formErrors, loading, error, islas, onClose, onSubmit, islasOcupadas = []} : ReservacionModalProps){
+export function ReservacionModal({ slot, form, setForm, formErrors, loading, error, islas, onClose, onSubmit, islasOcupadas = [], onSlotChange} : ReservacionModalProps){
     if (!slot) return null;
 
-    const islasDisponibles = islas.filter((i) => i.estado === 'Disponible' && !islasOcupadas.includes(i.id));
+    // Isla.estado es global (se marca "Reservada" con cualquier reserva); la disponibilidad real es por horario
+    const islasDisponibles = islas.filter((i) => !islasOcupadas.includes(i.id));
+    const hoy = formatDate(new Date());
 
     return(
         <div className="modal is-active">
@@ -39,14 +44,42 @@ export function ReservacionModal({ slot, form, setForm, formErrors, loading, err
                 </header>
 
                 <section className="modal-card-body">
-                    <div style={{ background:'#f8f9fa', borderRadius:'8px', padding:'0.75rem 1rem', marginBottom:'1.25rem' }}>
-                        <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'#555', margin:0}}>
-                            <strong>Fecha:</strong> {slot.fecha}
-                        </p>
-                        <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'#555', margin:0, marginTop:'0.25rem' }}>
-                            <strong>Hora inicio:</strong> {slot.hora}
-                        </p>
-                    </div>
+                    {onSlotChange ? (
+                        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem', marginBottom:'1rem' }}>
+                            <div className="field" style={{ marginBottom:0 }}>
+                                <label className="label" style={{ fontFamily:'Poppins', fontSize:'0.875rem' }}>Fecha</label>
+                                <input
+                                    className="input"
+                                    type="date"
+                                    min={hoy}
+                                    value={slot.fecha}
+                                    onChange={(e) => { onSlotChange({ fecha: e.target.value }); setForm((prev) => ({ ...prev, isla_id: null })); }}
+                                    style={{ fontFamily:'Poppins', borderRadius:'8px' }}
+                                />
+                            </div>
+                            <div className="field" style={{ marginBottom:0 }}>
+                                <label className="label" style={{ fontFamily:'Poppins', fontSize:'0.875rem' }}>Hora inicio</label>
+                                <div className="select is-fullwidth">
+                                    <select
+                                        value={slot.hora}
+                                        onChange={(e) => { onSlotChange({ hora: e.target.value }); setForm((prev) => ({ ...prev, isla_id: null })); }}
+                                        style={{ fontFamily:'Poppins' }}
+                                    >
+                                        {HORAS.map((hora) => <option key={hora} value={hora}>{hora}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div style={{ background:'#f8f9fa', borderRadius:'8px', padding:'0.75rem 1rem', marginBottom:'1.25rem' }}>
+                            <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'#555', margin:0}}>
+                                <strong>Fecha:</strong> {slot.fecha}
+                            </p>
+                            <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'#555', margin:0, marginTop:'0.25rem' }}>
+                                <strong>Hora inicio:</strong> {slot.hora}
+                            </p>
+                        </div>
+                    )}
 
                     <div className="field">
                         <label className="label" style={{ fontFamily:'Poppins', fontSize:'0.875rem' }}>
