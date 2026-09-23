@@ -26,8 +26,7 @@ async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}): Pr
 
     if (!response.ok) {
         const errorBody = await response.json().catch(() => null);
-        console.log('=== Error detalle completo:', JSON.stringify(errorBody, null, 2));
-        throw new Error(errorBody?.detail ?? `Error ${response.status}`);
+        throw new Error(errorBody?.message ?? errorBody?.detail ?? `Error ${response.status}`);
 }
 
     if (response.status === 204) return null as T;
@@ -87,15 +86,24 @@ async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}): Pr
 
             if (!response.ok) {
                 const errorBody = await response.json().catch(() => null);
-                console.log('=== finalize error:', errorBody);
-                throw new Error(errorBody?.detail ?? `Error ${response.status}`);
+                throw new Error(errorBody?.message ?? errorBody?.detail ?? `Error ${response.status}`);
             }
 
-            const raw = await response.json();
             // condition-report devuelve el reporte, no el préstamo
             // necesitamos refetch del préstamo actualizado
             const loanRaw = await fetchWithAuth<unknown>(`/material-loans/${id}/`);
             return unwrapResponse<MaterialLoan>(loanRaw);
+        },
+
+        // El backend devuelve el stock al rechazar, cancelar, finalizar o eliminar
+        reject: async (id: number): Promise<MaterialLoan> => {
+            const raw = await fetchWithAuth<unknown>(`/material-loans/${id}/reject/`, { method: 'POST' });
+            return unwrapResponse<MaterialLoan>(raw);
+        },
+
+        cancel: async (id: number): Promise<MaterialLoan> => {
+            const raw = await fetchWithAuth<unknown>(`/material-loans/${id}/cancel/`, { method: 'POST' });
+            return unwrapResponse<MaterialLoan>(raw);
         },
 
         delete: async (id: number): Promise<void> => {

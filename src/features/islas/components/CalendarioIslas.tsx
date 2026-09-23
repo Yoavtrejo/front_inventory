@@ -1,10 +1,11 @@
-import { HORAS, DIAS, formatDate, formatSemana, getReservacionesDeSemana, getReservacionEnSlot } from '../utils/calendar';
+import { HORAS, DIAS, formatDate, formatSemana, getReservacionesDeSemana, getReservacionEnSlot, getIslasOcupadasEnSlot } from '../utils/calendar';
 import { IoChevronBackOutline, IoChevronForwardOutline, IoLockClosedOutline } from 'react-icons/io5';
-import type { HorarioBloqueado, Reservacion } from '../types';
+import type { HorarioBloqueado, Reservacion, Ocupacion, Isla } from '../types';
 
 const ESTADO_COLORS : Record<string, {background: string; color:string }> = {
     Disponible: { background: '#bff0d7', color: '#065f46' },
     Reservada: { background: '#fef3c7', color: '#92400e'},
+    Ocupada: { background: '#e5e7eb', color: '#4b5563'},
 }
 
 interface CalendarioIslasPropos {
@@ -16,6 +17,9 @@ interface CalendarioIslasPropos {
     onSlotClick: (fecha:string, hora:string) => void;
     onBloqueoClick?: (fecha:string, hora:string) => void;
     isAdmin: boolean;
+    // Solo para docente/alumno: reservaciones de otras personas en la semana
+    ocupacion?: Ocupacion[];
+    islas?: Isla[];
 }
 
 export function getBloqueoEnSlot ( bloqueos: HorarioBloqueado[], fecha: string, hora:string ) : HorarioBloqueado | null {
@@ -26,7 +30,8 @@ export function getBloqueoEnSlot ( bloqueos: HorarioBloqueado[], fecha: string, 
     }) ?? null;
 }
 
-export function CalendarioIslas({ semanaActual, reservaciones, bloqueos, onAnterior, onSiguiente, onSlotClick, onBloqueoClick, isAdmin } : CalendarioIslasPropos) {
+export function CalendarioIslas({ semanaActual, reservaciones, bloqueos, onAnterior, onSiguiente, onSlotClick, onBloqueoClick, isAdmin, ocupacion = [], islas = [] } : CalendarioIslasPropos) {
+    const numeroIsla = (islaId: number) => islas.find((isla) => isla.id === islaId)?.numero_isla ?? islaId;
     const reservSemana = getReservacionesDeSemana(reservaciones, semanaActual);
 
     const fechaDias = DIAS.map((_,i) => {
@@ -80,6 +85,8 @@ export function CalendarioIslas({ semanaActual, reservaciones, bloqueos, onAnter
                                 {fechaDias.map((fecha, i) => {
                                     const reserv = getReservacionEnSlot(reservSemana, fecha, hora);
                                     const bloqueo = getBloqueoEnSlot(bloqueos, fecha, hora);
+                                    const ocupadas = getIslasOcupadasEnSlot(ocupacion, fecha, hora);
+                                    const todasOcupadas = islas.length > 0 && ocupadas.length >= islas.length;
 
                                     return(
                                         <td key={fecha} style={{ padding:'0.3rem',  borderTop:'1px solid #f5f5f5', textAlign:'center' }}>
@@ -92,6 +99,14 @@ export function CalendarioIslas({ semanaActual, reservaciones, bloqueos, onAnter
                                             ) : reserv ? (
                                                 <div title={`Isla ${reserv.isla_detalles.numero_isla} - ${reserv.alumno.first_name} ${reserv.alumno.last_name}`} style={{ background:'#fef3c7', color:'#92400e', borderRadius:'6px', padding:'0.25rem 0.4rem', fontSize:'0.75rem', fontFamily:'Poppins', fontWeight:'600', cursor:'default' }}>
                                                     Isla {reserv.isla_detalles.numero_isla}
+                                                </div>
+                                            ) : ocupadas.length > 0 ? (
+                                                <div
+                                                    title={`Ocupada: ${ocupadas.map((islaId) => `Isla ${numeroIsla(islaId)}`).join(', ')}`}
+                                                    onClick={() => { if (!todasOcupadas) onSlotClick(fecha, hora); }}
+                                                    style={{ background:'#e5e7eb', color:'#4b5563', borderRadius:'6px', padding:'0.25rem 0.4rem', fontSize:'0.72rem', fontFamily:'Poppins', fontWeight:600, cursor: todasOcupadas ? 'not-allowed' : 'pointer' }}
+                                                >
+                                                    {todasOcupadas ? 'Ocupada' : `${ocupadas.length} ocupada${ocupadas.length > 1 ? 's' : ''}`}
                                                 </div>
                                             ) : (
                                                 <div 
@@ -111,7 +126,7 @@ export function CalendarioIslas({ semanaActual, reservaciones, bloqueos, onAnter
             </div>
 
             <div style={{ display:'flex', gap:'1rem', marginTop:'1rem', flexWrap:'wrap' }}>
-                { Object.entries(ESTADO_COLORS).map(([estado, style]) => (
+                { Object.entries(ESTADO_COLORS).filter(([estado]) => !isAdmin || estado !== 'Ocupada').map(([estado, style]) => (
                     <div key={estado} style={{ display:'flex', alignItems:'center', gap:'0.4rem'}}>
                         <div style={{ width:12, height:12, borderRadius:'50%', background: style.background, border:`2px solid ${style.color}`}}/>
                         <span style={{ fontFamily:'Poppins', fontSize:'0.78rem', color:'#555'}}>{estado}</span>

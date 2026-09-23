@@ -2,7 +2,7 @@
 
 import { useRegister } from '@/features/login';
 import { usePasswordVisibility } from '@/features/login';
-import { IoMailOpenOutline, IoPersonOutline, IoLockClosedOutline, IoEyeOff, IoEye } from 'react-icons/io5';
+import { IoMailOpenOutline, IoPersonOutline, IoLockClosedOutline, IoEyeOff, IoEye, IoFolderOutline } from 'react-icons/io5';
 import Link from 'next/link';
 
 export function FormRegistro() {
@@ -17,6 +17,11 @@ export function FormRegistro() {
         setLastName,
         password,
         setPassword,
+        passwordConfirm,
+        setPasswordConfirm,
+        carrera,
+        setCarrera,
+        carreras,
         loading,
         error,
         handleRegister
@@ -104,7 +109,8 @@ export function FormRegistro() {
                     <div className="control">
                         <input
                             className='input'
-                            type="number"
+                            type="text"
+                            inputMode="numeric"
                             placeholder="e.g 2231029"
                             id="matricula"
                             value={username}
@@ -168,7 +174,33 @@ export function FormRegistro() {
                     </div>
                 </div>
 
-                {/* <div className="field">
+                {/* Campo Confirmar contraseña */}
+                <div className='field'>
+                    <label className="label" htmlFor='passwordConfirm' style={labelStyle}>
+                        <span className='icon is-small'style={{ marginRight: '4px'}}>
+                            <IoLockClosedOutline color="#58aed6" size={15} />
+                        </span>
+                        Confirmar contraseña
+                    </label>
+                    <div className="control">
+                        <input
+                            className={`input ${passwordConfirm && passwordConfirm !== password ? 'is-danger' : ''}`}
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="********"
+                            id="passwordConfirm"
+                            value={passwordConfirm}
+                            onChange={(e) => setPasswordConfirm(e.target.value)}
+                            required
+                            style={inputStyle}
+                        />
+                    </div>
+                    {passwordConfirm && passwordConfirm !== password && (
+                        <p className="help is-danger" style={{ fontFamily: 'Poppins' }}>Las contraseñas no coinciden.</p>
+                    )}
+                </div>
+
+                {/* Campo Carrera */}
+                <div className="field">
                     <label className="label" htmlFor="carrera" style={labelStyle}>
                         <span className="icon is-small" style={{ marginRight: '4px' }}>
                             <IoFolderOutline color="#f59e0b" size={15} />
@@ -179,20 +211,19 @@ export function FormRegistro() {
                         <div className="select is-fullwidth" style={{ borderRadius: '8px' }}>
                             <select
                                 id="carrera"
-                                value={carrera}
-                                onChange={(e) => setCarrera(e.target.value)}
+                                value={carrera ?? ''}
+                                onChange={(e) => setCarrera(e.target.value ? Number(e.target.value) : null)}
                                 required
-                                style={{ ...inputStyle, color: carrera === '' ? '#aaa' : '#1a1a1a' }}
+                                style={{ ...inputStyle, color: carrera === null ? '#aaa' : '#1a1a1a' }}
                             >
-                                <option value="" disabled>Selecciona una carrera</option>
-                                <option value="isi">Ing. en Sistemas Computacionales</option>
-                                <option value="isc">Ing. en Software</option>
-                                <option value="lg">Lic. en Gestión Empresarial</option>
-                                <option value="ia">Ing. en Administración</option>
+                                <option value="" disabled>{carreras.length === 0 ? 'No hay carreras registradas' : 'Selecciona una opción'}</option>
+                                {carreras.map((option) => (
+                                    <option key={option.id} value={option.id}>{option.nombre}</option>
+                                ))}
                             </select>
                         </div>
                     </div>
-                </div> */}
+                </div>
 
                 {/* Error */}
                 {error && (

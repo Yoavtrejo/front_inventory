@@ -2,9 +2,6 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { academicService } from '../services/academicService';
-import {
-    groupsTaughtBy, groupsOfStudent, activitiesOfGroups, submissionsOfActivities,
-} from '../utils/academicFilters';
 import { getSessionUserId } from '@/utils/session';
 import { getApiErrorMessage } from '@/utils/apiResponse';
 import type { ClassGroup, Activity, Submission, WorkTeam, StudentSummary } from '../types';
@@ -14,7 +11,7 @@ export type AcademicViewer = 'Docente' | 'Alumno';
 interface AcademicData {
     userId: number | null;
     groups: ClassGroup[];
-    allGroups: ClassGroup[];
+    joinableGroups: ClassGroup[];
     activities: Activity[];
     submissions: Submission[];
     teams: WorkTeam[];
@@ -22,10 +19,16 @@ interface AcademicData {
 }
 
 const EMPTY_DATA: AcademicData = {
-    userId: null, groups: [], allGroups: [], activities: [], submissions: [], teams: [], students: [],
+    userId: null, groups: [], joinableGroups: [], activities: [], submissions: [], teams: [], students: [],
 };
 
-// Carga la información académica visible para el usuario en sesión
+function uniqueStudents(groups: ClassGroup[]): StudentSummary[] {
+    const byId = new Map<number, StudentSummary>();
+    groups.flatMap((group) => group.students_detail ?? []).forEach((student) => byId.set(student.id, student));
+    return Array.from(byId.values());
+}
+
+// El backend ya filtra por rol: el docente recibe sus grupos y el alumno aquellos donde está inscrito
 export function useAcademicData(viewer: AcademicViewer) {
     const [academicData, setAcademicData] = useState<AcademicData>(EMPTY_DATA);
     const [loading, setLoading] = useState(true);
@@ -34,27 +37,24 @@ export function useAcademicData(viewer: AcademicViewer) {
 
     useEffect(() => {
         let isActive = true;
-        const userId = getSessionUserId();
 
         Promise.all([
             academicService.getGroups(),
             academicService.getActivities(),
             academicService.getSubmissions(),
             academicService.getWorkTeams(),
-            viewer === 'Docente' ? academicService.getStudents() : Promise.resolve<StudentSummary[]>([]),
+            viewer === 'Alumno' ? academicService.getJoinableGroups() : Promise.resolve<ClassGroup[]>([]),
         ])
-            .then(([allGroups, allActivities, allSubmissions, teams, students]) => {
+            .then(([groups, activities, submissions, teams, joinableGroups]) => {
                 if (!isActive) return;
-                const groups = viewer === 'Docente' ? groupsTaughtBy(allGroups, userId) : groupsOfStudent(allGroups, userId);
-                const activities = activitiesOfGroups(allActivities, groups);
                 setAcademicData({
-                    userId,
+                    userId: getSessionUserId(),
                     groups,
-                    allGroups,
+                    joinableGroups,
                     activities,
-                    submissions: submissionsOfActivities(allSubmissions, activities),
-                    teams: teams.filter((team) => groups.some((group) => group.id === team.group)),
-                    students,
+                    submissions,
+                    teams,
+                    students: uniqueStudents(groups),
                 });
                 setError(null);
             })

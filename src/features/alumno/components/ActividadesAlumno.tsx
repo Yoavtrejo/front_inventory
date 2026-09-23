@@ -1,7 +1,7 @@
 'use client';
 
 import { IoCloudUploadOutline, IoDocumentAttachOutline, IoEnterOutline } from 'react-icons/io5';
-import { useAcademicData, SubmissionStatusBadge, fileNameFromUrl, formatDate } from '@/features/academic';
+import { useAcademicData, SubmissionStatusBadge, fileNameFromUrl, formatDateTime, isPastDue } from '@/features/academic';
 import { PageHeader, CARD_STYLE, EmptyState } from '@/components/ui/PageHeader';
 import { Modal } from '@/components/ui/Modal/Modal';
 import { ModalCancelButton, ModalSubmitButton } from '@/components/ui/Modal/ModalButtons';
@@ -12,10 +12,9 @@ import { useUnirseGrupo } from '../hooks/useUnirseGrupo';
 const SECONDARY_BUTTON = { border: 'none', borderRadius: '8px', padding: '0.4rem 1rem', fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.8rem', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' } as const;
 
 export function ActividadesAlumno() {
-    const { userId, groups, allGroups, activities, submissions, teams, loading, error, reload } = useAcademicData('Alumno');
+    const { userId, groups, joinableGroups, activities, submissions, teams, loading, error, reload } = useAcademicData('Alumno');
     const entregas = useEntregas({ userId, submissions, teams, onSubmitted: reload });
     const unirse = useUnirseGrupo(reload);
-    const joinableGroups = allGroups.filter((group) => !groups.some((joined) => joined.id === group.id));
 
     return (
         <div style={{ width: '100%' }}>
@@ -47,8 +46,14 @@ export function ActividadesAlumno() {
                                     <div>
                                         <h3 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: '1.05rem', color: '#e53e6d', margin: 0 }}>{activity.title}</h3>
                                         <p style={{ fontFamily: 'Poppins', fontSize: '0.8rem', color: '#888', margin: 0 }}>
-                                            {group ? `${group.subject_name} · Grupo ${group.name}` : ''} · Parcial {activity.partial_period} · {activity.is_team_activity ? 'En equipo' : 'Individual'} · {formatDate(activity.created_at)}
+                                            {group ? `${group.subject_name} · Grupo ${group.name}` : ''} · Parcial {activity.partial_period} · {activity.is_team_activity ? 'En equipo' : 'Individual'}
                                         </p>
+                                        {activity.due_date && (
+                                            <p style={{ fontFamily: 'Poppins', fontSize: '0.8rem', color: isPastDue(activity) && !submission ? '#e53e6d' : 'var(--text-soft)', margin: 0 }}>
+                                                <strong>Fecha de entrega:</strong> {formatDateTime(activity.due_date)}
+                                                {isPastDue(activity) && !submission && ' · Vencida'}
+                                            </p>
+                                        )}
                                     </div>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                         <span style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: 'var(--text-soft)' }}>
@@ -74,6 +79,7 @@ export function ActividadesAlumno() {
                                                 <IoDocumentAttachOutline /> Mi entrega: {fileNameFromUrl(submission.student_file)}
                                             </a>
                                         )}
+                                        {submission?.is_late && <span style={{ color: '#e53e6d' }}>Entregada con retraso</span>}
                                         {pendingFile && <span style={{ color: '#92400e' }}>Por entregar: {pendingFile.name}</span>}
                                     </div>
 

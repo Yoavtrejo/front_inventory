@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { prestamoService } from "../services/prestamoService";
 import { getLoanStatus } from "../utils/loanStatus";
 import { TOKEN_KEYS } from "@/constants";
-import { adjustMaterialStock } from "../utils/stockSync";
 import type { MaterialLoan, LoanStatus } from "../types";
 
 type FilterStatus = LoanStatus | 'Todos';
@@ -76,25 +75,37 @@ export function usePrestamos(){
         try{
             const updated = await prestamoService.finalize(loanId);
             setLoans((prev) => prev.map((l) => l.id === loanId ? updated : l));
-
-            await adjustMaterialStock(updated.material, updated.quantity);
-
             window.dispatchEvent(new CustomEvent('inventory:refresh'));
         }catch (err){
             setError(err instanceof Error ? err.message : 'Error al finalizar')
         }
     };
 
+    const replaceLoan = (updated: MaterialLoan) =>
+        setLoans((prev) => prev.map((l) => l.id === updated.id ? updated : l));
+
+    const handleReject = async (loanId: number) => {
+        try{
+            replaceLoan(await prestamoService.reject(loanId));
+            window.dispatchEvent(new CustomEvent('inventory:refresh'));
+        }catch (err){
+            setError(err instanceof Error ? err.message : 'Error al rechazar');
+        }
+    };
+
+    const handleCancel = async (loanId: number) => {
+        try{
+            replaceLoan(await prestamoService.cancel(loanId));
+        }catch (err){
+            setError(err instanceof Error ? err.message : 'Error al cancelar');
+        }
+    };
+
     const handleDelete = async (loanId:number) => {
-        const loan = loans.find((l) => l.id === loanId);
         try{
             await prestamoService.delete(loanId);
             setLoans((prev) => prev.filter((l) => l.id !== loanId));
-            // El stock se descuenta al crear la solicitud; si no se finalizó, se devuelve
-            if (loan && getLoanStatus(loan) !== 'Finalizado') {
-                await adjustMaterialStock(loan.material, loan.quantity);
-                window.dispatchEvent(new CustomEvent('inventory:refresh'));
-            }
+            window.dispatchEvent(new CustomEvent('inventory:refresh'));
         }catch (err){
             setError(err instanceof Error ? err.message : 'Error al eliminar');
         }
@@ -109,6 +120,8 @@ export function usePrestamos(){
         refetch: fetchLoans,
         handleAuthorize,
         handleFinalize,
+        handleReject,
+        handleCancel,
         handleDelete
     };
 

@@ -82,6 +82,18 @@ export function CrearActividad() {
                         </div>
 
                         <div>
+                            <label style={LABEL_STYLE}>Fecha de entrega:</label>
+                            <input
+                                className={`input ${formErrors.due_date ? 'is-danger' : ''}`}
+                                type="datetime-local"
+                                value={form.due_date}
+                                onChange={(event) => updateField('due_date', event.target.value)}
+                                style={INPUT_STYLE}
+                            />
+                            <FieldError message={formErrors.due_date} />
+                        </div>
+
+                        <div>
                             <label style={LABEL_STYLE}>Asignar a un grupo:</label>
                             <div className={`select is-fullwidth ${formErrors.group ? 'is-danger' : ''}`}>
                                 <select

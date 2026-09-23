@@ -3,9 +3,9 @@ import api from '@/api/axiosconfig';
 import { unwrapList, unwrapResponse } from '@/utils/apiResponse';
 import type { Recurso, CreateRecursoPayload } from '../types';
 
-// El backend todavía no expone este endpoint; cuando exista solo hay que ajustar la ruta
 export const RECURSOS_ENDPOINT = '/resources/';
 
+// Permite que la pantalla degrade con un aviso si el servidor no tiene el módulo
 export function isEndpointMissing(error: unknown): boolean {
     return isAxiosError(error) && error.response?.status === 404;
 }

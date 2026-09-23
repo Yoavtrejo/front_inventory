@@ -62,6 +62,13 @@ export function MiPerfil() {
                         >
                             <IoClose /> Cancelar
                         </button>
+                        <button
+                            onClick={handleSave}
+                            disabled={saving}
+                            style={{ background: 'linear-gradient(135deg, #F97316, #E53E6D)', color: '#FFF', fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.9rem', border: 'none', borderRadius: '12px', padding: '0.65rem 1.25rem', cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.75 : 1, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                        >
+                            <IoSave /> {saving ? 'Guardando...' : 'Guardar'}
+                        </button>
                     </div>
                 )}
             </div>
@@ -164,27 +171,21 @@ export function MiPerfil() {
                         <span style={{ fontFamily: 'Poppins', fontSize: '0.8rem', fontWeight: 600 as const, color: '#888', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: '0.35rem', display: 'block' as const }}>
                             Matrícula / Usuario
                         </span>
-                        {editMode ? (
-                            <>
-                                <input
-                                    className={`input ${formErrors.username ? 'is-danger' : ''}`}
-                                    type="text"
-                                    value={form.username}
-                                    onChange={(e) => setForm((prev) => ({ ...prev, username: e.target.value }))}
-                                    style={{ fontFamily: 'Poppins', fontSize: '0.875rem', borderRadius: '8px' }}
-                                />
-                                {formErrors.username && (
-                                    <p style={{ color: '#e53e6d', fontSize: '0.78rem', fontFamily: 'var(--font-poppins)', marginTop: '0.25rem' }}>
-                                        {formErrors.username}
-                                    </p>
-                                )}
-                            </>
-                        ) : (
-                            <p style={{ fontFamily: 'Poppins', fontSize: '0.95rem', color: '#1a1a1a', fontWeight: 500 as const, margin: 0 }}>
-                                {perfil.username}
-                            </p>
-                        )}
+                        <p style={{ fontFamily: 'Poppins', fontSize: '0.95rem', color: '#1a1a1a', fontWeight: 500 as const, margin: 0 }}>
+                            {perfil.matricula ?? perfil.username}
+                        </p>
                     </div>
+
+                    {perfil.carrera && (
+                        <div style={{ marginBottom: '1rem' }}>
+                            <span style={{ fontFamily: 'Poppins', fontSize: '0.8rem', fontWeight: 600 as const, color: '#888', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: '0.35rem', display: 'block' as const }}>
+                                Carrera
+                            </span>
+                            <p style={{ fontFamily: 'Poppins', fontSize: '0.95rem', color: '#1a1a1a', fontWeight: 500 as const, margin: 0 }}>
+                                {perfil.carrera}
+                            </p>
+                        </div>
+                    )}
 
                     <div style={{ marginBottom: '1rem' }}>
                         <span style={{ fontFamily: 'Poppins', fontSize: '0.8rem', fontWeight: 600 as const, color: '#888', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: '0.35rem', display: 'block' as const }}>

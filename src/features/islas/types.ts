@@ -50,6 +50,15 @@ export interface Reservacion {
     updated_at: string;
 }
 
+export interface Ocupacion {
+    id: number;
+    isla: number;
+    fecha_reserva: string;
+    hora_inicio: string;
+    duracion_horas: number;
+    es_mia: boolean;
+}
+
 export interface CreateReservacionPayload {
     isla: number;
     fecha_reserva: string;

@@ -4,6 +4,8 @@ export interface UserRef {
     email: string;
     first_name: string;
     last_name: string;
+    matricula: string | null;
+    carrera: string | null;
 }
 
 export interface MaterialLoan{
@@ -16,6 +18,7 @@ export interface MaterialLoan{
     requested_by: UserRef;
     approved_by: UserRef | null;
     has_condition_report: boolean;
+    status: LoanStatus;
     created_at: string;
     updated_at: string;
 }

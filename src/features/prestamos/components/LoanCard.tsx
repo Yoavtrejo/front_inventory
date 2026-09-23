@@ -3,20 +3,36 @@ import { LoanStatusBadge } from "./LoanStatusBadge";
 import { IoTrash } from "react-icons/io5";
 import type { MaterialLoan } from "../types";
 
-interface LoanCardProps {
-    loan: MaterialLoan;
-    // Sin estas acciones la tarjeta es de solo consulta (docente/alumno)
-    onAuthorize?: (id: number) => void;
-    onFinalize?: (id: number) => void;
+export interface AdminLoanActions {
+    onAuthorize: (id: number) => void;
+    onFinalize: (id: number) => void;
+    onReject: (id: number) => void;
     onDelete: (id: number) => void;
 }
 
-export function LoanCard ({ loan, onAuthorize, onFinalize, onDelete} : LoanCardProps){
+export interface RequesterLoanActions {
+    onCancel: (id: number) => void;
+}
+
+interface LoanCardProps {
+    loan: MaterialLoan;
+    // El admin gestiona todas las solicitudes; docente y alumno solo cancelan las suyas
+    actions: AdminLoanActions | RequesterLoanActions;
+}
+
+const ACTION_BUTTON = { border:'none', borderRadius:'8px', padding:'0.4rem 1rem', fontFamily:'Poppins', fontWeight:600, fontSize:'0.8rem' } as const;
+
+function actionStyle(enabled: boolean, background: string, color: string) {
+    return { ...ACTION_BUTTON, background: enabled ? background : '#f0f0f0', color: enabled ? color : '#aaa', cursor: enabled ? 'pointer' : 'not-allowed' };
+}
+
+export function LoanCard ({ loan, actions } : LoanCardProps){
     const status = getLoanStatus(loan);
     const isPending = status === 'Pendiente';
     const isAuth = status === 'Autorizado';
-    const canManage = Boolean(onAuthorize && onFinalize);
-    const canDelete = canManage || isPending;
+    const adminActions = 'onAuthorize' in actions ? actions : null;
+    const requesterActions = 'onCancel' in actions ? actions : null;
+    const requesterId = loan.requested_by?.matricula ?? loan.requested_by?.username;
 
     return (
         <div style={{background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', padding:'1.25rem 1.5rem', boxShadow:'var(--shadow)', marginBottom:'0.75rem'}}>
@@ -27,8 +43,8 @@ export function LoanCard ({ loan, onAuthorize, onFinalize, onDelete} : LoanCardP
                 </span>
                 <div style={{ display:'flex', alignItems:'center', gap:'0.5rem'}}>
                     <LoanStatusBadge loan={loan} />
-                    {canDelete && (
-                        <button onClick={() => onDelete(loan.id)} title={canManage ? 'Eliminar' : 'Cancelar solicitud'} style={{ background: 'none', border:'none', cursor:'pointer', padding:'4px'}}>
+                    {adminActions && (
+                        <button onClick={() => adminActions.onDelete(loan.id)} title="Eliminar" style={{ background: 'none', border:'none', cursor:'pointer', padding:'4px'}}>
                             <IoTrash size={18} color="#e53e6d"/>
                         </button>
                     )}
@@ -38,7 +54,7 @@ export function LoanCard ({ loan, onAuthorize, onFinalize, onDelete} : LoanCardP
             <p style={{fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'0.35rem'}}>
                 <strong>Material ID:</strong> {loan.material}
             </p>
-            <div style={{display:'flex', gap:'2rem', marginBottom:'0.35rem'}}>
+            <div style={{display:'flex', gap:'2rem', marginBottom:'0.35rem', flexWrap:'wrap'}}>
                 <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>
                     <strong>Solicitante:</strong> {loan.requested_by?.first_name ?? '-'} {loan.requested_by?.last_name ?? '-'}
                 </p>
@@ -46,28 +62,35 @@ export function LoanCard ({ loan, onAuthorize, onFinalize, onDelete} : LoanCardP
                     <strong>Cantidad:</strong> {loan.quantity}
                 </p>
             </div>
+            {requesterId && (
+                <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'0.35rem'}}>
+                    <strong>Matrícula:</strong> {requesterId}
+                    {loan.requested_by?.carrera && <> · {loan.requested_by.carrera}</>}
+                </p>
+            )}
 
             <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'1rem'}}>
                 <strong>Fecha solicitud:</strong> {loan.loan_date}
             </p>
 
-            {canManage && (
-            <div style={{ display:'flex', gap:'0.5rem'}}>
-                <button 
-                    onClick={() => onAuthorize?.(loan.id)} 
-                    disabled={!isPending}
-                    style={{background: isPending ? '#d1fae5' : '#f0f0f0', color: isPending ? '#065f46' : '#aaa', border:'none', borderRadius:'8px', padding:'0.4rem 1rem', fontFamily:'Poppins', fontWeight:600, fontSize:'0.8rem', cursor: isPending ? 'pointer' : 'not-allowed'}}
-                > 
-                    Autorizar
+            {adminActions && (
+                <div style={{ display:'flex', gap:'0.5rem', flexWrap:'wrap'}}>
+                    <button onClick={() => adminActions.onAuthorize(loan.id)} disabled={!isPending} style={actionStyle(isPending, '#d1fae5', '#065f46')}>
+                        Autorizar
+                    </button>
+                    <button onClick={() => adminActions.onFinalize(loan.id)} disabled={!isAuth} style={actionStyle(isAuth, '#fce7f3', '#9d174d')}>
+                        Finalizar
+                    </button>
+                    <button onClick={() => adminActions.onReject(loan.id)} disabled={!isPending} style={actionStyle(isPending, '#f8d7da', '#721c24')}>
+                        Rechazar
+                    </button>
+                </div>
+            )}
+
+            {requesterActions && isPending && (
+                <button onClick={() => requesterActions.onCancel(loan.id)} style={actionStyle(true, '#e2e3e5', '#383d41')}>
+                    Cancelar solicitud
                 </button>
-                <button
-                    onClick={() => onFinalize?.(loan.id)}
-                    disabled={!isAuth}
-                    style={{ background: isAuth ? '#fce7f3' : '#f0f0f0', color: isAuth ? '#9d174d' : '#aaa', border:'none', borderRadius:'0.8rem', padding:'0.4rem 1rem', fontFamily:'Poppins', fontSize:'0.8rem', fontWeight: 600, cursor: isAuth ? 'pointer' : 'not-allowed'}}
-                >
-                    Finalizar
-                </button>
-            </div>
             )}
         </div>
     )

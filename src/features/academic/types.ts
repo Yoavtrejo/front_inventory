@@ -8,6 +8,8 @@ export interface ClassGroup {
     teacher: number;
     teacher_name: string;
     students: number[];
+    // Solo lo reciben el admin y el docente del grupo
+    students_detail?: StudentSummary[];
 }
 
 export interface Activity {
@@ -17,6 +19,7 @@ export interface Activity {
     partial_period: number;
     teacher_file: string | null;
     is_team_activity: boolean;
+    due_date: string | null;
     created_at: string;
     group: number;
 }
@@ -33,6 +36,7 @@ export interface Submission {
     activity: number;
     student: number | null;
     work_team: number | null;
+    is_late: boolean;
 }
 
 export interface WorkTeam {
@@ -48,6 +52,8 @@ export interface StudentSummary {
     email: string;
     first_name: string;
     last_name: string;
+    matricula?: string | null;
+    carrera?: string | null;
 }
 
 export interface GroupAverage {
@@ -62,6 +68,7 @@ export interface CreateActivityPayload {
     partial_period: number;
     is_team_activity: boolean;
     group: number;
+    due_date: string | null;
     teacher_file: File | null;
 }
 

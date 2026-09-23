@@ -12,13 +12,15 @@ export interface ActividadForm {
     partial_period: number;
     is_team_activity: boolean;
     group: number | null;
+    // Valor de <input type="datetime-local">: 'YYYY-MM-DDTHH:mm' en hora local
+    due_date: string;
     teacher_file: File | null;
 }
 
 type ActividadFormErrors = Partial<Record<keyof ActividadForm, string>>;
 
 const INITIAL_FORM: ActividadForm = {
-    title: '', description: '', partial_period: 1, is_team_activity: false, group: null, teacher_file: null,
+    title: '', description: '', partial_period: 1, is_team_activity: false, group: null, due_date: '', teacher_file: null,
 };
 
 export function useCrearActividad() {
@@ -37,6 +39,8 @@ export function useCrearActividad() {
         if (!form.title.trim()) errors.title = 'El nombre de la actividad es obligatorio.';
         if (!form.description.trim()) errors.description = 'Las instrucciones son obligatorias.';
         if (!form.group) errors.group = 'Selecciona un grupo.';
+        if (!form.due_date) errors.due_date = 'Indica la fecha de entrega.';
+        else if (new Date(form.due_date).getTime() <= Date.now()) errors.due_date = 'La fecha de entrega debe ser futura.';
         if (form.partial_period < 1 || form.partial_period > 3) errors.partial_period = 'El parcial debe ser 1, 2 o 3.';
         setFormErrors(errors);
         return Object.keys(errors).length === 0;
@@ -47,7 +51,13 @@ export function useCrearActividad() {
         setSaving(true);
         setError(null);
         try {
-            await academicService.createActivity({ ...form, title: form.title.trim(), description: form.description.trim(), group: form.group });
+            await academicService.createActivity({
+                ...form,
+                title: form.title.trim(),
+                description: form.description.trim(),
+                group: form.group,
+                due_date: new Date(form.due_date).toISOString(),
+            });
             showToast('Actividad creada correctamente.', 'success');
             router.push('/docente/actividades');
         } catch (err) {

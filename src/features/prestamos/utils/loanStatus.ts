@@ -1,9 +1,7 @@
 import type { MaterialLoan, LoanStatus } from '@/features/prestamos/types';
 
 export function getLoanStatus(loan:MaterialLoan): LoanStatus {
-    if (loan.has_condition_report) return 'Finalizado';
-    if (loan.approved_by !== null) return 'Autorizado';
-    return 'Pendiente';
+    return loan.status;
 }
 
 export function getLoanStatusStyle(status: LoanStatus):{ background: string, color: string} {

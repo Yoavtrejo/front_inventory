@@ -1,6 +1,6 @@
 import { API, TOKEN_KEYS } from '@/constants';
 import { unwrapList, unwrapResponse } from '@/utils/apiResponse';
-import type { Isla, Reservacion, CreateIslaPayload, UpdateIslaPayload, CreateReservacionPayload, HorarioBloqueado, CreateHorarioBloqueadoPayload } from '../types';
+import type { Isla, Reservacion, Ocupacion, CreateIslaPayload, UpdateIslaPayload, CreateReservacionPayload, HorarioBloqueado, CreateHorarioBloqueadoPayload } from '../types';
 
 function getAuthHeaders() : HeadersInit {
     const token = typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEYS.access) : null;
@@ -42,7 +42,6 @@ async function fetchWithAuth<T>(endpoint:string, options: RequestInit = {}) : Pr
                     ? String((errorBody as { message?: unknown }).message ?? '')
                     : `Error ${response.status}`;
 
-        console.error('API error:', endpoint, detail);
         throw new Error(detail || `Error ${response.status}`);
     }
 
@@ -87,6 +86,12 @@ export const islasService = {
         const raw = await fetchWithAuth<unknown>('/reservaciones/');
         return unwrapList<Reservacion>(raw);
     },
+    // Reservaciones de todos (sin datos personales) para pintar horarios ocupados
+    getOcupacion: async (desde: string, hasta: string): Promise<Ocupacion[]> => {
+        const raw = await fetchWithAuth<unknown>(`/reservaciones/ocupacion/?desde=${desde}&hasta=${hasta}`);
+        return unwrapList<Ocupacion>(raw);
+    },
+
     createReservacion: async(payload: CreateReservacionPayload) : Promise<Reservacion> => {
         const raw = await fetchWithAuth<unknown>('/reservaciones/', {
             method: 'POST',

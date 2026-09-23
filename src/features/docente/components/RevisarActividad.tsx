@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { IoArrowBack, IoDocumentAttachOutline } from 'react-icons/io5';
-import { useAcademicData, fileNameFromUrl, formatDate } from '@/features/academic';
+import { useAcademicData, fileNameFromUrl, formatDate, formatDateTime } from '@/features/academic';
 import { PageHeader, CARD_STYLE, EmptyState } from '@/components/ui/PageHeader';
 import { EntregasTable } from './EntregasTable';
 
@@ -35,6 +35,7 @@ export function RevisarActividad({ activityId }: { activityId: number }) {
                 <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', marginTop: '0.75rem', fontFamily: 'Poppins', fontSize: '0.85rem', color: 'var(--text-soft)' }}>
                     <span><strong>Tipo:</strong> {activity.is_team_activity ? 'En equipo' : 'Individual'}</span>
                     <span><strong>Creada:</strong> {formatDate(activity.created_at)}</span>
+                    <span><strong>Fecha de entrega:</strong> {activity.due_date ? formatDateTime(activity.due_date) : 'Sin fecha'}</span>
                     {activity.teacher_file && (
                         <a href={activity.teacher_file} target="_blank" rel="noopener noreferrer" style={{ color: '#e53e6d', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                             <IoDocumentAttachOutline /> {fileNameFromUrl(activity.teacher_file)}

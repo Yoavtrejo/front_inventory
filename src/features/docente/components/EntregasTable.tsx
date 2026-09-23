@@ -1,7 +1,7 @@
 'use client';
 
 import { IoDocumentAttachOutline } from 'react-icons/io5';
-import { SubmissionStatusBadge, studentFullName, fileNameFromUrl } from '@/features/academic';
+import { SubmissionStatusBadge, studentFullName, studentIdentifier, fileNameFromUrl } from '@/features/academic';
 import type { Activity, ClassGroup, Submission, StudentSummary, WorkTeam } from '@/features/academic';
 import { useCalificarEntrega } from '../hooks/useCalificarEntrega';
 
@@ -40,7 +40,7 @@ function buildRows({ activity, group, students, teams, submissions }: Omit<Entre
         const student = students.find((candidate) => candidate.id === studentId);
         return {
             key: `student-${studentId}`,
-            identifier: student?.username ?? String(studentId),
+            identifier: studentIdentifier(student, studentId),
             name: studentFullName(student),
             submission: activitySubmissions.find((submission) => submission.student === studentId),
         };
@@ -86,6 +86,9 @@ export function EntregasTable(props: EntregasTableProps) {
                             </td>
                             <td style={BODY_CELL}>
                                 <SubmissionStatusBadge status={submission ? submission.status : 'Asignada'} />
+                                {submission?.is_late && (
+                                    <span style={{ display: 'block', fontFamily: 'Poppins', fontSize: '0.72rem', color: '#e53e6d', marginTop: '0.25rem' }}>Con retraso</span>
+                                )}
                             </td>
                             <td style={BODY_CELL}>
                                 {submission ? (

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { IoAdd, IoDocumentAttachOutline, IoTrash } from 'react-icons/io5';
-import { academicService, useAcademicData, expectedSubmissions, formatDate, fileNameFromUrl } from '@/features/academic';
+import { academicService, useAcademicData, expectedSubmissions, formatDateTime, fileNameFromUrl } from '@/features/academic';
 import { PageHeader, PRIMARY_BUTTON_STYLE, CARD_STYLE, EmptyState } from '@/components/ui/PageHeader';
 import { ConfirmModal } from '@/components/ui/Modal/ConfirmModal';
 import { useToast } from '@/components/ui/Toast/ToastContext';
@@ -79,7 +79,7 @@ export function ActividadesDocente() {
                                     <span><strong>Grupo:</strong> {group?.name ?? activity.group}</span>
                                 </div>
                                 <p style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: 'var(--text-soft)', margin: 0 }}>
-                                    <strong>Fecha de creación:</strong> {formatDate(activity.created_at)}
+                                    <strong>Fecha de entrega:</strong> {activity.due_date ? formatDateTime(activity.due_date) : 'Sin fecha'}
                                 </p>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
                                     <span style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: 'var(--text-soft)' }}>

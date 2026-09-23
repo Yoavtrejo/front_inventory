@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { authService } from '../services/authService';
+import { useEffect, useState } from 'react';
+import { authService, type Carrera } from '../services/authService';
 import { useRouter } from 'next/navigation';
 
 export function useRegister(){
@@ -10,27 +10,45 @@ export function useRegister(){
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [password, setPassword] = useState('');
-    //const [carrer, setCarrer] = useState('');
-    
+    const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [carrera, setCarrera] = useState<number | null>(null);
+    const [carreras, setCarreras] = useState<Carrera[]>([]);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
 
+    useEffect(() => {
+        let isActive = true;
+        authService.getCarreras()
+            .then((data) => { if (isActive) setCarreras(data); })
+            .catch((err: unknown) => {
+                if (isActive) setError(err instanceof Error ? err.message : 'No se pudieron cargar las carreras.');
+            });
+        return () => { isActive = false; };
+    }, []);
+
     const handleRegister = async () => {
+        if (password !== passwordConfirm) {
+            setError('Las contraseñas no coinciden.');
+            return;
+        }
+        if (carrera === null) {
+            setError('Selecciona tu carrera.');
+            return;
+        }
+
         setLoading(true);
         setError(null);
         try {
             await authService.register({
-                username,
-                email,
                 first_name: firstName,
                 last_name: lastName,
+                matricula: username.trim(),
+                email,
                 password,
-                is_active: true, 
-                is_staff: false, 
-                is_superuser: false,
-                // carrer
+                password_confirm: passwordConfirm,
+                carrera,
             });
             router.push('/login');
         } catch (err) {
@@ -52,8 +70,11 @@ export function useRegister(){
         setLastName,
         password,
         setPassword,
-        //carrer,
-        //setCarrer,
+        passwordConfirm,
+        setPasswordConfirm,
+        carrera,
+        setCarrera,
+        carreras,
         loading,
         error,
         handleRegister

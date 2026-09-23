@@ -1,4 +1,4 @@
-import type { Reservacion } from "../types";
+import type { Reservacion, Ocupacion } from "../types";
 
 export const HORAS = [
     '08:00','09:00', '10:00', '11:00', '12:00', 
@@ -66,9 +66,6 @@ export function getReservacionesDeSemana(
   const lunesStr   = formatDate(lunes);
   const viernesStr = formatDate(viernes);
 
-  console.log('=== rango semana:', { lunesStr, viernesStr }); // ← agrega esto
-  console.log('=== reservaciones raw:', reservaciones.map(r => r.fecha_reserva));
-
   return reservaciones.filter((r) => {
     if (r.cancelada || r.completada) return false;
     return r.fecha_reserva >= lunesStr && r.fecha_reserva <= viernesStr;
@@ -80,16 +77,22 @@ export function getReservacionEnSlot(
   fecha: string,
   hora:  string
 ): Reservacion | null {
-  console.log('=== buscando slot:', { fecha, hora });
-  console.log('=== reservaciones en semana:', reservaciones.map(r => ({
-    fecha: r.fecha_reserva,
-    hora:  r.hora_inicio,
-    horaSlice: normalizeHora(r.hora_inicio),
-  })));
-
   return reservaciones.find((r) => {
     if (r.fecha_reserva !== fecha) return false;
     const horaReserva = normalizeHora(r.hora_inicio);
     return horaReserva === hora;
   }) ?? null;
+}
+
+
+// Islas ocupadas por otras personas en un horario (la ocupación no trae datos personales)
+export function getIslasOcupadasEnSlot(ocupacion: Ocupacion[], fecha: string, hora: string): number[] {
+  const horaSlot = parseInt(hora.slice(0, 2), 10);
+  return ocupacion
+    .filter((o) => {
+      if (o.es_mia || o.fecha_reserva !== fecha) return false;
+      const inicio = parseInt(o.hora_inicio.slice(0, 2), 10);
+      return horaSlot >= inicio && horaSlot < inicio + o.duracion_horas;
+    })
+    .map((o) => o.isla);
 }

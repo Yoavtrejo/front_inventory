@@ -9,10 +9,12 @@ export interface Perfil {
     is_superuser: boolean;
     date_joined: string;
     last_login: string | null;
+    matricula: string | null;
+    carrera: string | null;
 }
 
+// El backend solo permite editar estos campos; username y rol son de solo lectura
 export interface UpdatePerfilPayload {
-    username?: string;
     email?: string;
     first_name?: string;
     last_name?: string;

@@ -13,6 +13,7 @@ import { useBloqueoModal } from "../hooks/useBloqueoModal";
 import { BloqueoModal } from "./BloqueoModal";
 import { HistorialReservaciones } from "./HistorialReservaciones";
 import type { SessionRole } from "@/utils/session";
+import { getIslasOcupadasEnSlot } from "../utils/calendar";
 
 interface GestionIslasProps {
     // Si se indica, evita depender de localStorage durante el render
@@ -21,7 +22,7 @@ interface GestionIslasProps {
 
 export function GestionIslas({ role }: GestionIslasProps = {}){
     const {
-        islas, reservaciones, loading, error, semanaActual, semanaAnterior, semanaSiguiente, bloqueos, handleDeleteIsla, refetch
+        islas, reservaciones, ocupacion, loading, error, semanaActual, semanaAnterior, semanaSiguiente, bloqueos, handleDeleteIsla, refetch
     } = useIslas();
 
     const isAdmin = role
@@ -80,6 +81,8 @@ export function GestionIslas({ role }: GestionIslasProps = {}){
                         onSlotClick={reservModal.openModal}
                         onBloqueoClick={isAdmin ? bloqueoModal.openModal : undefined}
                         isAdmin={isAdmin}
+                        ocupacion={isAdmin ? [] : ocupacion}
+                        islas={islas}
                     />
                 </div>
 
@@ -123,6 +126,7 @@ export function GestionIslas({ role }: GestionIslasProps = {}){
                     islas={islas}
                     onClose={reservModal.close}
                     onSubmit={() => reservModal.handleSubmit(islas)}
+                    islasOcupadas={reservModal.slot ? getIslasOcupadasEnSlot(ocupacion, reservModal.slot.fecha, reservModal.slot.hora) : []}
                 />
             )}
 

@@ -18,12 +18,14 @@ interface ReservacionModalProps {
     islas: Isla[];
     onClose: () => void;
     onSubmit: () => void;
+    // Islas que otra persona ya reservó en este horario
+    islasOcupadas?: number[];
 }
 
-export function ReservacionModal({ slot, form, setForm, formErrors, loading, error, islas, onClose, onSubmit} : ReservacionModalProps){
+export function ReservacionModal({ slot, form, setForm, formErrors, loading, error, islas, onClose, onSubmit, islasOcupadas = []} : ReservacionModalProps){
     if (!slot) return null;
 
-    const islasDisponibles = islas.filter((i) => i.estado === 'Disponible');
+    const islasDisponibles = islas.filter((i) => i.estado === 'Disponible' && !islasOcupadas.includes(i.id));
 
     return(
         <div className="modal is-active">

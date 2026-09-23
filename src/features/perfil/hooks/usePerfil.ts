@@ -55,7 +55,6 @@ export function usePerfil() {
         const errors: FormErrors = {};
         if (!form.first_name.trim()) errors.first_name = 'El nombre es obligatorio';
         if (!form.last_name.trim()) errors.last_name = 'El apellido es obligatorio';
-        if (!form.username.trim()) errors.username  = 'El usuario es obligatorio';
         if (!form.email.trim()) errors.email = 'El correo es obligatorio';
         setFormErrors(errors);
         return Object.keys(errors).length === 0;
@@ -68,7 +67,6 @@ export function usePerfil() {
             const payload: UpdatePerfilPayload = {
                 first_name: form.first_name,
                 last_name: form.last_name,
-                username: form.username,
                 email: form.email,
             };
             if (form.password.trim()) {

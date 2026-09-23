@@ -22,7 +22,7 @@ async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}) : P
     }
     if (!response.ok) {
         const errorBody = await response.json().catch(() => null);
-        throw new Error(errorBody?.detail ?? `Error ${response.status}`);
+        throw new Error(errorBody?.message ?? errorBody?.detail ?? `Error ${response.status}`);
     }
     return response.json() as Promise<T>;
 }

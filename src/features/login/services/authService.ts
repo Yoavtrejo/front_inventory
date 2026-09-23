@@ -11,15 +11,24 @@ interface LoginResponse {
 }
 
 interface RegisterCredentials{
-    username: string;
-    email: string;
     first_name: string;
     last_name: string;
+    matricula: string;
+    email: string;
     password: string;
-    is_active: boolean;
-    is_staff: boolean;
-    is_superuser: boolean;
-    //carrer: string;
+    password_confirm: string;
+    carrera: number;
+}
+
+export interface Carrera {
+    id: number;
+    nombre: string;
+}
+
+interface ApiEnvelope<T> {
+    success: boolean;
+    data?: T;
+    message?: string;
 }
 
 export const authService = {
@@ -59,18 +68,26 @@ export const authService = {
         return JSON.parse(atob(payload));
     },
 
+    // Registro público: el backend siempre crea alumnos (username = matrícula)
     register: async(credentials: RegisterCredentials) => {
-        const response = await fetch(`${API}/users/`, {
+        const response = await fetch(`${API}/register/`, {
             method: 'POST',
             headers: { 'Content-Type' : 'application/json' },
             body: JSON.stringify(credentials)
         });
+        const body = await response.json().catch(() => null) as ApiEnvelope<unknown> | null;
 
         if (!response.ok) {
-            throw new Error('Error al registrar el usuario.');
+            throw new Error(body?.message ?? 'Error al registrar el usuario.');
         }
 
-        return response.json();
+        return body?.data;
+    },
+
+    getCarreras: async(): Promise<Carrera[]> => {
+        const response = await fetch(`${API}/carreras/`);
+        const body = await response.json().catch(() => null) as ApiEnvelope<Carrera[]> | null;
+        if (!response.ok) throw new Error(body?.message ?? 'No se pudieron cargar las carreras.');
+        return body?.data ?? [];
     }
 }
-

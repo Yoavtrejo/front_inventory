@@ -6,6 +6,8 @@ import { Modal } from '@/components/ui/Modal/Modal';
 import { ModalCancelButton, ModalSubmitButton } from '@/components/ui/Modal/ModalButtons';
 import { FileDropzone } from '@/components/ui/FileDropzone';
 import { useRecursos } from '../hooks/useRecursos';
+import { formatDate } from '@/features/academic';
+import { getSessionUserId } from '@/utils/session';
 
 interface RecursosProps {
     // El docente puede registrar recursos; el alumno solo los consulta
@@ -19,6 +21,8 @@ export function Recursos({ canManage }: RecursosProps) {
         recursos, loading, error, isBackendAvailable,
         isModalOpen, openModal, closeModal, form, updateField, formErrors, saving, handleSubmit, handleDelete,
     } = useRecursos();
+    // Solo el autor puede eliminar (el backend lo valida). La lista solo se pinta en el cliente, tras cargar
+    const currentUserId = getSessionUserId();
 
     return (
         <div style={{ width: '100%' }}>
@@ -50,7 +54,7 @@ export function Recursos({ canManage }: RecursosProps) {
                                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', background: '#fef3c7', color: '#92400e', borderRadius: '20px', padding: '0.2rem 0.75rem', fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.75rem' }}>
                                     <IoBulbOutline /> Tip
                                 </span>
-                                {canManage && (
+                                {canManage && recurso.created_by === currentUserId && (
                                     <button onClick={() => handleDelete(recurso.id)} title="Eliminar" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}>
                                         <IoTrash size={16} color="#e53e6d" />
                                     </button>
@@ -58,6 +62,9 @@ export function Recursos({ canManage }: RecursosProps) {
                             </div>
                             <h3 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: '1rem', color: 'var(--text)', margin: 0 }}>{recurso.title}</h3>
                             <p style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: 'var(--text-soft)', margin: 0 }}>{recurso.description}</p>
+                            <p style={{ fontFamily: 'Poppins', fontSize: '0.75rem', color: '#888', margin: 0 }}>
+                                {recurso.created_by_name} · {formatDate(recurso.created_at)}
+                            </p>
                             {recurso.file && (
                                 <a href={recurso.file} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: '#e53e6d', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', marginTop: 'auto' }}>
                                     <IoDocumentAttachOutline /> Ver archivo

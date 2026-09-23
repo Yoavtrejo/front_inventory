@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { prestamoService } from '../services/prestamoService';
 import { inventarioService } from '@/features/inventario';
+import { perfilService } from '@/features/perfil';
 import { TOKEN_KEYS } from '@/constants';
 import { ROLE_BASE_PATH, getSessionRole } from '@/utils/session';
 import type { Material } from '@/features/inventario/types';
@@ -13,6 +14,8 @@ interface UserInfo {
     name: string;
     username: string;
     role: string;
+    matricula: string | null;
+    carrera: string | null;
 }
 
 // toISOString() usa UTC y en la tarde (UTC-6) ya marca el día siguiente
@@ -26,6 +29,8 @@ export function useCrearPrestamo() {
         name: '',
         username: '',
         role: '',
+        matricula: null,
+        carrera: null,
     });
 
     const [materials,setMaterials] = useState<Material[]>([]);
@@ -46,7 +51,13 @@ export function useCrearPrestamo() {
             name: localStorage.getItem(TOKEN_KEYS.name)  ?? '',
             username: localStorage.getItem(TOKEN_KEYS.name)  ?? '',
             role: localStorage.getItem(TOKEN_KEYS.role)  ?? '',
+            matricula: null,
+            carrera: null,
         });
+
+        perfilService.get()
+            .then((perfil) => setUserInfo((prev) => ({ ...prev, username: perfil.username, matricula: perfil.matricula, carrera: perfil.carrera })))
+            .catch(() => { /* los datos básicos ya se muestran desde la sesión */ });
 
         async function fetchMaterials() {
             try {

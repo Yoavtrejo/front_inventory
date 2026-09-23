@@ -7,13 +7,15 @@ import type { LoanStatus }     from '../types';
 import { useRouter } from 'next/navigation';
 import { ROLE_BASE_PATH, type SessionRole } from '@/utils/session';
 
-const FILTERS: Array<'Todos' | LoanStatus> = ['Todos', 'Pendiente', 'Autorizado', 'Finalizado'];
+const FILTERS: Array<'Todos' | LoanStatus> = ['Todos', 'Pendiente', 'Autorizado', 'Finalizado', 'Rechazado', 'Cancelado'];
 
 const FILTER_STYLES: Record<string, { background: string; color: string }> = {
     Todos:      { background: '#f0f0f0', color: '#555'    },
     Pendiente:  { background: '#fef3c7', color: '#92400e' },
     Autorizado: { background: '#d1fae5', color: '#065f46' },
     Finalizado: { background: '#ff84ac', color: '#992048' },
+    Rechazado:  { background: '#f8d7da', color: '#721c24' },
+    Cancelado:  { background: '#e2e3e5', color: '#383d41' },
 };
 
 interface PrestamosProps {
@@ -28,6 +30,8 @@ export function Prestamos({ role = 'Administrador' }: PrestamosProps) {
         filter,  setFilter,
         handleAuthorize,
         handleFinalize,
+        handleReject,
+        handleCancel,
         handleDelete,
     } = usePrestamos();
 
@@ -82,7 +86,13 @@ export function Prestamos({ role = 'Administrador' }: PrestamosProps) {
                 {loading ? Array.from({ length: 4 }).map((_, i) => (
                     <div key={i} style={{ height: '180px', borderRadius: '16px', background: '#f0f0f0' }} />
                 )) : loans.map((loan) => (
-                    <LoanCard key={loan.id} loan={loan} onDelete={handleDelete} {...(isAdmin ? { onAuthorize: handleAuthorize, onFinalize: handleFinalize } : {})}/>
+                    <LoanCard
+                        key={loan.id}
+                        loan={loan}
+                        actions={isAdmin
+                            ? { onAuthorize: handleAuthorize, onFinalize: handleFinalize, onReject: handleReject, onDelete: handleDelete }
+                            : { onCancel: handleCancel }}
+                    />
                 ))
                 }
             </div>

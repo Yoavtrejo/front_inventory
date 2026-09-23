@@ -1,23 +1,5 @@
 import type { ClassGroup, Activity, Submission, WorkTeam, StudentSummary } from '../types';
 
-export function groupsTaughtBy(groups: ClassGroup[], teacherId: number | null): ClassGroup[] {
-    return groups.filter((group) => group.teacher === teacherId);
-}
-
-export function groupsOfStudent(groups: ClassGroup[], studentId: number | null): ClassGroup[] {
-    return studentId === null ? [] : groups.filter((group) => group.students.includes(studentId));
-}
-
-export function activitiesOfGroups(activities: Activity[], groups: ClassGroup[]): Activity[] {
-    const groupIds = new Set(groups.map((group) => group.id));
-    return activities.filter((activity) => groupIds.has(activity.group));
-}
-
-export function submissionsOfActivities(submissions: Submission[], activities: Activity[]): Submission[] {
-    const activityIds = new Set(activities.map((activity) => activity.id));
-    return submissions.filter((submission) => activityIds.has(submission.activity));
-}
-
 // En actividades de equipo la entrega pertenece al equipo del alumno
 export function findStudentSubmission(
     submissions: Submission[], activity: Activity, studentId: number, teams: WorkTeam[],
@@ -43,6 +25,18 @@ export function studentFullName(student: StudentSummary | undefined): string {
     if (!student) return 'Alumno desconocido';
     const fullName = `${student.first_name} ${student.last_name}`.trim();
     return fullName || student.username;
+}
+
+export function studentIdentifier(student: StudentSummary | undefined, fallbackId: number): string {
+    return student?.matricula || student?.username || String(fallbackId);
+}
+
+export function formatDateTime(isoDate: string): string {
+    return new Date(isoDate).toLocaleString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+export function isPastDue(activity: Activity): boolean {
+    return activity.due_date !== null && new Date(activity.due_date).getTime() < Date.now();
 }
 
 export function formatDate(isoDate: string): string {

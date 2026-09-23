@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useAcademicData, findStudentSubmission, SubmissionStatusBadge } from '@/features/academic';
+import { useAcademicData, findStudentSubmission, SubmissionStatusBadge, formatDateTime } from '@/features/academic';
 import { LoanStatusBadge } from '@/features/prestamos';
 import { CARD_STYLE, EmptyState } from '@/components/ui/PageHeader';
 import { useSessionName } from '@/hooks/useSessionName';
@@ -51,6 +51,9 @@ export function AlumnoDashboard() {
                                         </div>
                                         <p style={CARD_TEXT}>Actividad · Parcial {activity.partial_period}</p>
                                         <p style={CARD_TEXT}><strong>Calificación:</strong> {grade}</p>
+                                        {activity.due_date && (
+                                            <p style={CARD_TEXT}><strong>Fecha de entrega:</strong> {formatDateTime(activity.due_date)}</p>
+                                        )}
                                     </Link>
                                 );
                             })}

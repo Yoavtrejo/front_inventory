@@ -31,8 +31,16 @@ export function CrearPrestamo(){
                             <strong>Nombre:</strong> {userInfo.name}
                         </span>
                         <span style={{ fontFamily: 'Poppins', fontSize: '0.875rem', color: '#555' }}>
+                            <strong>Matrícula:</strong> {userInfo.matricula ?? userInfo.username}
+                        </span>
+                        <span style={{ fontFamily: 'Poppins', fontSize: '0.875rem', color: '#555' }}>
                             <strong>Rol:</strong> {userInfo.role}
                         </span>
+                        {userInfo.carrera && (
+                            <span style={{ fontFamily: 'Poppins', fontSize: '0.875rem', color: '#555' }}>
+                                <strong>Carrera:</strong> {userInfo.carrera}
+                            </span>
+                        )}
                     </div>
                 </div>
             </div>

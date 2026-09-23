@@ -1,14 +1,20 @@
 import api from '@/api/axiosconfig';
 import { unwrapList, unwrapResponse } from '@/utils/apiResponse';
 import type {
-    ClassGroup, Activity, Submission, WorkTeam, StudentSummary, GroupAverage,
+    ClassGroup, Activity, Submission, WorkTeam, GroupAverage,
     CreateActivityPayload, CreateWorkTeamPayload, CreateSubmissionPayload, GradeSubmissionPayload,
 } from '../types';
 
-// Nota: los endpoints académicos no filtran por usuario; el filtrado se hace en utils/academicFilters.
+// El backend ya limita cada listado a lo que el usuario en sesión puede ver
 export const academicService = {
     getGroups: async (): Promise<ClassGroup[]> => {
         const response = await api.get('/academic/classgroups/');
+        return unwrapList<ClassGroup>(response.data);
+    },
+
+    // Para un alumno: grupos en los que todavía no está inscrito
+    getJoinableGroups: async (): Promise<ClassGroup[]> => {
+        const response = await api.get('/academic/classgroups/', { params: { disponibles: true } });
         return unwrapList<ClassGroup>(response.data);
     },
 
@@ -43,6 +49,7 @@ export const academicService = {
         formData.append('partial_period', String(payload.partial_period));
         formData.append('is_team_activity', String(payload.is_team_activity));
         formData.append('group', String(payload.group));
+        if (payload.due_date) formData.append('due_date', payload.due_date);
         if (payload.teacher_file) formData.append('teacher_file', payload.teacher_file);
 
         const response = await api.post('/academic/activities/', formData);
@@ -68,10 +75,10 @@ export const academicService = {
         return unwrapResponse<Submission>(response.data);
     },
 
+    // El alumno solo puede enviar el archivo; el backend regresa el estado a 'Entregado'
     replaceSubmissionFile: async (id: number, studentFile: File): Promise<Submission> => {
         const formData = new FormData();
         formData.append('student_file', studentFile);
-        formData.append('status', 'Entregado');
 
         const response = await api.patch(`/academic/submissions/${id}/`, formData);
         return unwrapResponse<Submission>(response.data);
@@ -96,9 +103,4 @@ export const academicService = {
         await api.delete(`/academic/workteams/${id}/`);
     },
 
-    // Solo staff (docente/admin) tiene permiso sobre /users/
-    getStudents: async (): Promise<StudentSummary[]> => {
-        const response = await api.get('/users/', { params: { is_staff: false } });
-        return unwrapList<StudentSummary>(response.data);
-    },
 };
