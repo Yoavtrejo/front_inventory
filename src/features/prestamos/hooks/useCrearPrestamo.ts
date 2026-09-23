@@ -15,6 +15,11 @@ interface UserInfo {
     role: string;
 }
 
+// toISOString() usa UTC y en la tarde (UTC-6) ya marca el día siguiente
+function toLocalIsoDate(date: Date): string {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
 export function useCrearPrestamo() {
     const router = useRouter();
     const [userInfo, setUserInfo] = useState<UserInfo>({
@@ -112,10 +117,11 @@ export function useCrearPrestamo() {
         setError(null);
 
         try {
-            const today = new Date().toISOString().split('T')[0];
-            const returnDate = new Date();
+            const todayDate = new Date();
+            const today = toLocalIsoDate(todayDate);
+            const returnDate = new Date(todayDate);
             returnDate.setDate(returnDate.getDate() + 7);
-            const returnDateStr = returnDate.toISOString().split('T')[0];
+            const returnDateStr = toLocalIsoDate(returnDate);
 
             await Promise.all(
                 selectedList.map((item) =>
