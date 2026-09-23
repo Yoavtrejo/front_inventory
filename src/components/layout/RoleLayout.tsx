@@ -6,16 +6,23 @@ import { FiMenu, FiX } from 'react-icons/fi';
 import { Sidebar } from '@/components/ui/Sidebar/Sidebar';
 import { ToastProvider } from '@/components/ui/Toast/ToastContext';
 import { TOKEN_KEYS } from '@/constants';
-import type { NavItem } from '@/constants/navigations';
+import { ADMIN_NAV, DOCENTE_NAV, ALUMNO_NAV, type NavItem } from '@/constants/navigations';
 import type { SessionRole } from '@/utils/session';
+
+// Los íconos son funciones y no pueden pasar de un layout de servidor a este componente
+const NAV_BY_ROLE: Record<SessionRole, NavItem[]> = {
+  Administrador: ADMIN_NAV,
+  Docente: DOCENTE_NAV,
+  Alumno: ALUMNO_NAV,
+};
 
 interface RoleLayoutProps {
   role: SessionRole;
-  navItems: NavItem[];
   children: ReactNode;
 }
 
-export function RoleLayout({ role, navItems, children }: RoleLayoutProps) {
+export function RoleLayout({ role, children }: RoleLayoutProps) {
+  const navItems = NAV_BY_ROLE[role];
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
 

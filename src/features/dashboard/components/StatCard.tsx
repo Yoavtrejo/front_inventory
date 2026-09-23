@@ -1,4 +1,4 @@
-import { IoCalendarOutline, IoCardOutline, IoGridOutline, IoWarningOutline } from "react-icons/io5";
+import { IoCalendarOutline, IoCardOutline, IoGridOutline, IoWarningOutline, IoPeopleOutline, IoClipboardOutline, IoCheckmarkDoneOutline, IoTimeOutline } from "react-icons/io5";
 import type { IconType } from "react-icons";
 
 const ICON_MAP: Record<string, IconType> = {
@@ -6,6 +6,10 @@ const ICON_MAP: Record<string, IconType> = {
     card: IoCardOutline,
     grid: IoGridOutline,
     warning: IoWarningOutline,
+    people: IoPeopleOutline,
+    clipboard: IoClipboardOutline,
+    done: IoCheckmarkDoneOutline,
+    pending: IoTimeOutline,
 };
 
 interface StatCardProps{

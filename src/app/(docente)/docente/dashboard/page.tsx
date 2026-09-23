@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { DocenteDashboard } from "@/features/docente/dashboard";
+import { DocenteDashboard } from "@/features/docente";
 
-export const metadata : Metadata = { title: 'Dashboard | SIDERED' };
+export const metadata: Metadata = { title: 'Inicio | SIDERED' };
 
 export default function DocenteDashboardPage() {
-    return <DocenteDashboard/>;
+    return <DocenteDashboard />;
 }

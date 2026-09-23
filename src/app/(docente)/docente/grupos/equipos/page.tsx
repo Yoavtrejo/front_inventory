@@ -1,13 +1,13 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { Prestamos } from '@/features/prestamos';
+import { CrearEquipos } from '@/features/docente';
 
-export const metadata: Metadata = { title: 'Préstamos | SIDERED' };
+export const metadata: Metadata = { title: 'Crear Equipos | SIDERED' };
 
-export default function DocentePrestamosPage() {
+export default function DocenteCrearEquiposPage() {
     return (
         <Suspense fallback={<div style={{ fontFamily: 'Poppins', padding: '2rem', color: '#888' }}>Cargando...</div>}>
-            <Prestamos role="Docente" />
+            <CrearEquipos />
         </Suspense>
     );
 }
