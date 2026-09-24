@@ -34,11 +34,11 @@ export function FormLogin() {
                 Inicio de sesión
             </h1>
             <p className="has-text-centered" style={{fontFamily: 'Poppins',fontWeight: 300,fontSize: '0.875rem',color: '#888',marginBottom: '2rem',lineHeight: '1.5',}}>
-                Ingresa tu matrícula o usuario y tu contraseña para acceder.
+                Ingresa tu matrícula y contraseña para acceder.
             </p>
 
             <form onSubmit={handleSubmit}>
-                {/* Campo matrícula o usuario */}
+                {/* Campo matrícula */}
                 <div className="field">
                     <label 
                         className="label" 
@@ -48,7 +48,7 @@ export function FormLogin() {
                         <span className="icon is-small" style={{ marginRight: '4px' }}>
                             <IoPersonOutline color="#f59e0b" size={16} />
                         </span>
-                        Matrícula o usuario
+                        Matrícula
                     </label>
                     <div className="control">
                         <input
