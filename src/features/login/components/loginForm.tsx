@@ -1,6 +1,6 @@
 "use client";
 
-import { IoEye, IoEyeOff, IoMailOutline, IoLockClosedOutline } from 'react-icons/io5';
+import { IoEye, IoEyeOff, IoPersonOutline, IoLockClosedOutline } from 'react-icons/io5';
 import { useLogin } from '@/features/login';
 import { usePasswordVisibility } from '@/features/login';
 import Link from 'next/link';
@@ -34,28 +34,29 @@ export function FormLogin() {
                 Inicio de sesión
             </h1>
             <p className="has-text-centered" style={{fontFamily: 'Poppins',fontWeight: 300,fontSize: '0.875rem',color: '#888',marginBottom: '2rem',lineHeight: '1.5',}}>
-                Ingresa tu correo electrónico y contraseña para acceder.
+                Ingresa tu matrícula o usuario y tu contraseña para acceder.
             </p>
 
             <form onSubmit={handleSubmit}>
-                {/* Campo correo */}
+                {/* Campo matrícula o usuario */}
                 <div className="field">
                     <label 
                         className="label" 
-                        htmlFor="email" 
+                        htmlFor="username" 
                         style={{ fontFamily: 'Poppins', fontWeight: 400, fontSize: '0.875rem', color: '#555' }}
                         >
                         <span className="icon is-small" style={{ marginRight: '4px' }}>
-                            <IoMailOutline color="#f59e0b" size={16} />
+                            <IoPersonOutline color="#f59e0b" size={16} />
                         </span>
-                        Correo electrónico
+                        Matrícula o usuario
                     </label>
                     <div className="control">
                         <input
                             className="input"
                             type="text"
-                            placeholder="correo@ejemplo.com"
-                            id="text"
+                            placeholder="e.g. 2231029"
+                            id="username"
+                            autoComplete="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
