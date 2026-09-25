@@ -101,6 +101,12 @@ export function FormLogin() {
                     </div>
                 </div>
 
+                <p style={{ textAlign: 'right', marginTop: '-0.25rem', marginBottom: '0.75rem' }}>
+                    <Link href="/recuperar" style={{ fontFamily: 'Poppins', fontSize: '0.8rem', color: '#d81e5b', fontWeight: 500 }}>
+                        ¿Olvidaste tu contraseña?
+                    </Link>
+                </p>
+
                 {/* Error */}
                 {error && (
                     <p className="help is-danger" style={{ fontFamily: 'Poppins', marginBottom: '0.75rem' }}>

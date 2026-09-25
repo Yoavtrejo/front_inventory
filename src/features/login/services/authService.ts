@@ -31,6 +31,27 @@ interface ApiEnvelope<T> {
     message?: string;
 }
 
+export interface ConfirmPasswordResetPayload {
+    uid: string;
+    token: string;
+    password: string;
+    password_confirm: string;
+}
+
+async function postPublic(endpoint: string, payload: object, fallbackError: string): Promise<string> {
+    const response = await fetch(`${API}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    });
+    const body = await response.json().catch(() => null) as ApiEnvelope<{ detail?: string }> | null;
+    if (!response.ok) {
+        if (response.status === 429) throw new Error('Demasiados intentos. Espera un momento e inténtalo de nuevo.');
+        throw new Error(body?.message ?? fallbackError);
+    }
+    return body?.data?.detail ?? '';
+}
+
 export const authService = {
     login: async(credentials: LoginCredentials): Promise<LoginResponse> => {
         const response = await fetch(`${API}/token/`, {
@@ -89,5 +110,12 @@ export const authService = {
         const body = await response.json().catch(() => null) as ApiEnvelope<Carrera[]> | null;
         if (!response.ok) throw new Error(body?.message ?? 'No se pudieron cargar las carreras.');
         return body?.data ?? [];
-    }
+    },
+
+    // Siempre responde igual exista o no la cuenta, para no revelar quién está registrado
+    requestPasswordReset: (identificador: string): Promise<string> =>
+        postPublic('/password-reset/', { identificador }, 'No se pudo enviar el enlace de recuperación.'),
+
+    confirmPasswordReset: (payload: ConfirmPasswordResetPayload): Promise<string> =>
+        postPublic('/password-reset/confirm/', payload, 'No se pudo actualizar la contraseña.'),
 }
