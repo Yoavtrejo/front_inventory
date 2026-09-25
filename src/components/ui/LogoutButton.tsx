@@ -3,11 +3,14 @@
 import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
 import { TOKEN_KEYS } from '@/constants';
+import { authService } from '@/features/login';
 
 export function LogoutButton() {
   const router = useRouter();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const refresh = localStorage.getItem(TOKEN_KEYS.refresh);
+    if (refresh) await authService.logout(refresh).catch(() => undefined);
     Object.values(TOKEN_KEYS).forEach((key) => localStorage.removeItem(key));
     router.replace('/login');
   };

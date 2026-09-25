@@ -1,4 +1,5 @@
 import { API, TOKEN_KEYS } from '@/constants/index';
+import { authFetch } from '@/api/authSession';
 import { unwrapResponse } from '@/utils/apiResponse';
 import type { Perfil, UpdatePerfilPayload } from '../types';
 
@@ -11,7 +12,7 @@ function getAuthHeaders(): HeadersInit {
 }
 
 async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}) : Promise<T> {
-    const response = await fetch(`${API}${endpoint}`, {
+    const response = await authFetch(`${API}${endpoint}`, {
         ...options,
         headers: { ...getAuthHeaders(), ...options.headers },
     });

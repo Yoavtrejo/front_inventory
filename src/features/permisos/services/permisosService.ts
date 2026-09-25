@@ -1,4 +1,5 @@
 import { API, TOKEN_KEYS } from '@/constants';
+import { authFetch } from '@/api/authSession';
 import { unwrapList, unwrapResponse } from '@/utils/apiResponse';
 import type { Usuario, CreateUsuarioPayload, UpdateUsuarioPayload } from '../types';
 
@@ -10,7 +11,7 @@ function getAuthHeaders() : HeadersInit {
 } 
 
 async function fetchWithAuth<T>(endpoint:string, options: RequestInit = {}):Promise<T> {
-    const response = await fetch(`${API}${endpoint}`, {
+    const response = await authFetch(`${API}${endpoint}`, {
         ...options, 
         headers: { ...getAuthHeaders(), ...options.headers },
     });

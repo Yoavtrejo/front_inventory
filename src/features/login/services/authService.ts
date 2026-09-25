@@ -61,6 +61,14 @@ export const authService = {
         });
 
         if (!response.ok) {
+            // 429: demasiados intentos; el backend explica cuánto esperar en "detail"
+            if (response.status === 429) {
+                const body = await response.json().catch(() => null) as { detail?: string } | null;
+                const seconds = body?.detail?.match(/\d+/)?.[0];
+                throw new Error(seconds
+                    ? `Demasiados intentos. Inténtalo de nuevo en ${seconds} segundos.`
+                    : 'Demasiados intentos. Espera un momento e inténtalo de nuevo.');
+            }
             throw new Error('Error al iniciar sesión. Por favor, verifica tus credenciales.');
         }
 
@@ -110,6 +118,15 @@ export const authService = {
         const body = await response.json().catch(() => null) as ApiEnvelope<Carrera[]> | null;
         if (!response.ok) throw new Error(body?.message ?? 'No se pudieron cargar las carreras.');
         return body?.data ?? [];
+    },
+
+    // Invalida el refresh en el backend; si falla, la sesión local se cierra igual
+    logout: async (refresh: string): Promise<void> => {
+        await fetch(`${API}/logout/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refresh }),
+        });
     },
 
     // Siempre responde igual exista o no la cuenta, para no revelar quién está registrado

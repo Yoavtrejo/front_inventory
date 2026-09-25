@@ -1,4 +1,5 @@
 import { API, TOKEN_KEYS } from "@/constants/index";
+import { authFetch } from '@/api/authSession';
 import type { MaterialLoan, CreateLoanPayload, AuthorizeLoanPayload } from "@/features/prestamos/types";
 import { unwrapList, unwrapResponse } from '@/utils/apiResponse';
 
@@ -12,7 +13,7 @@ function getAuthHeaders(): HeadersInit {
 
 
 async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const response = await fetch(`${API}${endpoint}`, {
+    const response = await authFetch(`${API}${endpoint}`, {
         ...options,
         headers: { ...getAuthHeaders(), ...options.headers },
     });
@@ -70,7 +71,7 @@ async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}): Pr
 
             const token = typeof window !== 'undefined' ? localStorage.getItem(TOKEN_KEYS.access) : null;
 
-            const response = await fetch(`${API}/material-loans/${id}/condition-report/`, {
+            const response = await authFetch(`${API}/material-loans/${id}/condition-report/`, {
                 method: 'POST',
                 headers: {
                      // NO incluir Content-Type — el browser lo pone automáticamente con el boundary

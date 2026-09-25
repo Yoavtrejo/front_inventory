@@ -1,5 +1,6 @@
 
 import { API, TOKEN_KEYS } from '@/constants';
+import { authFetch } from '@/api/authSession';
 import type { Reservacion, MaterialLoan, Isla } from '../types';
 import { unwrapList } from '@/utils/apiResponse';
 
@@ -21,7 +22,7 @@ function normalizeList<T>(data: unknown): T[] {
 }
 
 async function fetchWithAuth<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${API}${endpoint}`, {
+    const response = await authFetch(`${API}${endpoint}`, {
         method:  'GET',
         headers: getAuthHeaders(),
     });

@@ -1,36 +1,31 @@
 import type { Metadata } from "next";
-import { Poppins, Noto_Sans } from "next/font/google";
+import { Noto_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 
 const notoSans = Noto_Sans({
-  variable: "--font-noto-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
+    variable: "--font-noto-sans",
+    subsets: ["latin"],
+    weight: ["400", "500", "700"],
 });
 
 const poppins = Poppins({
-  variable: "--font-poppins",
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
+    variable: "--font-poppins",
+    weight: ["300", "400", "500", "600", "700"],
+    subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "SIDERED",
-  description: "Sistema de Gestión de Laboratorios de Red",
+    title: "SIDERED",
+    description: "Sistema de Gestión de Laboratorios de Red",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="es" className={`${notoSans.variable} ${poppins.variable}`}>
-      <head>
-        {/* La app tiene su propio modo oscuro; evita que Dark Reader altere el HTML y rompa la hidratación */}
-        <meta name="darkreader-lock" />
-      </head>
-      <body>{children}</body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang="es" className={`${notoSans.variable} ${poppins.variable}`}>
+            <head>
+                <meta name="darkreader-lock" />
+            </head>
+            <body>{children}</body>
+        </html>
+    );
 }
