@@ -9,7 +9,8 @@ import {
     IoBarChartOutline,
     IoDocumentTextOutline,
     IoPeopleOutline,
-    IoClipboardOutline
+    IoClipboardOutline,
+    IoCalendarOutline
 } from 'react-icons/io5';
 
 import type { IconType } from 'react-icons';
@@ -25,6 +26,7 @@ export const ADMIN_NAV: NavItem[] = [
     { label: 'Préstamos', href:'/admin/prestamos', icon:IoCardOutline },
     { label: 'Inventario', href:'/admin/inventario', icon: IoCubeOutline },
     { label: 'Islas', href:'/admin/islas', icon: IoGridOutline },
+    { label: 'Calendario', href:'/admin/calendario', icon: IoCalendarOutline },
     { label: 'Permisos', href:'/admin/permisos', icon: IoLockClosedOutline },
     { label: 'Reportes', href:'/admin/reportes', icon: IoBarChartOutline},
     { label: 'Perfil', href:'/admin/perfil', icon: IoPersonOutline },
@@ -38,6 +40,7 @@ export const DOCENTE_NAV: NavItem[] = [
   { label: 'Islas', href: '/docente/islas', icon: IoGridOutline },
   { label: 'Actividades', href: '/docente/actividades',  icon: IoClipboardOutline },
   { label: 'Grupos', href: '/docente/grupos', icon: IoPeopleOutline },
+  { label: 'Calendario', href: '/docente/calendario', icon: IoCalendarOutline },
   { label: 'Perfil', href: '/docente/perfil', icon: IoPersonOutline },
   { label: 'Acerca de', href: '/docente/acerca', icon: IoInformationCircleOutline }, 
 ];
@@ -48,6 +51,7 @@ export const ALUMNO_NAV: NavItem[] = [
   { label: 'Recursos', href: '/alumno/recursos', icon: IoDocumentTextOutline },
   { label: 'Islas', href: '/alumno/islas', icon: IoGridOutline },
   { label: 'Actividades', href: '/alumno/actividades', icon: IoClipboardOutline },
+  { label: 'Calendario', href: '/alumno/calendario', icon: IoCalendarOutline },
   { label: 'Perfil', href: '/alumno/perfil', icon: IoPersonOutline },
   { label: 'Acerca de', href: '/alumno/acerca', icon: IoInformationCircleOutline },
 ];

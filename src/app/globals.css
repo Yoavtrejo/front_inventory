@@ -145,3 +145,10 @@ button, a {
     width: 100%;
   }
 }
+
+/* Calendario: en pantallas angostas los eventos se muestran como barras de color */
+@media (max-width: 640px) {
+  .cal-day { min-height: 64px !important; padding: 0.2rem !important; }
+  .cal-chip { padding: 0 !important; height: 6px; }
+  .cal-chip-text { display: none; }
+}
