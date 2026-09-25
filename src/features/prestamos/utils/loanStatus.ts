@@ -14,3 +14,8 @@ export function getLoanStatusStyle(status: LoanStatus):{ background: string, col
     };
     return styles[status];
 }
+
+// "2 × Cable Ethernet, 1 × Pinzas para ponchar"
+export function formatLoanItems(loan: MaterialLoan): string {
+    return loan.items.map((item) => `${item.quantity} × ${item.material_name}`).join(', ');
+}

@@ -44,7 +44,7 @@ export function useAdminDashboard() {
                     id: `pres-${p.id}`,
                     usuario: `${p.requested_by.first_name} ${p.requested_by.last_name}`.trim() || p.requested_by.username,
                     accion: 'Préstamo',
-                    detalle: `Material ID: ${p.material} (${p.quantity} unidades)`,
+                    detalle: p.items.map((item) => `${item.quantity} × ${item.material_name}`).join(', '),
                     fecha: p.created_at,
                     estado: p.has_condition_report ? 'alerta' : p.approved_by ? 'completado' : 'pendiente'
                 }));

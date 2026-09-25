@@ -21,8 +21,7 @@ export interface Isla {
 
 export interface MaterialLoan {
     id:                   number;
-    material:             number;
-    quantity:              number;
+    items:                Array<{ id: number; material: number; material_name: string; quantity: number }>;
     loan_period_days:    number;
     loan_date:           string;
     return_date:         string;

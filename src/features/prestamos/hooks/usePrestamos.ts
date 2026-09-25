@@ -53,6 +53,7 @@ export function usePrestamos(){
                 loan.requested_by.first_name.toLowerCase().includes(term) || 
                 loan.requested_by.last_name.toLowerCase().includes(term) ||
                 loan.requested_by.username.toLowerCase().includes(term) || 
+                loan.items.some((item) => item.material_name.toLowerCase().includes(term)) ||
                 String(loan.id).includes(term)
             );
         }

@@ -8,10 +8,17 @@ export interface UserRef {
     carrera: string | null;
 }
 
-export interface MaterialLoan{
+// Un préstamo agrupa varios materiales; estado, fechas y autorización aplican a todo el préstamo
+export interface LoanItem {
     id: number;
     material: number;
+    material_name: string;
     quantity: number;
+}
+
+export interface MaterialLoan{
+    id: number;
+    items: LoanItem[];
     loan_period_days: number;
     loan_date: string;
     return_date: string;
@@ -26,8 +33,7 @@ export interface MaterialLoan{
 export type LoanStatus = 'Pendiente' | 'Autorizado' | 'Finalizado' | 'Rechazado' | 'Cancelado';
 
 export interface CreateLoanPayload {
-    material:         number;
-    quantity:         number;
+    items:            Array<{ material: number; quantity: number }>;
     loan_period_days: number;
     loan_date:        string;
     return_date:      string;

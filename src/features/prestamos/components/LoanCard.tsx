@@ -51,16 +51,16 @@ export function LoanCard ({ loan, actions } : LoanCardProps){
                 </div>
             </div>
 
-            <p style={{fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'0.35rem'}}>
-                <strong>Material ID:</strong> {loan.material}
+            <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'0.35rem' }}>
+                <strong>Solicitante:</strong> {loan.requested_by?.first_name ?? '-'} {loan.requested_by?.last_name ?? '-'}
             </p>
-            <div style={{display:'flex', gap:'2rem', marginBottom:'0.35rem', flexWrap:'wrap'}}>
-                <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>
-                    <strong>Solicitante:</strong> {loan.requested_by?.first_name ?? '-'} {loan.requested_by?.last_name ?? '-'}
-                </p>
-                <p style={{ fontFamily: 'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>
-                    <strong>Cantidad:</strong> {loan.quantity}
-                </p>
+            <div style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'0.35rem' }}>
+                <strong>Materiales:</strong>
+                <ul style={{ margin:'0.25rem 0 0', paddingLeft:'1.1rem', listStyle:'disc' }}>
+                    {loan.items.map((item) => (
+                        <li key={item.id}>{item.quantity} × {item.material_name}</li>
+                    ))}
+                </ul>
             </div>
             {requesterId && (
                 <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'0.35rem'}}>

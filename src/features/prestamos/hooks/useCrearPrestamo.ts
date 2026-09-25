@@ -134,17 +134,13 @@ export function useCrearPrestamo() {
             returnDate.setDate(returnDate.getDate() + 7);
             const returnDateStr = toLocalIsoDate(returnDate);
 
-            await Promise.all(
-                selectedList.map((item) =>
-                    prestamoService.create({
-                        material: item.material_id,
-                        quantity: item.quantity,
-                        loan_period_days: 7,
-                        loan_date: today,
-                        return_date: returnDateStr,
-                    })
-                )
-            );
+            // Una sola solicitud con todos los materiales seleccionados
+            await prestamoService.create({
+                items: selectedList.map((item) => ({ material: item.material_id, quantity: item.quantity })),
+                loan_period_days: 7,
+                loan_date: today,
+                return_date: returnDateStr,
+            });
 
             // El backend descuenta el stock al crear la solicitud
             window.dispatchEvent(new CustomEvent('inventory:refresh'));

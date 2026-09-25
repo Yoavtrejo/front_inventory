@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAcademicData, findStudentSubmission, SubmissionStatusBadge, formatDateTime } from '@/features/academic';
-import { LoanStatusBadge } from '@/features/prestamos';
+import { LoanStatusBadge, formatLoanItems } from '@/features/prestamos';
 import { CARD_STYLE, EmptyState } from '@/components/ui/PageHeader';
 import { useSessionName } from '@/hooks/useSessionName';
 import { useMisPrestamos } from '../hooks/useMisPrestamos';
@@ -57,13 +57,13 @@ export function AlumnoDashboard() {
                                     </Link>
                                 );
                             })}
-                            {prestamos.map(({ loan, materialName }) => (
+                            {prestamos.map((loan) => (
                                 <Link key={`loan-${loan.id}`} href="/alumno/prestamos" style={{ ...CARD_STYLE, textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
                                         <h3 style={CARD_TITLE}>Préstamo</h3>
                                         <LoanStatusBadge loan={loan} />
                                     </div>
-                                    <p style={CARD_TEXT}>{loan.quantity} × {materialName}</p>
+                                    <p style={CARD_TEXT}>{formatLoanItems(loan)}</p>
                                     <p style={CARD_TEXT}><strong>Fecha de solicitud:</strong> {formatDay(loan.loan_date)}</p>
                                     <p style={CARD_TEXT}><strong>Fecha de entrega:</strong> {formatDay(loan.return_date)}</p>
                                 </Link>

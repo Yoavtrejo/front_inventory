@@ -1,8 +1,10 @@
 export interface LoanHistory {
     id: number;
     original_loand_id: number;
+    // Resumen legible: "2 × Cable Ethernet, 1 × Pinzas para ponchar"
     material_name: string;
     quantity: number;
+    items: Array<{ material_name: string; quantity: number }>;
     requested_by_username: string;
     approved_by_username: string;
     aproval_date: string;
