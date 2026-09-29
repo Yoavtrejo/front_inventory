@@ -4,19 +4,25 @@ import { IoCodeSlash, IoServer, IoLogoGithub,IoMail, IoPeople, IoInformationCirc
 
 const EQUIPO = [
   {
-    nombre: 'Dr. José Manuel Hernández Reyes',
-    rol:    'Profesor y Asesor del Proyecto',
-    icono:  '👨‍🏫',
+    nombre: 'José Manuel Hernández Reyes',
+    icono: '👨🏻‍💼'
+  },
+  {
+    nombre: 'Alma Delia Vite',
+    icono: '👩🏻‍💼'
+  },
+  {
+    nombre: 'Miriam Olvera Cuellar',
+    icono:  '👩🏻‍💼',
   },
   {
     nombre: 'Yoav Zipacna Trejo Jiménez',
-    rol:    'Desarrollador Backend',
-    icono:  '👨‍💻',
+    icono:  '👨🏻‍💻',
   },
+
   {
     nombre: 'Mara Naomi Bustos Olivares',
-    rol:    'Desarrolladora Frontend',
-    icono:  '👩‍💻',
+    icono:  '👩🏻‍💻',
   },
 ];
 
@@ -107,9 +113,6 @@ export function AcercaDe() {
                   <div>
                     <p style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.875rem', color: 'var(--text)', margin: 0 }}>
                       {miembro.nombre}
-                    </p>
-                    <p style={{ fontFamily: 'Poppins', fontSize: '0.78rem', color: 'var(--text-muted)', margin: 0 }}>
-                      {miembro.rol}
                     </p>
                   </div>
                 </div>
