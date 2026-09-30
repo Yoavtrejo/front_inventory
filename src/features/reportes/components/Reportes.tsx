@@ -23,20 +23,20 @@ function TablaHistorial({ datos, id } : {datos: LoanHistory[]; id:string }) {
         <tbody>
           {datos.length === 0 ? (
             <tr>
-              <td colSpan={8} style={{ padding:'2rem', textAlign:'center', fontFamily:'Poppins', color:'#AAA' }}>
+              <td colSpan={8} style={{ padding:'2rem', textAlign:'center', fontFamily:'Poppins', color:'var(--text-muted)' }}>
                 Sin registros
               </td>
             </tr>
           ) : datos.map((h,i) => (
-            <tr key={h.id} style={{ background: i % 2 === 0 ? '#fff' : '#FAFAFA', borderBottom:'1px solid #F5F5F5' }}>
-              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#888' }}>{h.original_loand_id}</td>
-              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', fontWeight:600, color:'#1A1A1A' }}>{h.material_name}</td>
-              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{h.quantity}</td>
-              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{h.requested_by_username}</td>
-              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{h.approved_by_username}</td>
-              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{h.loan_date}</td>
-              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{h.return_date}</td>
-              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{h.loan_period_days}</td>
+            <tr key={h.id} style={{ background: i % 2 === 0 ? 'var(--surface)' : 'var(--surface-soft)', borderBottom:'1px solid var(--border)' }}>
+              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-muted)' }}>{h.original_loand_id}</td>
+              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', fontWeight:600, color:'var(--text)' }}>{h.material_name}</td>
+              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{h.quantity}</td>
+              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{h.requested_by_username}</td>
+              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{h.approved_by_username}</td>
+              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{h.loan_date}</td>
+              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{h.return_date}</td>
+              <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{h.loan_period_days}</td>
             </tr>
           ))}
         </tbody>
@@ -47,9 +47,9 @@ function TablaHistorial({ datos, id } : {datos: LoanHistory[]; id:string }) {
 
 function TablaReservaciones({ datos, id }: { datos: Reservacion[]; id: string }) {
   const getEstado = (r: Reservacion) => {
-    if (r.cancelada) return { label: 'Cancelada', bg:'#FEE2E2', color:'#991B1B' };
-      if (r.completada) return { label: 'Completada', bg:'#DBEAFE', color:'#065F46' };
-      return { label:'Activa', bg:'#D1FAE5', color:'#065F46' };
+    if (r.cancelada) return { label: 'Cancelada', bg:'var(--reservation-expired-bg)', color:'var(--reservation-expired-text)' };
+      if (r.completada) return { label: 'Completada', bg:'var(--reservation-completed-bg)', color:'var(--reservation-completed-text)' };
+      return { label:'Activa', bg:'var(--reservation-active-bg)', color:'var(--reservation-active-text)' };
   };
 
   return (
@@ -67,7 +67,7 @@ function TablaReservaciones({ datos, id }: { datos: Reservacion[]; id: string })
         <tbody>
           {datos.length === 0 ? (
             <tr>
-              <td colSpan={7} style={{ padding:'2rem', textAlign:'center', fontFamily:'Poppins', color:'#AAA' }}>
+              <td colSpan={7} style={{ padding:'2rem', textAlign:'center', fontFamily:'Poppins', color:'var(--text-muted)' }}>
                 Sin registros
               </td>
             </tr>
@@ -75,13 +75,13 @@ function TablaReservaciones({ datos, id }: { datos: Reservacion[]; id: string })
             const estado = getEstado(r);
 
             return (
-              <tr key={r.id} style={{ background:i % 2 === 0 ? '#FFF' : '#FAFAFA', borderBottom:'1px solid #F5F5F5' }}>
-                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#888' }}>{r.id}</td>
-                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', fontWeight:600, color:'#1A1A1A' }}>Isla #{r.isla_detalles.numero_isla}</td>
-                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{r.alumno.first_name} {r.alumno.last_name}</td>
-                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{r.fecha_reserva}</td>
-                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{r.hora_inicio.slice(0, 5)}</td>
-                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'#555' }}>{r.duracion_horas}</td>
+              <tr key={r.id} style={{ background:i % 2 === 0 ? 'var(--surface)' : 'var(--surface-soft)', borderBottom:'1px solid var(--border)' }}>
+                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-muted)' }}>{r.id}</td>
+                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', fontWeight:600, color:'var(--text)' }}>Isla #{r.isla_detalles.numero_isla}</td>
+                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{r.alumno.first_name} {r.alumno.last_name}</td>
+                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{r.fecha_reserva}</td>
+                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{r.hora_inicio.slice(0, 5)}</td>
+                <td style={{ padding:'0.75rem 1rem', fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)' }}>{r.duracion_horas}</td>
                 <td style={{ padding:'0.75rem 1rem' }}>
                   <span style={{ background:estado.bg, color:estado.color, fontFamily:'Poppins', fontSize:'0.72rem', fontWeight:600, borderRadius:'20px', padding:'0.2rem 0.6rem' }}>
                     {estado.label}
@@ -145,10 +145,10 @@ export function Reportes() {
     <div>
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'1.5rem' }}>
         <div>
-          <h1 style={{ fontFamily:'Poppins', fontWeight: 700, fontSize:'1.75rem', color:'#1a1a1a', marginBottom:'0.25rem' }}>
+          <h1 style={{ fontFamily:'Poppins', fontWeight: 700, fontSize:'1.75rem', color:'var(--text)', marginBottom:'0.25rem' }}>
             Reportes
           </h1>
-          <p style={{ fontFamily: 'Poppins', color:'#888', fontSize:'0.875rem' }}>
+          <p style={{ fontFamily: 'Poppins', color:'var(--text-muted)', fontSize:'0.875rem' }}>
             Consulta y exporta el historial del sistema.
           </p>
         </div>
@@ -156,22 +156,22 @@ export function Reportes() {
         <div style={{ display:'flex', gap:'0.75rem' }}>
           <button
             onClick={handleExportCSV}
-            style={{ background:'#fff', color:'#065f46', fontFamily:'Poppins', fontWeight:600, fontSize:'0.85rem', border:'1px solid #bbf7d0', borderRadius:'10px', padding:'0.6rem 1rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.4rem' }}
+            style={{ background:'var(--reservation-active-bg)', color:'var(--reservation-active-text)', fontFamily:'Poppins', fontWeight:600, fontSize:'0.85rem', border:'1px solid var(--border)', borderRadius:'10px', padding:'0.6rem 1rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.4rem' }}
           >
             <IoDownload size={16} /> Excel / CSV
           </button>
           <button
             onClick={handleExportPDF}
-            style={{ background:'#fff', color:'#991b1b', fontFamily:'Poppins', fontWeight:600, fontSize:'0.85rem', border:'1px solid #fecaca', borderRadius:'10px', padding:'0.6rem 1rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.4rem' }}
+            style={{ background:'var(--reservation-expired-bg)', color:'var(--reservation-expired-text)', fontFamily:'Poppins', fontWeight:600, fontSize:'0.85rem', border:'1px solid var(--border)', borderRadius:'10px', padding:'0.6rem 1rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.4rem' }}
           >
             <IoDownload size={16} /> PDF / Imprimir
           </button>
         </div>
       </div>
 
-      <div style={{ background:'#fff', borderRadius:'16px', boxShadow:'0 2px 8px rgba(0,0,0,0.06)', overflow:'hidden' }}>
+      <div style={{ background:'var(--surface)', border:'1px solid var(--border)', borderRadius:'16px', boxShadow:'var(--shadow)', overflow:'hidden' }}>
 
-        <div style={{ display:'flex', borderBottom:'1px solid #f0f0f0' }}>
+        <div style={{ display:'flex', borderBottom:'1px solid var(--border)' }}>
           {PESTANAS.map(({ key, label, icon: Icon }) => (
             <button
               key={key}
@@ -182,10 +182,10 @@ export function Reportes() {
                 fontFamily:'Poppins',
                 fontWeight:pestana === key ? 700 : 400,
                 fontSize:'0.875rem',
-                color:pestana === key ? '#e53e6d' : '#888',
+                color:pestana === key ? 'var(--color-secondary)' : 'var(--text-muted)',
                 background:'none',
                 border:'none',
-                borderBottom:pestana === key ? '2px solid #e53e6d' : '2px solid transparent',
+                borderBottom:pestana === key ? '2px solid var(--color-secondary)' : '2px solid transparent',
                 cursor:'pointer',
                 display:'flex',
                 alignItems:'center',
@@ -199,10 +199,10 @@ export function Reportes() {
           ))}
         </div>
 
-        <div style={{ padding:'1rem 1.5rem', borderBottom:'1px solid #f5f5f5' }}>
+        <div style={{ padding:'1rem 1.5rem', borderBottom:'1px solid var(--border)' }}>
           <div className="control has-icons-left" style={{ maxWidth: '360px' }}>
             <input
-              className="input"
+              className="input reportes-input"
               type="text"
               placeholder={
                 pestana === 'prestamos' ? 'Buscar por material o usuario...' :
@@ -221,7 +221,7 @@ export function Reportes() {
           {loading ? (
             <div style={{ padding:'3rem', display:'flex', flexDirection:'column', gap:'0.75rem' }}>
               {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} style={{ height:'44px', borderRadius:'8px', background:'#f0f0f0' }} />
+                <div key={i} style={{ height:'44px', borderRadius:'8px', background:'var(--surface-muted)' }} />
               ))}
             </div>
           ) : (
@@ -233,7 +233,7 @@ export function Reportes() {
               {pestana === 'condicion' && (
                 <div id="tabla-condicion" style={{ padding: '1rem 1.5rem' }}>
                   {condReportes.length === 0 ? (
-                    <p style={{ fontFamily:'Poppins', color:'#aaa', textAlign:'center', padding:'2rem' }}>
+                    <p style={{ fontFamily:'Poppins', color:'var(--text-muted)', textAlign:'center', padding:'2rem' }}>
                       No hay reportes de condición registrados.
                     </p>
                   ) : (
@@ -241,7 +241,7 @@ export function Reportes() {
                       {condReportes.map((r) => (
                         <div
                           key={r.id}
-                          style={{ background:'#fafafa', borderRadius:'12px', padding:'1rem', border:'1px solid #f0f0f0' }}
+                          style={{ background:'var(--surface-soft)', borderRadius:'12px', padding:'1rem', border:'1px solid var(--border)' }}
                         >
                           {r.photo && (
                             <img
@@ -250,16 +250,16 @@ export function Reportes() {
                               style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '8px', marginBottom: '0.75rem' }}
                             />
                           )}
-                          <p style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.85rem', color: '#1a1a1a', margin: '0 0 0.25rem' }}>
+                          <p style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text)', margin: '0 0 0.25rem' }}>
                             Préstamo #{r.loan}
                           </p>
-                          <p style={{ fontFamily: 'Poppins', fontSize: '0.78rem', color: '#888', margin: '0 0 0.5rem' }}>
+                          <p style={{ fontFamily: 'Poppins', fontSize: '0.78rem', color: 'var(--text-muted)', margin: '0 0 0.5rem' }}>
                             Por: {r.user.first_name} {r.user.last_name}
                           </p>
-                          <p style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: '#555', margin: 0, lineHeight: 1.6 }}>
+                          <p style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: 'var(--text-soft)', margin: 0, lineHeight: 1.6 }}>
                             {r.description || 'Sin descripción'}
                           </p>
-                          <p style={{ fontFamily: 'Poppins', fontSize: '0.75rem', color: '#aaa', margin: '0.5rem 0 0' }}>
+                          <p style={{ fontFamily: 'Poppins', fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0.5rem 0 0' }}>
                             {new Date(r.created_at).toLocaleString('es-MX')}
                           </p>
                         </div>

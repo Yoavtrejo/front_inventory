@@ -1,8 +1,8 @@
 import type { Isla } from "../types";
 
 const ESTADO_COLORS: Record<string, {background: string; color:string; dot:string}> = {
-    Disponible: { background:'#f0fdf4', color:'#065f46', dot:'#22c55e' },
-    Reservada: { background:'#fffbeb', color:'#92400e', dot:'#f59e0b' }
+  Disponible: { background:'var(--isla-available-bg)', color:'var(--isla-available-text)', dot:'#22c55e' },
+  Reservada: { background:'var(--isla-reserved-bg)', color:'var(--isla-reserved-text)', dot:'#f59e0b' }
 };
 
 interface PanelIslasProps {

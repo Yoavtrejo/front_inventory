@@ -35,8 +35,8 @@ export function ReservacionModal({ slot, form, setForm, formErrors, loading, err
     return(
         <div className="modal is-active">
             <div className="modal-background" onClick={onClose}/>
-            <div className="modal-card" style={{ borderRadius:'16px', maxWidth:'440px', width:'90%'}}>
-                <header className="modal-card-head" style={{ borderRadius:'16px 16px 0 0', background:'#fff', borderBottom:'1px solid #f0f0f0', }}>
+            <div className="modal-card islas-modal" style={{ borderRadius:'16px', maxWidth:'440px', width:'90%'}}>
+                <header className="modal-card-head" style={{ borderRadius:'16px 16px 0 0', background:'var(--surface)', borderBottom:'1px solid var(--border)', }}>
                     <p className="modal-card-title" style={{ fontFamily: 'Poppins', fontWeight:600 }}>
                         Reservar Isla
                     </p>
@@ -49,7 +49,7 @@ export function ReservacionModal({ slot, form, setForm, formErrors, loading, err
                             <div className="field" style={{ marginBottom:0 }}>
                                 <label className="label" style={{ fontFamily:'Poppins', fontSize:'0.875rem' }}>Fecha</label>
                                 <input
-                                    className="input"
+                                    className="input islas-input"
                                     type="date"
                                     min={hoy}
                                     value={slot.fecha}
@@ -59,7 +59,7 @@ export function ReservacionModal({ slot, form, setForm, formErrors, loading, err
                             </div>
                             <div className="field" style={{ marginBottom:0 }}>
                                 <label className="label" style={{ fontFamily:'Poppins', fontSize:'0.875rem' }}>Hora inicio</label>
-                                <div className="select is-fullwidth">
+                                <div className="select is-fullwidth islas-select">
                                     <select
                                         value={slot.hora}
                                         onChange={(e) => { onSlotChange({ hora: e.target.value }); setForm((prev) => ({ ...prev, isla_id: null })); }}
@@ -71,11 +71,11 @@ export function ReservacionModal({ slot, form, setForm, formErrors, loading, err
                             </div>
                         </div>
                     ) : (
-                        <div style={{ background:'#f8f9fa', borderRadius:'8px', padding:'0.75rem 1rem', marginBottom:'1.25rem' }}>
-                            <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'#555', margin:0}}>
+                        <div style={{ background:'var(--surface-soft)', borderRadius:'8px', padding:'0.75rem 1rem', marginBottom:'1.25rem' }}>
+                            <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', margin:0}}>
                                 <strong>Fecha:</strong> {slot.fecha}
                             </p>
-                            <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'#555', margin:0, marginTop:'0.25rem' }}>
+                            <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', margin:0, marginTop:'0.25rem' }}>
                                 <strong>Hora inicio:</strong> {slot.hora}
                             </p>
                         </div>
@@ -86,7 +86,7 @@ export function ReservacionModal({ slot, form, setForm, formErrors, loading, err
                             Isla
                         </label>
                         <div className="control">
-                            <div className={`select is-fullwidth ${formErrors.isla_id ? 'is-danger' : ''}`}>
+                            <div className={`select is-fullwidth islas-select ${formErrors.isla_id ? 'is-danger' : ''}`}>
                                 <select 
                                     value={form.isla_id ?? ''}
                                     onChange={(e) => setForm((prev) => ({...prev, isla_id:Number(e.target.value) || null }))}
@@ -115,7 +115,7 @@ export function ReservacionModal({ slot, form, setForm, formErrors, loading, err
                         </label>
                         <div className="control">
                             <input 
-                                className={`input ${formErrors.duracion_horas ? 'is-danger' : ''}`}
+                                className={`input islas-input ${formErrors.duracion_horas ? 'is-danger' : ''}`}
                                 type="number" 
                                 min={1}
                                 max={4}
@@ -132,7 +132,7 @@ export function ReservacionModal({ slot, form, setForm, formErrors, loading, err
                     </div>
 
                     {islasDisponibles.length === 0 && (
-                        <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'#e53e6d' }}>
+                        <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--color-secondary)' }}>
                             Ups! No hay islas disponibles para este horario.
                         </p>
                     )}
@@ -144,11 +144,11 @@ export function ReservacionModal({ slot, form, setForm, formErrors, loading, err
                     )}
                 </section>
 
-                <footer className="modal-card-foot" style={{ borderRadius:'0 0 16px 16px', background:'#fff', borderTop:'1px solid #f0f0f0', justifyContent:'flex-end', gap:'0.75rem' }}>
+                <footer className="modal-card-foot" style={{ borderRadius:'0 0 16px 16px', background:'var(--surface)', borderTop:'1px solid var(--border)', justifyContent:'flex-end', gap:'0.75rem' }}>
                     <button className="button" onClick={onClose} style={{ fontFamily:'Poppins', borderRadius:'8px'}}>
                         Cancelar
                     </button>
-                    <button className="button" onClick={onSubmit} disabled={loading || islasDisponibles.length === 0} style={{ background:'linear-gradient(135deg, #f97316, #e53e6d', color:'#fff', fontFamily:'Poppins', fontWeight:600, borderRadius:'8px', border:'none', opacity: loading ? 0.75 : 1}}>
+                    <button className="button" onClick={onSubmit} disabled={loading || islasDisponibles.length === 0} style={{ background:'linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end))', color:'#fff', fontFamily:'Poppins', fontWeight:600, borderRadius:'8px', border:'none', opacity: loading ? 0.75 : 1}}>
                         { loading ? 'Reservando...' : 'Confirmar reserva'}
                     </button>
                 </footer>

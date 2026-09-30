@@ -29,8 +29,8 @@ export function Modal({ open, title, onClose, children, footer, maxWidth = '460p
                 zIndex: 1000,
             }}
         >
-            <div className="modal-card" style={{ borderRadius:'16px', maxWidth, width:'90%', overflow:'hidden', background:'#fff', boxShadow:'0 20px 45px rgba(0,0,0,0.18)' }}>
-                <header className="modal-card-head" style={{ borderRadius:'16px 16px 0 0', background:'#ffffff', borderBottom:'1px solid #f0f0f0', padding:'1rem 1.5rem  0.75rem', display:'flex', flexDirection:'column', alignItems:'center', position:'relative', minHeight:'80px' }}>
+            <div className="modal-card" style={{ borderRadius:'16px', maxWidth, width:'90%', overflow:'hidden', background:'var(--surface)', color:'var(--text)', boxShadow:'var(--shadow)' }}>
+                <header className="modal-card-head" style={{ borderRadius:'16px 16px 0 0', background:'var(--surface)', borderBottom:'1px solid var(--border)', padding:'1rem 1.5rem  0.75rem', display:'flex', flexDirection:'column', alignItems:'center', position:'relative', minHeight:'80px' }}>
                     <div style={{ display:'flex', gap:'6px', position:'absolute', top:'1rem', left:'1.25rem'}}>
                         <span style={{ width:14, height:14, borderRadius:'50%', background:'#e53e6d', display:'block' }} />
                         <span style={{ width:14, height:14, borderRadius:'50%', background:'#f97316', display:'block' }} />
@@ -44,17 +44,17 @@ export function Modal({ open, title, onClose, children, footer, maxWidth = '460p
                         aria-label="Cerrar modal"
                     />
 
-                    <p style={{ fontFamily:'Poppins', fontSize:'1.25rem', fontWeight:700, color:'#111827', margin:'0.5rem 0 0', textAlign:'center' }}>
+                    <p style={{ fontFamily:'Poppins', fontSize:'1.25rem', fontWeight:700, color:'var(--text)', margin:'0.5rem 0 0', textAlign:'center' }}>
                         {title}
                     </p>
                 </header>
 
-                <section className="modal-card-body" style={{ padding:'1.25rem 1.5rem' }}>
+                <section className="modal-card-body" style={{ padding:'1.25rem 1.5rem', background:'var(--surface)', color:'var(--text)' }}>
                     {children}
                 </section>
 
                 {footer && (
-                    <footer className="modal-card-foot" style={{ borderRadius:'0 0 16px 16px', background:'#fff', borderTop:'1px solid #f0f0f0', justifyContent:'flex-end', gap:'0.75rem', padding:'1rem 1.5rem' }}>
+                    <footer className="modal-card-foot" style={{ borderRadius:'0 0 16px 16px', background:'var(--surface)', borderTop:'1px solid var(--border)', justifyContent:'flex-end', gap:'0.75rem', padding:'1rem 1.5rem' }}>
                         {footer}
                     </footer>
                 )}

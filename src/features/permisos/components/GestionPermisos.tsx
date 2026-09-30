@@ -61,14 +61,14 @@ export function GestionPermisos() {
                 {loading && (
                     <div style={{ padding:'1rem 1.5rem', display:'flex', flexDirection:'column', gap:'0.75rem'}}>
                         {Array.from({ length: 5 }).map((_,i) => (
-                            <div key={i} style={{ height:'48px', borderRadius:'8px', background:'#F0F0F0' }}/>
+                            <div key={i} style={{ height:'48px', borderRadius:'8px', background:'var(--surface-muted)' }}/>
                         ))}
                     </div>
                 )}
 
                 {!loading && usuarios.map((usuario, index) => (
-                    <div key={usuario.id} className="permiso-table-row" style={{ display:'grid', gridTemplateColumns:'60px 1fr 1fr 1fr 120px 100px', minWidth:'780px', padding:'1rem 1.5rem', alignItems:'center', background: index % 2 === 0 ? '#FFFFFF' : '#FAFAFA', borderBottom:'1px solid #F5F5F5', fontFamily:'Poppins', fontSize:'0.875rem' }}>
-                        <span style={{ color:'#888', fontWeight:500}}>
+                    <div key={usuario.id} className="permiso-table-row" style={{ display:'grid', gridTemplateColumns:'60px 1fr 1fr 1fr 120px 100px', minWidth:'780px', padding:'1rem 1.5rem', alignItems:'center', background: index % 2 === 0 ? 'var(--surface)' : 'var(--surface-soft)', borderBottom:'1px solid var(--border)', fontFamily:'Poppins', fontSize:'0.875rem' }}>
+                        <span style={{ color:'var(--text-muted)', fontWeight:500}}>
                             {String(usuario.id).padStart(3,'0')}
                         </span>
                         <span style={{ fontWeight:500, color:'var(--text)' }}>
@@ -102,7 +102,7 @@ export function GestionPermisos() {
                 ))}
 
                 {!loading && usuarios.length === 0 && (
-                    <div style={{ padding: '3rem', textAlign: 'center', fontFamily: 'var(--font-poppins)', color: '#aaa' }}>
+                    <div style={{ padding: '3rem', textAlign: 'center', fontFamily: 'var(--font-poppins)', color: 'var(--text-muted)' }}>
                         No hay usuarios registrados.
                     </div>
                 )}

@@ -18,8 +18,8 @@ export function Inventario(){
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems:'flex-start', marginBottom:'1.5rem', flexWrap:'wrap', gap:'1rem' }}>
                 <div>
-                    <h1 style={{ fontWeight: 700, fontSize: 'clamp(1.25rem, 2vw, 1.75rem)', color: '#1a1a1a', marginBottom:'0.25rem'}}> Gestión de Inventario </h1>
-                    <p style={{ color:'#888', fontSize:'0.875rem'}}> Administra todo el material que está dentro del laboratorio.</p>
+                    <h1 style={{ fontWeight: 700, fontSize: 'clamp(1.25rem, 2vw, 1.75rem)', color: 'var(--text)', marginBottom:'0.25rem'}}> Gestión de Inventario </h1>
+                    <p style={{ color:'var(--text-muted)', fontSize:'0.875rem'}}> Administra todo el material que está dentro del laboratorio.</p>
                 </div>
 
                 <button onClick={openCreate} style={{ background: 'linear-gradient(135deg, #f97316, #e53e6d)', color: '#fff', fontWeight:600, fontSize:'0.9rem', border:'none', borderRadius:'12px', padding:'0.65rem 1.25rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.5rem', width:'100%', maxWidth:'220px', justifyContent:'center'}}>

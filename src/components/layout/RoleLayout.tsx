@@ -79,6 +79,7 @@ export function RoleLayout({ role, children }: RoleLayoutProps) {
           style={{
             flex: 1,
             width: '100%',
+            marginLeft: 'var(--sidebar-width)',
             padding: '1rem',
             overflow: 'auto',
             minWidth: 0,

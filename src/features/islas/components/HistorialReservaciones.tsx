@@ -8,10 +8,10 @@ import { useState } from 'react';
 import type { Reservacion } from '../types';
 
 const ESTADO_STYLES: Record<string, { background: string; color: string }> = {
-    Activa: { background: '#d1fae5', color: '#065f46' },
-    Completada: { background: '#dbeafe', color: '#1e40af' },
-    Cancelada: { background: '#f3f4f6', color: '#6b7280' },
-    Expirada: { background: '#fee2e2', color: '#991b1b' },
+    Activa: { background: 'var(--reservation-active-bg)', color: 'var(--reservation-active-text)' },
+    Completada: { background: 'var(--reservation-completed-bg)', color: 'var(--reservation-completed-text)' },
+    Cancelada: { background: 'var(--reservation-cancelled-bg)', color: 'var(--reservation-cancelled-text)' },
+    Expirada: { background: 'var(--reservation-expired-bg)', color: 'var(--reservation-expired-text)' },
 };
 
 interface HistorialReservacionesProps {
@@ -43,12 +43,12 @@ export function HistorialReservaciones({ reservaciones, semanaActual, onRefetch,
         const isActive = estado === 'Activa';
 
         return (
-            <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0.75rem 1rem',borderBottom:'1px solid #f5f5f5',gap:'1rem' }}>
+            <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0.75rem 1rem',borderBottom:'1px solid var(--border)',gap:'1rem' }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.85rem', color: '#1a1a1a', margin: 0 }}>
+                    <p style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text)', margin: 0 }}>
                         Isla #{r.isla_detalles.numero_isla}
                     </p>
-                    <p style={{ fontFamily: 'Poppins', fontSize: '0.78rem', color: '#888', margin: 0 }}>
+                    <p style={{ fontFamily: 'Poppins', fontSize: '0.78rem', color: 'var(--text-muted)', margin: 0 }}>
                         {r.alumno.first_name} {r.alumno.last_name} · {r.fecha_reserva} · {r.hora_inicio.slice(0,5)}h · {r.duracion_horas}h
                     </p>
                 </div>
@@ -87,13 +87,13 @@ export function HistorialReservaciones({ reservaciones, semanaActual, onRefetch,
 <>
             <div style={{ background:'var(--surface)',border:'1px solid var(--border)',borderRadius:'16px',boxShadow:'var(--shadow)',marginTop:'1.5rem',overflow:'hidden', width:'100%' }}>
 
-                <div style={{ display: 'flex', borderBottom: '1px solid #f0f0f0' }}>
+                <div style={{ display: 'flex', borderBottom: '1px solid var(--border)' }}>
                     {(['semana', 'historial'] as const).map((p) => (
 
                         <button
                             key={p}
                             onClick={() => setPestana(p)}
-                            style={{ flex:1,padding:'0.875rem',fontFamily:'Poppins',fontWeight:pestana === p ? 600 : 400,fontSize:'0.875rem',color:pestana === p ? '#e53e6d' : '#888',background:'none',border:'none',borderBottom:pestana === p ? '2px solid #e53e6d' : '2px solid transparent',cursor:'pointer',transition:'all 0.15s',textTransform:'capitalize'}}
+                            style={{ flex:1,padding:'0.875rem',fontFamily:'Poppins',fontWeight:pestana === p ? 600 : 400,fontSize:'0.875rem',color:pestana === p ? 'var(--color-secondary)' : 'var(--text-muted)',background:'none',border:'none',borderBottom:pestana === p ? '2px solid var(--color-secondary)' : '2px solid transparent',cursor:'pointer',transition:'all 0.15s',textTransform:'capitalize'}}
                         >
                             {p === 'semana' ? 'Esta semana' : 'Historial completo'}
                         </button>
@@ -102,16 +102,16 @@ export function HistorialReservaciones({ reservaciones, semanaActual, onRefetch,
 
                 <div style={{ maxHeight: '320px', overflowY: 'auto' }}>
                     {lista.length === 0 ? (
-                        <p style={{ fontFamily: 'Poppins', color: '#aaa', fontSize: '0.85rem', textAlign: 'center', padding: '2rem' }}>
+                        <p style={{ fontFamily: 'Poppins', color: 'var(--text-muted)', fontSize: '0.85rem', textAlign: 'center', padding: '2rem' }}>
                             No hay reservaciones {pestana === 'semana' ? 'esta semana' : 'en el historial'}.
                         </p>
                     ) : (
-                        lista.map((r) => <div key={r.id} className="historial-row" style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0.75rem 1rem',borderBottom:'1px solid #f5f5f5',gap:'1rem' }}>
+                        lista.map((r) => <div key={r.id} className="historial-row" style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0.75rem 1rem',borderBottom:'1px solid var(--border)',gap:'1rem' }}>
                             <div style={{ flex: 1, minWidth: 0 }}>
-                                <p style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.85rem', color: '#1a1a1a', margin: 0 }}>
+                                <p style={{ fontFamily: 'Poppins', fontWeight: 600, fontSize: '0.85rem', color: 'var(--text)', margin: 0 }}>
                                     Isla #{r.isla_detalles.numero_isla}
                                 </p>
-                                <p style={{ fontFamily: 'Poppins', fontSize: '0.78rem', color: '#888', margin: 0 }}>
+                                <p style={{ fontFamily: 'Poppins', fontSize: '0.78rem', color: 'var(--text-muted)', margin: 0 }}>
                                     {r.alumno.first_name} {r.alumno.last_name} · {r.fecha_reserva} · {r.hora_inicio.slice(0,5)}h · {r.duracion_horas}h
                                 </p>
                             </div>

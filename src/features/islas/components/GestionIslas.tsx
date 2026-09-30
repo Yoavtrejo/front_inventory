@@ -37,7 +37,7 @@ export function GestionIslas({ role }: GestionIslasProps = {}){
 
     if (loading) {
         return (
-            <div style={{ padding:'2rem', fontFamily:'Poppins', color:'#888'}}>
+            <div style={{ padding:'2rem', fontFamily:'Poppins', color:'var(--text-muted)'}}>
                 Cargando islas...
             </div>
         );
@@ -47,10 +47,10 @@ export function GestionIslas({ role }: GestionIslasProps = {}){
         <div style={{ width: '100%' }}>
             <div className="islas-header" style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'1.5rem', flexWrap:'wrap', gap:'1rem'}}>
                 <div>
-                    <h1 style={{ fontFamily:'Poppins', fontWeight:700, fontSize:'1.75rem', color: '#1a1a1a', marginBottom:'0.25rem' }}>
+                    <h1 style={{ fontFamily:'Poppins', fontWeight:700, fontSize:'1.75rem', color: 'var(--text)', marginBottom:'0.25rem' }}>
                         {isAdmin ? 'Gestión de Islas' : 'Islas'}
                     </h1>
-                    <p style={{ fontFamily:'Poppins', color:'#888', fontSize:'0.875rem' }}>
+                    <p style={{ fontFamily:'Poppins', color:'var(--text-muted)', fontSize:'0.875rem' }}>
                         {isAdmin ? 'Administra el estado y horarios de las islas.' : 'Visualiza el estado y disponibilidad de cada isla. Da clic en un horario libre para reservar.'}
                     </p>
                 </div>
@@ -58,7 +58,7 @@ export function GestionIslas({ role }: GestionIslasProps = {}){
                 {!isAdmin && (
                     <button
                         onClick={reservModal.openBlank}
-                        style={{ background:'linear-gradient(135deg, #f97316, #e53e6d)', color:'#fff', fontFamily:'Poppins', fontWeight:600, fontSize:'0.9rem', border:'none', borderRadius:'12px', padding:'0.65rem 1.25rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.5rem', justifyContent:'center', width:'100%', maxWidth:'220px' }}
+                        style={{ background:'linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end))', color:'#fff', fontFamily:'Poppins', fontWeight:600, fontSize:'0.9rem', border:'none', borderRadius:'12px', padding:'0.65rem 1.25rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.5rem', justifyContent:'center', width:'100%', maxWidth:'220px' }}
                     >
                         <IoCalendarOutline size={18} /> Reservar
                     </button>
@@ -67,7 +67,7 @@ export function GestionIslas({ role }: GestionIslasProps = {}){
                 {isAdmin && (
                     <button
                         onClick={() => islaModal.openCreate(islas)}
-                        style={{ background:'linear-gradient(135deg, #f97316, #e53e6d)', color:'#fff', fontFamily:'Poppins', fontWeight:600, fontSize:'0.9rem', border:'none', borderRadius:'12px', padding:'0.65rem 1.25rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.5rem', justifyContent:'center', width:'100%', maxWidth:'220px' }}
+                        style={{ background:'linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end))', color:'#fff', fontFamily:'Poppins', fontWeight:600, fontSize:'0.9rem', border:'none', borderRadius:'12px', padding:'0.65rem 1.25rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'0.5rem', justifyContent:'center', width:'100%', maxWidth:'220px' }}
                     >
                         <IoAdd size={18} /> Agregar Isla
                     </button>

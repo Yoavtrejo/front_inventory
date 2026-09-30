@@ -29,13 +29,16 @@ export function Sidebar({ items, mobileOpen = false, onClose }: SidebarProps){
             <aside
                 style={{
                     width: 'var(--sidebar-width)',
+                    height: '100vh',
                     minHeight: '100vh',
                     background: 'var(--surface)',
                     borderRight: '1px solid var(--border)',
                     display: 'flex',
                     flexDirection: 'column',
-                    position: 'sticky',
+                    position: 'fixed',
                     top: 0,
+                    left: 0,
+                    overflowY: 'auto',
                     flexShrink: 0,
                     zIndex: 30,
                     boxShadow: 'var(--shadow)',

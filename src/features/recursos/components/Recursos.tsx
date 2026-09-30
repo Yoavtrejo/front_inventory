@@ -14,7 +14,7 @@ interface RecursosProps {
     canManage: boolean;
 }
 
-const LABEL_STYLE = { fontFamily: 'Poppins', fontSize: '0.85rem', fontWeight: 600, color: '#1a1a1a', display: 'block', marginBottom: '0.35rem' } as const;
+const LABEL_STYLE = { fontFamily: 'Poppins', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text)', display: 'block', marginBottom: '0.35rem' } as const;
 
 export function Recursos({ canManage }: RecursosProps) {
     const {
@@ -87,16 +87,16 @@ export function Recursos({ canManage }: RecursosProps) {
                     </>
                 )}
             >
-                <p style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1rem' }}>Completa lo siguiente</p>
+                <p style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: 'var(--text-muted)', textAlign: 'center', marginBottom: '1rem' }}>Completa lo siguiente</p>
                 <div style={{ marginBottom: '0.75rem' }}>
                     <label style={LABEL_STYLE}>Título:</label>
-                    <input className={`input ${formErrors.title ? 'is-danger' : ''}`} value={form.title} onChange={(event) => updateField('title', event.target.value)} style={{ fontFamily: 'Poppins', borderRadius: '8px' }} />
-                    {formErrors.title && <p style={{ color: '#e53e6d', fontSize: '0.78rem', fontFamily: 'Poppins' }}>{formErrors.title}</p>}
+                    <input className={`input recurso-modal-input ${formErrors.title ? 'is-danger' : ''}`} value={form.title} onChange={(event) => updateField('title', event.target.value)} style={{ fontFamily: 'Poppins', borderRadius: '8px' }} />
+                    {formErrors.title && <p style={{ color: 'var(--color-secondary)', fontSize: '0.78rem', fontFamily: 'Poppins' }}>{formErrors.title}</p>}
                 </div>
                 <div style={{ marginBottom: '0.75rem' }}>
                     <label style={LABEL_STYLE}>Descripción:</label>
-                    <textarea className={`textarea ${formErrors.description ? 'is-danger' : ''}`} rows={3} value={form.description} onChange={(event) => updateField('description', event.target.value)} style={{ fontFamily: 'Poppins', borderRadius: '8px' }} />
-                    {formErrors.description && <p style={{ color: '#e53e6d', fontSize: '0.78rem', fontFamily: 'Poppins' }}>{formErrors.description}</p>}
+                    <textarea className={`textarea recurso-modal-input ${formErrors.description ? 'is-danger' : ''}`} rows={3} value={form.description} onChange={(event) => updateField('description', event.target.value)} style={{ fontFamily: 'Poppins', borderRadius: '8px' }} />
+                    {formErrors.description && <p style={{ color: 'var(--color-secondary)', fontSize: '0.78rem', fontFamily: 'Poppins' }}>{formErrors.description}</p>}
                 </div>
                 <label style={LABEL_STYLE}>Subir un archivo (Opcional):</label>
                 <FileDropzone file={form.file} onFileChange={(file) => updateField('file', file)} />

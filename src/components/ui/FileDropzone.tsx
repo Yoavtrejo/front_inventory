@@ -30,20 +30,20 @@ export function FileDropzone({ file, onFileChange, accept }: FileDropzoneProps) 
             onDragLeave={() => setIsDragging(false)}
             onDrop={handleDrop}
             style={{
-                border: `2px dashed ${isDragging ? '#e53e6d' : '#f97316'}`, borderRadius: '12px', padding: '1.75rem 1rem',
-                textAlign: 'center', cursor: 'pointer', background: isDragging ? '#fff7ed' : 'transparent',
-                fontFamily: 'Poppins', color: '#888', transition: 'background 0.2s',
+                border: `2px dashed ${isDragging ? 'var(--color-secondary)' : 'var(--color-primary)'}`, borderRadius: '12px', padding: '1.75rem 1rem',
+                textAlign: 'center', cursor: 'pointer', background: isDragging ? 'var(--surface-soft)' : 'transparent',
+                fontFamily: 'Poppins', color: 'var(--text-muted)', transition: 'background 0.2s',
             }}
         >
-            <IoCloudUploadOutline size={32} color="#f97316" />
+            <IoCloudUploadOutline size={32} color="var(--color-primary)" />
             <p style={{ margin: '0.5rem 0 0', fontSize: '0.875rem' }}>
-                {file ? <strong style={{ color: '#e53e6d' }}>{file.name}</strong> : 'Sube o arrastra el archivo aquí'}
+                {file ? <strong style={{ color: 'var(--color-secondary)' }}>{file.name}</strong> : 'Sube o arrastra el archivo aquí'}
             </p>
             {file && (
                 <button
                     type="button"
                     onClick={(event) => { event.stopPropagation(); onFileChange(null); }}
-                    style={{ marginTop: '0.5rem', background: 'none', border: 'none', color: '#e53e6d', fontFamily: 'Poppins', fontSize: '0.8rem', cursor: 'pointer' }}
+                    style={{ marginTop: '0.5rem', background: 'none', border: 'none', color: 'var(--color-secondary)', fontFamily: 'Poppins', fontSize: '0.8rem', cursor: 'pointer' }}
                 >
                     Quitar archivo
                 </button>

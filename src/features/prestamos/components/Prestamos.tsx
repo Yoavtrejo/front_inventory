@@ -41,10 +41,10 @@ export function Prestamos({ role = 'Administrador' }: PrestamosProps) {
         <div style={{ width: '100%' }}>
             <div className="prestamos-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap:'wrap', gap:'1rem' }}>
                 <div>
-                    <h1 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: '1.75rem', color: '#1a1a1a', marginBottom: '0.25rem' }}>
+                    <h1 style={{ fontFamily: 'Poppins', fontWeight: 700, fontSize: '1.75rem', color: 'var(--text)', marginBottom: '0.25rem' }}>
                         {isAdmin ? 'Gestión de préstamos' : 'Mis préstamos'}
                     </h1>
-                    <p style={{ fontFamily: 'Poppins', color: '#888', fontSize: '0.875rem' }}>
+                    <p style={{ fontFamily: 'Poppins', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
                         {isAdmin ? 'Administra y autoriza todas las solicitudes de préstamo.' : 'Consulta el estado de tus solicitudes de material.'}
                     </p>
                 </div>

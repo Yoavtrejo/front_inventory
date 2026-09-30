@@ -19,6 +19,31 @@
   --text-muted: #888888;
   --border: rgba(15, 23, 42, 0.08);
   --shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  --role-admin-bg: #FEF3C7;
+  --role-admin-text: #92400E;
+  --role-docente-bg: #D1FAE5;
+  --role-docente-text: #065F46;
+  --role-alumno-bg: #DBEAFE;
+  --role-alumno-text: #1E40AF;
+  --isla-available-bg: #DCFCE7;
+  --isla-available-text: #166534;
+  --isla-reserved-bg: #FEF3C7;
+  --isla-reserved-text: #92400E;
+  --isla-occupied-bg: #E5E7EB;
+  --isla-occupied-text: #4B5563;
+  --isla-blocked-bg: #FEE2E2;
+  --isla-blocked-text: #991B1B;
+  --reservation-active-bg: #D1FAE5;
+  --reservation-active-text: #065F46;
+  --reservation-completed-bg: #DBEAFE;
+  --reservation-completed-text: #1E40AF;
+  --reservation-cancelled-bg: #F3F4F6;
+  --reservation-cancelled-text: #4B5563;
+  --reservation-expired-bg: #FEE2E2;
+  --reservation-expired-text: #991B1B;
+  --loan-selection-bg: #FFF7ED;
+  --loan-stock-bg: #FEF3C7;
+  --loan-stock-text: #92400E;
   --sidebar-width: 240px;
 }
 
@@ -34,6 +59,31 @@
   --text-muted: #b1bfd3;
   --border: rgba(148, 163, 184, 0.18);
   --shadow: 0 14px 30px rgba(2, 6, 23, 0.45);
+  --role-admin-bg: #78350F;
+  --role-admin-text: #FEF3C7;
+  --role-docente-bg: #064E3B;
+  --role-docente-text: #D1FAE5;
+  --role-alumno-bg: #1E3A8A;
+  --role-alumno-text: #DBEAFE;
+  --isla-available-bg: #14532D;
+  --isla-available-text: #DCFCE7;
+  --isla-reserved-bg: #78350F;
+  --isla-reserved-text: #FEF3C7;
+  --isla-occupied-bg: #374151;
+  --isla-occupied-text: #E5E7EB;
+  --isla-blocked-bg: #7F1D1D;
+  --isla-blocked-text: #FEE2E2;
+  --reservation-active-bg: #064E3B;
+  --reservation-active-text: #D1FAE5;
+  --reservation-completed-bg: #1E3A8A;
+  --reservation-completed-text: #DBEAFE;
+  --reservation-cancelled-bg: #374151;
+  --reservation-cancelled-text: #E5E7EB;
+  --reservation-expired-bg: #7F1D1D;
+  --reservation-expired-text: #FEE2E2;
+  --loan-selection-bg: #3B2F25;
+  --loan-stock-bg: #78350F;
+  --loan-stock-text: #FEF3C7;
 }
 
 html {
@@ -49,6 +99,33 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), sans-serif;
+  color: var(--text);
+}
+
+.perfil-input,
+.perfil-input:focus,
+.islas-input,
+.islas-input:focus,
+.recurso-modal-input,
+.recurso-modal-input:focus,
+.reportes-input,
+.reportes-input:focus,
+.islas-select select {
+  background-color: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.perfil-input::placeholder,
+.islas-input::placeholder,
+.recurso-modal-input::placeholder,
+.reportes-input::placeholder {
+  color: var(--text-muted);
+}
+
+.islas-modal .modal-card-body {
+  background: var(--surface);
   color: var(--text);
 }
 
@@ -96,6 +173,7 @@ button, a {
   }
 
   .admin-main {
+    margin-left: 0 !important;
     padding: 0.75rem !important;
     /* deja espacio para el botón fijo del menú */
     padding-top: 4.25rem !important;

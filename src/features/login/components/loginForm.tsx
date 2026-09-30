@@ -28,7 +28,17 @@ export function FormLogin() {
 
     return (
         <div style={{background: '#ffffff',borderRadius: '16px',boxShadow: '0 8px 40px rgba(0, 0, 0, 0.13)',padding: '2.5rem 2.25rem 2rem',}}>
-            
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '1.75rem' }}>
+                <div aria-hidden="true" style={{ display: 'flex', gap: '6px', marginBottom: '0.65rem' }}>
+                    <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#e53e6d' }} />
+                    <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#f97316' }} />
+                    <span style={{ width: 12, height: 12, borderRadius: '50%', background: '#facc15' }} />
+                </div>
+                <p style={{ fontFamily: 'Poppins', fontWeight: 800, fontSize: '1.5rem', color: '#1a1a1a', margin: 0, lineHeight: 1.2 }}>
+                    SIDERED
+                </p>
+            </div>
+
             {/* Encabezado */}
             <h1 className="title is-4 has-text-centered" style={{ fontFamily: 'Poppins', fontWeight: 600, marginBottom: '0.4rem', color: '#1a1a1a'}}>
                 Inicio de sesión
@@ -107,14 +117,12 @@ export function FormLogin() {
                     </Link>
                 </p>
 
-                {/* Error */}
                 {error && (
                     <p className="help is-danger" style={{ fontFamily: 'Poppins', marginBottom: '0.75rem' }}>
                         {error}
                     </p>
                 )}
 
-                {/* Botón */}
                 <div className="field" style={{ marginTop: '1.25rem' }}>
                     <button
                         className="button is-fullwidth"
