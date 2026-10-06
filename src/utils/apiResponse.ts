@@ -33,3 +33,19 @@ export function getApiErrorMessage(error: unknown, fallback: string): string {
     }
     return fallback;
 }
+
+// Cuerpo de error del backend: envuelto ({message}), {detail} o el formato de DRF por campo
+// ({"non_field_errors": ["..."]} / {"grupo": ["..."]}) en vistas sin envoltura
+export function errorBodyMessage(body: unknown, fallback: string): string {
+    if (typeof body !== 'object' || body === null) return fallback;
+    const record = body as Record<string, unknown>;
+    if (typeof record.message === 'string') return record.message;
+    if (typeof record.detail === 'string') return record.detail;
+    for (const [field, value] of Object.entries(record)) {
+        const firstMessage = Array.isArray(value) ? value[0] : value;
+        if (typeof firstMessage === 'string') {
+            return field === 'non_field_errors' ? firstMessage : `${field}: ${firstMessage}`;
+        }
+    }
+    return fallback;
+}

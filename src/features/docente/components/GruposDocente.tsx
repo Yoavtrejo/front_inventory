@@ -1,12 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { IoPeople, IoPeopleOutline } from 'react-icons/io5';
+import { IoAdd, IoPeople, IoPeopleOutline } from 'react-icons/io5';
 import { useAcademicData } from '@/features/academic';
 import { PageHeader, PRIMARY_BUTTON_STYLE, CARD_STYLE, EmptyState } from '@/components/ui/PageHeader';
+import { Modal } from '@/components/ui/Modal/Modal';
+import { ModalCancelButton, ModalSubmitButton } from '@/components/ui/Modal/ModalButtons';
+import { CohorteFields, useCarreras } from '@/features/cohorte';
+import { useCrearGrupo } from '../hooks/useCrearGrupo';
 
 export function GruposDocente() {
-    const { groups, activities, loading, error } = useAcademicData('Docente');
+    const { groups, activities, loading, error, reload } = useAcademicData('Docente');
+    const crearGrupo = useCrearGrupo(reload);
+    const { carreras } = useCarreras();
 
     return (
         <div style={{ width: '100%' }}>
@@ -14,9 +20,14 @@ export function GruposDocente() {
                 title="Gestión de Grupos"
                 subtitle="Administra los grupos asignados."
                 action={(
-                    <Link href="/docente/grupos/equipos" style={{ ...PRIMARY_BUTTON_STYLE, textDecoration: 'none', width: '100%', maxWidth: '220px' }}>
-                        <IoPeopleOutline size={18} /> Crear Equipos
-                    </Link>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        <button onClick={crearGrupo.open} style={{ ...PRIMARY_BUTTON_STYLE }}>
+                            <IoAdd size={18} /> Crear grupo
+                        </button>
+                        <Link href="/docente/grupos/equipos" style={{ ...PRIMARY_BUTTON_STYLE, textDecoration: 'none', background: '#fce7f3', color: '#9d174d' }}>
+                            <IoPeopleOutline size={18} /> Crear Equipos
+                        </Link>
+                    </div>
                 )}
             />
 
@@ -47,7 +58,38 @@ export function GruposDocente() {
                     ))}
             </div>
 
-            {!loading && groups.length === 0 && <EmptyState message="Aún no tienes grupos asignados. Pide al administrador que te asigne uno." />}
+            {!loading && groups.length === 0 && <EmptyState message="Aún no tienes grupos. Crea uno con «Crear grupo» y tus alumnos se inscribirán solos." />}
+
+            <Modal
+                open={crearGrupo.isOpen}
+                title="Crear grupo"
+                onClose={crearGrupo.close}
+                footer={(
+                    <>
+                        <ModalCancelButton onClick={crearGrupo.close} />
+                        <ModalSubmitButton onClick={crearGrupo.save} loading={crearGrupo.saving} label="Crear" loadingLabel="Creando..." />
+                    </>
+                )}
+            >
+                <p style={{ fontFamily: 'Poppins', fontSize: '0.85rem', color: '#555', marginBottom: '1rem' }}>
+                    Se crea en el cuatrimestre activo. Los alumnos de ese grupo escolar quedan inscritos automáticamente.
+                </p>
+                <div className="field">
+                    <label style={{ fontFamily: 'Poppins', fontSize: '0.85rem', fontWeight: 600, color: '#1a1a1a', display: 'block', marginBottom: '0.35rem' }}>Materia</label>
+                    <div className="select is-fullwidth">
+                        <select
+                            value={crearGrupo.subjectId ?? ''}
+                            onChange={(e) => crearGrupo.setSubjectId(e.target.value ? Number(e.target.value) : null)}
+                            style={{ fontFamily: 'Poppins', fontSize: '0.875rem', borderRadius: '8px' }}
+                        >
+                            <option value="">Selecciona una opción</option>
+                            {crearGrupo.subjects.map((subject) => <option key={subject.id} value={subject.id}>{subject.name}</option>)}
+                        </select>
+                    </div>
+                </div>
+                <CohorteFields value={crearGrupo.cohorte} onChange={crearGrupo.setCohorte} carreras={carreras} />
+                {crearGrupo.error && <p className="help is-danger" style={{ fontFamily: 'Poppins', marginTop: '0.75rem' }}>{crearGrupo.error}</p>}
+            </Modal>
         </div>
     );
 }

@@ -73,6 +73,11 @@ export function GestionPermisos() {
                         </span>
                         <span style={{ fontWeight:500, color:'var(--text)' }}>
                             {usuario.first_name} {usuario.last_name}
+                            {usuario.grupo_escolar && (
+                                <span style={{ marginLeft: '0.5rem', background: '#fce7f3', color: '#9d174d', borderRadius: '6px', padding: '0.1rem 0.4rem', fontSize: '0.72rem', fontWeight: 600 }}>
+                                    {usuario.grupo_escolar}
+                                </span>
+                            )}
                         </span>
                         <span style={{ color:'var(--text-soft)' }}>
                             {usuario.email}

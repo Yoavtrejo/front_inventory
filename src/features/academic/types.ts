@@ -8,6 +8,11 @@ export interface ClassGroup {
     teacher: number;
     teacher_name: string;
     students: number[];
+    // Grupo escolar (null en grupos creados antes de la inscripción automática)
+    carrera: number | null;
+    carrera_clave: string | null;
+    cuatrimestre: number | null;
+    grupo: number | null;
     // Solo lo reciben el admin y el docente del grupo
     students_detail?: StudentSummary[];
 }
@@ -54,6 +59,20 @@ export interface StudentSummary {
     last_name: string;
     matricula?: string | null;
     carrera?: string | null;
+    grupo_escolar?: string | null;
+}
+
+export interface Subject {
+    id: number;
+    name: string;
+    description: string;
+}
+
+export interface CreateClassGroupPayload {
+    subject: number;
+    carrera: number;
+    cuatrimestre: number;
+    grupo: number;
 }
 
 export interface GroupAverage {

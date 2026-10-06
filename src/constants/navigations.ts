@@ -10,7 +10,8 @@ import {
     IoDocumentTextOutline,
     IoPeopleOutline,
     IoClipboardOutline,
-    IoCalendarOutline
+    IoCalendarOutline,
+    IoSchoolOutline
 } from 'react-icons/io5';
 
 import type { IconType } from 'react-icons';
@@ -28,6 +29,7 @@ export const ADMIN_NAV: NavItem[] = [
     { label: 'Islas', href:'/admin/islas', icon: IoGridOutline },
     { label: 'Calendario', href:'/admin/calendario', icon: IoCalendarOutline },
     { label: 'Permisos', href:'/admin/permisos', icon: IoLockClosedOutline },
+    { label: 'Carreras', href:'/admin/carreras', icon: IoSchoolOutline },
     { label: 'Reportes', href:'/admin/reportes', icon: IoBarChartOutline},
     { label: 'Perfil', href:'/admin/perfil', icon: IoPersonOutline },
     { label: 'Acerca de', href:'/admin/acerca', icon: IoInformationCircleOutline},

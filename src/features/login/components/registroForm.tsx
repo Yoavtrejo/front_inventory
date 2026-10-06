@@ -4,6 +4,7 @@ import { useRegister } from '@/features/login';
 import { usePasswordVisibility } from '@/features/login';
 import { IoMailOpenOutline, IoPersonOutline, IoLockClosedOutline, IoEyeOff, IoEye, IoFolderOutline } from 'react-icons/io5';
 import Link from 'next/link';
+import { CohorteFields } from '@/features/cohorte';
 
 export function FormRegistro() {
     const {
@@ -21,6 +22,10 @@ export function FormRegistro() {
         setPasswordConfirm,
         carrera,
         setCarrera,
+        cuatrimestre,
+        setCuatrimestre,
+        grupo,
+        setGrupo,
         carreras,
         loading,
         error,
@@ -223,6 +228,18 @@ export function FormRegistro() {
                             </select>
                         </div>
                     </div>
+                </div>
+
+                {/* Cuatrimestre y grupo: con ellos se inscribe solo en las materias de su grupo */}
+                <div style={{ marginBottom: '0.75rem' }}>
+                    <CohorteFields
+                        value={{ carrera, cuatrimestre, grupo }}
+                        onChange={(value) => { setCuatrimestre(value.cuatrimestre); setGrupo(value.grupo); }}
+                        carreras={carreras}
+                        showCarrera={false}
+                        labelStyle={labelStyle}
+                        selectStyle={inputStyle}
+                    />
                 </div>
 
                 {/* Error */}

@@ -176,6 +176,18 @@ export function MiPerfil() {
                         </p>
                     </div>
 
+                    {(perfil.cuatrimestre !== null || perfil.grupo_escolar) && (
+                        <div style={{ marginBottom: '1rem' }}>
+                            <span style={{ fontFamily: 'Poppins', fontSize: '0.8rem', fontWeight: 600 as const, color: '#888', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: '0.35rem', display: 'block' as const }}>
+                                Grupo escolar
+                            </span>
+                            <p style={{ fontFamily: 'Poppins', fontSize: '0.95rem', color: '#1a1a1a', fontWeight: 500 as const, margin: 0 }}>
+                                {perfil.grupo_escolar ?? '—'}
+                                {perfil.cuatrimestre !== null && ` · ${perfil.cuatrimestre}° cuatrimestre, grupo ${perfil.grupo ?? '—'}`}
+                            </p>
+                        </div>
+                    )}
+
                     {perfil.carrera && (
                         <div style={{ marginBottom: '1rem' }}>
                             <span style={{ fontFamily: 'Poppins', fontSize: '0.8rem', fontWeight: 600 as const, color: '#888', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: '0.35rem', display: 'block' as const }}>

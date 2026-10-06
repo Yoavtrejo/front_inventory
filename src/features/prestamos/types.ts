@@ -6,6 +6,7 @@ export interface UserRef {
     last_name: string;
     matricula: string | null;
     carrera: string | null;
+    grupo_escolar?: string | null;
 }
 
 // Un préstamo agrupa varios materiales; estado, fechas y autorización aplican a todo el préstamo

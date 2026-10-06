@@ -3,6 +3,8 @@ import { Modal } from '@/components/ui/Modal/Modal';;
 import { ModalCancelButton, ModalSubmitButton } from '@/components/ui/Modal/ModalButtons';
 import { RolUsuario } from '../types';
 import { generarContrasena } from '@/utils';
+import { CohorteFields, useCarreras } from '@/features/cohorte';
+import type { CohorteValue } from '@/features/cohorte';
 
 interface UsuarioForm {
     first_name: string;
@@ -12,6 +14,7 @@ interface UsuarioForm {
     password: string;
     rol: RolUsuario;
     is_active: boolean;
+    cohorte: CohorteValue;
 }
 
 type FormErrors = Partial<Record<keyof UsuarioForm, string>>;
@@ -29,6 +32,7 @@ interface UsuarioModalProps {
 const ROLES: RolUsuario[] = ['Administrador', 'Docente', 'Alumno'];
 
 export function UsuarioModal({ isEdit, form, setForm, formErrors, loading, onClose, onSubmit } : UsuarioModalProps) {
+    const { carreras } = useCarreras();
 
     const field = ( label:string, key: keyof UsuarioForm, type: string = 'text' ) => (
         <div style={{ marginBottom:'0.75rem'}}>
@@ -115,6 +119,25 @@ export function UsuarioModal({ isEdit, form, setForm, formErrors, loading, onClo
                     </select>
                 </div>
             </div>
+
+            {form.rol === 'Alumno' && (
+                <div style={{ marginBottom: '0.75rem', padding: '0.75rem', border: '1px solid #f0f0f0', borderRadius: '10px' }}>
+                    <CohorteFields
+                        value={form.cohorte}
+                        onChange={(cohorte) => setForm((prev) => ({ ...prev, cohorte }))}
+                        carreras={carreras}
+                        labelStyle={{ fontFamily:'Poppins', fontSize:'0.875rem', fontWeight: 500, color:'#555', display:'block', marginBottom:'0.35rem' }}
+                    />
+                    {isEdit && (
+                        <p style={{ fontFamily: 'Poppins', fontSize: '0.75rem', color: '#888', margin: '0.5rem 0 0' }}>
+                            Si cambias el grupo, el alumno pasa automáticamente a las materias de su nuevo grupo.
+                        </p>
+                    )}
+                    {formErrors.cohorte && (
+                        <p style={{ color: '#e53e6d', fontSize: '0.78rem', fontFamily: 'Poppins', marginTop: '0.25rem' }}>{formErrors.cohorte}</p>
+                    )}
+                </div>
+            )}
 
             <div style={{ display:'flex', alignItems:'center', gap:'0.75rem' }}>
                 <input 

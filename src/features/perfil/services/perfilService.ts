@@ -1,6 +1,6 @@
 import { API, TOKEN_KEYS } from '@/constants/index';
 import { authFetch } from '@/api/authSession';
-import { unwrapResponse } from '@/utils/apiResponse';
+import { unwrapResponse, errorBodyMessage } from '@/utils/apiResponse';
 import type { Perfil, UpdatePerfilPayload } from '../types';
 
 function getAuthHeaders(): HeadersInit {
@@ -23,7 +23,7 @@ async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}) : P
     }
     if (!response.ok) {
         const errorBody = await response.json().catch(() => null);
-        throw new Error(errorBody?.message ?? errorBody?.detail ?? `Error ${response.status}`);
+        throw new Error(errorBodyMessage(errorBody, `Error ${response.status}`));
     }
     return response.json() as Promise<T>;
 }

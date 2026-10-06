@@ -12,6 +12,8 @@ export function useRegister(){
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [carrera, setCarrera] = useState<number | null>(null);
+    const [cuatrimestre, setCuatrimestre] = useState<number | null>(null);
+    const [grupo, setGrupo] = useState<number | null>(null);
     const [carreras, setCarreras] = useState<Carrera[]>([]);
 
     const [loading, setLoading] = useState(false);
@@ -37,6 +39,10 @@ export function useRegister(){
             setError('Selecciona tu carrera.');
             return;
         }
+        if (cuatrimestre === null || grupo === null) {
+            setError('Selecciona tu cuatrimestre y tu grupo.');
+            return;
+        }
 
         setLoading(true);
         setError(null);
@@ -49,6 +55,8 @@ export function useRegister(){
                 password,
                 password_confirm: passwordConfirm,
                 carrera,
+                cuatrimestre,
+                grupo,
             });
             router.push('/login');
         } catch (err) {
@@ -74,6 +82,10 @@ export function useRegister(){
         setPasswordConfirm,
         carrera,
         setCarrera,
+        cuatrimestre,
+        setCuatrimestre,
+        grupo,
+        setGrupo,
         carreras,
         loading,
         error,

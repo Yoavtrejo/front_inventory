@@ -18,11 +18,14 @@ interface RegisterCredentials{
     password: string;
     password_confirm: string;
     carrera: number;
+    cuatrimestre: number;
+    grupo: number;
 }
 
 export interface Carrera {
     id: number;
     nombre: string;
+    clave: string | null;
 }
 
 interface ApiEnvelope<T> {

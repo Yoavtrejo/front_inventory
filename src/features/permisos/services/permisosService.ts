@@ -1,6 +1,6 @@
 import { API, TOKEN_KEYS } from '@/constants';
 import { authFetch } from '@/api/authSession';
-import { unwrapList, unwrapResponse } from '@/utils/apiResponse';
+import { unwrapList, unwrapResponse, errorBodyMessage } from '@/utils/apiResponse';
 import type { Usuario, CreateUsuarioPayload, UpdateUsuarioPayload } from '../types';
 
 function getAuthHeaders() : HeadersInit {
@@ -23,7 +23,7 @@ async function fetchWithAuth<T>(endpoint:string, options: RequestInit = {}):Prom
 
     if (!response.ok) {
         const errorBody = await response.json().catch(() => null);
-        throw new Error(errorBody?.detail ?? `Error ${response.status}: ${response.statusText}`);
+        throw new Error(errorBodyMessage(errorBody, `Error ${response.status}: ${response.statusText}`));
     }
 
     if(response.status === 204) return null as T;

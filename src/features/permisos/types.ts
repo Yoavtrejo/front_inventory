@@ -9,6 +9,11 @@ export interface Usuario {
     is_superuser: boolean;
     date_joined: string;
     last_login: string | null;
+    matricula?: string | null;
+    carrera_id?: number | null;
+    cuatrimestre?: number | null;
+    grupo?: number | null;
+    grupo_escolar?: string | null;
 }
 
 export type RolUsuario = 'Administrador' | 'Docente' | 'Alumno';
@@ -38,6 +43,10 @@ export interface CreateUsuarioPayload {
 }
 
 export interface UpdateUsuarioPayload {
+    // Grupo escolar del alumno: cambiarlo lo reinscribe en las materias de su nuevo grupo
+    carrera?: number | null;
+    cuatrimestre?: number | null;
+    grupo?: number | null;
     username?: string;
     email?: string;
     first_name?: string;

@@ -5,6 +5,8 @@ import { permisosService } from '../services/permisosService';
 import { rolToFlags } from '../types';
 import type { Usuario, RolUsuario } from '../types';
 import { useToast } from '@/components/ui/Toast/ToastContext';
+import { EMPTY_COHORTE, isCohorteComplete } from '@/features/cohorte';
+import type { CohorteValue } from '@/features/cohorte';
 
 interface UsuarioForm {
     first_name: string;
@@ -14,6 +16,7 @@ interface UsuarioForm {
     password: string;
     rol: RolUsuario;
     is_active: boolean;
+    cohorte: CohorteValue;
 }
 
 type FormErrors = Partial<Record<keyof UsuarioForm, string>>;
@@ -26,6 +29,7 @@ const EMPTY_FORM: UsuarioForm = {
     password: '',
     rol: 'Alumno',
     is_active: true,
+    cohorte: EMPTY_COHORTE,
 }
 
 export function useUsuarioModal(onSuccess: () => void) {
@@ -44,6 +48,9 @@ export function useUsuarioModal(onSuccess: () => void) {
         if(!form.email.trim()) errors.email = 'El correo es obligatorio';
         if(!editTarget && !form.password.trim())
             errors.password = 'La contraseña es obligatoria';
+        const cohorteParcial = form.cohorte.carrera !== null || form.cohorte.cuatrimestre !== null || form.cohorte.grupo !== null;
+        if (form.rol === 'Alumno' && cohorteParcial && !isCohorteComplete(form.cohorte))
+            errors.cohorte = 'Completa carrera, cuatrimestre y grupo, o déjalos vacíos.';
         setFormErrors(errors);
         return Object.keys(errors).length === 0;
     };
@@ -64,6 +71,7 @@ export function useUsuarioModal(onSuccess: () => void) {
             password: '',
             rol: usuario.is_superuser ? 'Administrador' : usuario.is_staff ? 'Docente' : 'Alumno',
             is_active: usuario.is_active,
+            cohorte: { carrera: usuario.carrera_id ?? null, cuatrimestre: usuario.cuatrimestre ?? null, grupo: usuario.grupo ?? null },
         });
         setEditTarget(usuario);
         setFormErrors({});
@@ -81,6 +89,9 @@ export function useUsuarioModal(onSuccess: () => void) {
         setLoading(true);
         try {
             const flags = rolToFlags(form.rol);
+            const cohortePayload = form.rol === 'Alumno' && isCohorteComplete(form.cohorte)
+                ? { carrera: form.cohorte.carrera, cuatrimestre: form.cohorte.cuatrimestre, grupo: form.cohorte.grupo }
+                : {};
 
             if (editTarget) {
                 await permisosService.update(editTarget.id, {
@@ -90,10 +101,11 @@ export function useUsuarioModal(onSuccess: () => void) {
                     email: form.email,
                     is_active: form.is_active,
                     ...flags,
+                    ...cohortePayload,
                 });
                 showToast('Usuario actualizado correctamente', 'success');
             }else {
-                await permisosService.create({
+                const created = await permisosService.create({
                     first_name: form.first_name,
                     last_name: form.last_name,
                     username: form.username,
@@ -102,6 +114,8 @@ export function useUsuarioModal(onSuccess: () => void) {
                     is_active: form.is_active,
                     ...flags,
                 });
+                // El alta no recibe datos del perfil; el grupo escolar se asigna justo después
+                if (Object.keys(cohortePayload).length > 0) await permisosService.update(created.id, cohortePayload);
                 showToast('Usuario creado correctamente', 'success');
             }
             onSuccess();

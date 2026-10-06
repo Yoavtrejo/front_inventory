@@ -1,7 +1,7 @@
 import api from '@/api/axiosconfig';
 import { unwrapList, unwrapResponse } from '@/utils/apiResponse';
 import type {
-    ClassGroup, Activity, Submission, WorkTeam, GroupAverage,
+    ClassGroup, Activity, Submission, WorkTeam, GroupAverage, Subject, CreateClassGroupPayload,
     CreateActivityPayload, CreateWorkTeamPayload, CreateSubmissionPayload, GradeSubmissionPayload,
 } from '../types';
 
@@ -10,6 +10,17 @@ export const academicService = {
     getGroups: async (): Promise<ClassGroup[]> => {
         const response = await api.get('/academic/classgroups/');
         return unwrapList<ClassGroup>(response.data);
+    },
+
+    // El nombre (p. ej. ISC34) lo arma el backend y ahí mismo inscribe a los alumnos de ese grupo escolar
+    createGroup: async (payload: CreateClassGroupPayload): Promise<ClassGroup> => {
+        const response = await api.post('/academic/classgroups/', payload);
+        return unwrapResponse<ClassGroup>(response.data);
+    },
+
+    getSubjects: async (): Promise<Subject[]> => {
+        const response = await api.get('/academic/subjects/');
+        return unwrapList<Subject>(response.data);
     },
 
     // Para un alumno: grupos en los que todavía no está inscrito

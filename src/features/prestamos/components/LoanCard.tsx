@@ -65,6 +65,7 @@ export function LoanCard ({ loan, actions } : LoanCardProps){
             {requesterId && (
                 <p style={{ fontFamily:'Poppins', fontSize:'0.85rem', color:'var(--text-soft)', marginBottom:'0.35rem'}}>
                     <strong>Matrícula:</strong> {requesterId}
+                    {loan.requested_by?.grupo_escolar && <> · {loan.requested_by.grupo_escolar}</>}
                     {loan.requested_by?.carrera && <> · {loan.requested_by.carrera}</>}
                 </p>
             )}
